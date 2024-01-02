@@ -126,7 +126,14 @@ if args.split>0:
     node_id_sorted_xy = sorted(node_id_sorted_xy, key = lambda x: (x[1], x[2]))
     with gzip.open(metadata_to + args.data_name+'_'+'node_id_sorted_xy', 'wb') as fp:  #b, a:[0:5]   
     	pickle.dump(node_id_sorted_xy, fp)
+####################################################################
+df = pd.read_csv('/cluster/home/t116508uhn/64630/NEST_database.csv', sep=",")
 
+'''
+        Ligand   Receptor          Annotation           Reference
+0        TGFB1     TGFBR1  Secreted Signaling      KEGG: hsa04350
+1        TGFB1     TGFBR2  Secreted Signaling      KEGG: hsa04350
+'''
 ################# for running Niches ###############################
 ligand_dict_dataset = defaultdict(list)
 cell_cell_contact = dict() 
