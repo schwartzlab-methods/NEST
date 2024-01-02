@@ -8,7 +8,7 @@ from torch_geometric.nn import Linear, DeepGraphInfomax
 from torch_geometric.data import Data, DataLoader
 import gzip
 
-from NEST_GATv2Conv import GATv2Conv
+from GATv2Conv_NEST import GATv2Conv
 
 def get_graph(X, training_data_name):
 
