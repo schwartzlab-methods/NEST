@@ -74,7 +74,7 @@ if __name__ == "__main__":
     print(args) 
 
     
-    from CCC_train_ST import CCC_on_ST
+    from train_CCC_gat import CCC_on_ST
     CCC_on_ST(args)
     end_time = time.time() - start_time
     print('time elapsed %g min'%(end_time/60))
