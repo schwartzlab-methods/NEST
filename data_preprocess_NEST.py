@@ -34,10 +34,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument( '--data_from', type=str, default='data/PDAC_64630/outs/' , help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
 parser.add_argument( '--data_name', type=str, default='PDAC_64630', help='Name of the dataset')
 parser.add_argument( '--data_to', type=str, default='input_graph/PDAC_64630/', help='Path to save the input graph (to be passed to GAT)')
+parser.add_argument( '--metadata_to', type=str, default='metadata/PDAC_64630/', help='Path to save the metadata')
 parser.add_argument( '--filter_min_cell', type=int, default=5 , help='Minimum number of cells for gene filtering') 
 parser.add_argument( '--threshold_gene_exp', type=double, default=98, help='Threshold percentile for gene expression. Genes above this percentile are considered active.')
 parser.add_argument( '--tissue_position_file', type=str, default='None', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
 parser.add_argument( '--spot_diameter', type=double, default=89.43, help='Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel).')
+parser.add_argument( '--split', type=int, default=0 , help='How many split sections?') 
 args = parser.parse_args()
 filter_min_cell = 5
 threshold_expression = 98
@@ -45,7 +47,23 @@ threshold_expression = 98
 
 ####### get the gene id, cell barcode, cell coordinates ######
 
-if args.--tissue_position_file != 'None':
+if args.tissue_position_file == 'None': # Data is available in Space Ranger output format
+    adata_h5 = st.Read10X(path=args.data_from, count_file='filtered_feature_bc_matrix.h5')
+    print('data read done')
+    gene_count_before = len(list(adata_h5.var_names) )    
+    sc.pp.filter_genes(adata_h5, min_cells=args.filter_min_cell)
+    gene_count_after = len(list(adata_h5.var_names) )  
+    print('Gene filtering done. Number of genes reduced from %d to %d'%(gene_count_before, gene_count_after))
+    gene_ids = list(adata_h5.var_names)
+    coordinates = adata_h5.obsm['spatial']
+    cell_barcode = np.array(adata_h5.obs.index)
+    print('Applying quantile normalization')
+    temp = qnorm.quantile_normalize(np.transpose(sparse.csr_matrix.toarray(adata_h5.X)))  #https://en.wikipedia.org/wiki/Quantile_normalization
+    adata_X = np.transpose(temp)  
+    cell_vs_gene = copy.deepcopy(adata_X)
+
+
+else: # Data is not available in Space Ranger output format
     # read the mtx file
     temp = sc.read_10x_mtx(args.data_from)
     print('*.mtx file read done')
@@ -55,14 +73,18 @@ if args.--tissue_position_file != 'None':
     print('Gene filtering done. Number of genes reduced from %d to %d'%(gene_count_before, gene_count_after))
     gene_ids = list(temp.var_names) 
     cell_barcode = np.array(temp.obs.index)
+    print('Applying quantile normalization')
+    temp = qnorm.quantile_normalize(np.transpose(sparse.csr_matrix.toarray(temp.X)))  #https://en.wikipedia.org/wiki/Quantile_normalization
+    cell_vs_gene = np.transpose(temp)  
+
     
     # now read the tissue position file. It has the format:     
     df = pd.read_csv(args.tissue_position_file, sep=",", header=None)   
     tissue_position = df.values
-    barcode_vs_xy = dict() # record the x and y coordinates for each spot
+    barcode_vs_xy = dict() # record the x and y coordinates for each spot/cell
     for i in range (0, tissue_position.shape[0]):
-        barcode_vs_xy[tissue_position[i][0]] = [tissue_position[i][5], tissue_position[i][4]] #for some weird reason, in the .h5 format, the x and y are swapped
-        #barcode_vs_xy[tissue_position[i][0]] = [tissue_position[i][4], tissue_position[i][5]] 
+        #barcode_vs_xy[tissue_position[i][0]] = [tissue_position[i][4], tissue_position[i][5]] # x and y coordinates
+        barcode_vs_xy[tissue_position[i][0]] = [tissue_position[i][5], tissue_position[i][4]] #for some weird reason, in the .h5 format for LUAD sample, the x and y are swapped
     
     coordinates = np.zeros((cell_barcode.shape[0], 2)) # insert the coordinates in the order of cell_barcodes
     for i in range (0, cell_barcode.shape[0]):
@@ -70,44 +92,14 @@ if args.--tissue_position_file != 'None':
         coordinates[i,1] = barcode_vs_xy[cell_barcode[i]][1]
     
 
-else:
-    adata_h5 = st.Read10X(path=args.data_from, count_file='filtered_feature_bc_matrix.h5') #count_file=args.data_name+'_filtered_feature_bc_matrix.h5' )
-    print(adata_h5)
-    sc.pp.filter_genes(adata_h5, min_cells=args.filter_min_cell)
-    print(adata_h5)
-    gene_ids = list(adata_h5.var_names)
-    coordinates = adata_h5.obsm['spatial']
-    cell_barcode = np.array(adata_h5.obs.index)
-    temp = qnorm.quantile_normalize(np.transpose(sparse.csr_matrix.toarray(adata_h5.X)))  
-    adata_X = np.transpose(temp)  
-    cell_vs_gene = copy.deepcopy(adata_X)
-    print('min gene count after quantile transformation %g'%np.min(cell_vs_gene))    
 
-##################### make cell metadata: barcode_info ###################################
-i=0
-barcode_serial = dict()
-for cell_code in cell_barcode:
-    barcode_serial[cell_code]=i
-    i=i+1
-    
+
+##################### make metadata: barcode_info ###################################
 i=0
 barcode_info=[]
 for cell_code in cell_barcode:
     barcode_info.append([cell_code, coordinates[i,0],coordinates[i,1], 0]) # last entry will hold the component number later
     i=i+1
-
-
-
-#### needed if split data is used ##############
-i=0
-node_id_sorted_xy=[]
-for cell_code in cell_barcode:
-    node_id_sorted_xy.append([i, coordinates[i,0],coordinates[i,1]])
-    i=i+1
-	
-node_id_sorted_xy = sorted(node_id_sorted_xy, key = lambda x: (x[1], x[2]))
-with gzip.open("/cluster/projects/schwartzgroup/fatema/find_ccc/" + args.data_name+'_'+'node_id_sorted_xy', 'wb') as fp:  #b, a:[0:5]   
-	pickle.dump(node_id_sorted_xy, fp)
 ################################################
 
 gene_info=dict()
@@ -119,27 +111,20 @@ i = 0
 for gene in gene_ids: 
     gene_index[gene] = i
     i = i+1
+    
+#### needed if split data is used ##############
+if args.split>0:
+    i=0
+    node_id_sorted_xy=[]
+    for cell_code in cell_barcode:
+        node_id_sorted_xy.append([i, coordinates[i,0],coordinates[i,1]])
+        i=i+1
+    	
+    node_id_sorted_xy = sorted(node_id_sorted_xy, key = lambda x: (x[1], x[2]))
+    with gzip.open(metadata_to + args.data_name+'_'+'node_id_sorted_xy', 'wb') as fp:  #b, a:[0:5]   
+    	pickle.dump(node_id_sorted_xy, fp)
+
 ################# for running Niches ###############################
-'''
-gene_vs_cell = np.transpose(cell_vs_gene)  
-np.save("/cluster/projects/schwartzgroup/fatema/find_ccc/gene_vs_cell_quantile_transformed_"+args.data_name, gene_vs_cell)
-df = pd.DataFrame(gene_ids)
-df.to_csv('/cluster/projects/schwartzgroup/fatema/find_ccc/gene_ids_'+args.data_name+'.csv', index=False, header=False)
-df = pd.DataFrame(cell_barcode)
-df.to_csv('/cluster/projects/schwartzgroup/fatema/find_ccc/cell_barcode_'+args.data_name+'.csv', index=False, header=False)
-'''   
-####################
-''' 
-for i in range (0, cell_vs_gene.shape[0]):
-    max_value = np.max(cell_vs_gene[i][:])
-    min_value = np.min(cell_vs_gene[i][:])
-    for j in range (0, cell_vs_gene.shape[1]):
-        cell_vs_gene[i][j] = (cell_vs_gene[i][j]-min_value)/(max_value-min_value)
-
-with gzip.open("/cluster/projects/schwartzgroup/fatema/find_ccc/" + 'cell_vs_gene_quantile_transformed_scaled', 'wb') as fp:  #b, a:[0:5]   
-	pickle.dump(cell_vs_gene, fp)
-'''
-
 ligand_dict_dataset = defaultdict(list)
 cell_cell_contact = dict() 
    
