@@ -40,6 +40,9 @@ parser.add_argument( '--threshold_gene_exp', type=double, default=98, help='Thre
 parser.add_argument( '--tissue_position_file', type=str, default='None', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
 parser.add_argument( '--spot_diameter', type=double, default=89.43, help='Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel).')
 parser.add_argument( '--split', type=int, default=0 , help='How many split sections?') 
+parser.add_argument( '--database_path', type=str, default='database/NEST_database.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
+
+
 args = parser.parse_args()
 filter_min_cell = 5
 threshold_expression = 98
