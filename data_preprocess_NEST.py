@@ -37,6 +37,7 @@ parser.add_argument( '--data_to', type=str, default='input_graph/PDAC_64630/', h
 parser.add_argument( '--filter_min_cell', type=int, default=5 , help='Minimum number of cells for gene filtering') 
 parser.add_argument( '--threshold_gene_exp', type=double, default=98, help='Threshold percentile for gene expression. Genes above this percentile are considered active.')
 parser.add_argument( '--tissue_position_file', type=str, default='None', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
+parser.add_argument( '--spot_diameter', type=double, default=89.43, help='Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel).')
 args = parser.parse_args()
 filter_min_cell = 5
 threshold_expression = 98
