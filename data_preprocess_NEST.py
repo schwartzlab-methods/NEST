@@ -28,89 +28,37 @@ spot_diameter = 89.43 #pixels
 data_name = 'PDAC_130355_D1'
 
 
-if data_name == 'LUAD_GSM5702473_TD1':
-    parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_path', type=str, default='/cluster/projects/schwartzgroup/fatema/data/LUAD/LUAD_GSM5702473_TD1/' , help='The path to dataset') 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='LUAD_GSM5702473_TD1', help='The name of dataset')
-    parser.add_argument( '--model_name', type=str, default='gat_r1_3attr', help='model name')
-    #parser.add_argument( '--slice', type=int, default=0, help='starting index of ligand')
-    args = parser.parse_args()  	
-#############################################################   
-elif data_name == 'V1_Human_Lymph_Node_spatial':
-    parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_path', type=str, default='/cluster/projects/schwartzgroup/fatema/data/V1_Human_Lymph_Node_spatial/' , help='The path to dataset') 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='V1_Human_Lymph_Node_spatial', help='The name of dataset')
-    args = parser.parse_args()
 
 
-elif data_name == 'PDAC_64630':
-    parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_path', type=str, default='/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/' , help='The path to dataset') 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='PDAC_64630', help='The name of dataset')
-    args = parser.parse_args()
-    filter_min_cell = 5
-    threshold_expression = 98
-
-elif data_name == 'PDAC_130355_B1':
-    parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_path', type=str, default='/cluster/projects/schwartzgroup/fatema/data/exp2_B1/outs/' , help='The path to dataset') 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='PDAC_130355_B1', help='The name of dataset')
-    args = parser.parse_args()
-    filter_min_cell = 5
-    threshold_expression = 98.1
-    
-elif data_name == 'PDAC_130355_A1':
-    parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_path', type=str, default='/cluster/projects/schwartzgroup/fatema/data/exp2_A1/outs/' , help='The path to dataset') 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='PDAC_130355_A1', help='The name of dataset')
-    args = parser.parse_args()
-    filter_min_cell = 5
-    threshold_expression = 98.7
-
-elif data_name == 'PDAC_140694':
-    parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_path', type=str, default='/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/V10M25-60_C1_PDA_140694_Pa_P_Spatial10x/outs/' , help='The path to dataset') 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='PDAC_140694', help='The name of dataset')
-    #parser.add_argument( '--model_name', type=str, default='gat_r1_2attr', help='model name')
-    #parser.add_argument( '--slice', type=int, default=0, help='starting index of ligand')
-    args = parser.parse_args()
-    filter_min_cell = 1
-    threshold_expression = 98
+parser = argparse.ArgumentParser()
+parser.add_argument( '--data_from', type=str, default='data/PDAC_64630/outs/' , help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
+parser.add_argument( '--data_name', type=str, default='PDAC_64630', help='Name of the dataset')
+parser.add_argument( '--data_to', type=str, default='input_graph/PDAC_64630/', help='Path to save the input graph (to be passed to GAT)')
+parser.add_argument( '--filter_min_cell', type=int, default=5 , help='Minimum number of cells for gene filtering') 
+parser.add_argument( '--threshold_gene_exp', type=double, default=98, help='Threshold percentile for gene expression. Genes above this percentile are considered active.')
+parser.add_argument( '--tissue_position_file', type=str, default='None', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
+args = parser.parse_args()
+filter_min_cell = 5
+threshold_expression = 98
 
 
-elif data_name == 'PDAC_130355_D1':
-    parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_path', type=str, default='/cluster/projects/schwartzgroup/fatema/data/exp1/exp1_D1/outs/' , help='The path to dataset') 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='PDAC_130355_D1', help='The name of dataset')
-    #parser.add_argument( '--model_name', type=str, default='gat_r1_2attr', help='model name')
-    #parser.add_argument( '--slice', type=int, default=0, help='starting index of ligand')
-    args = parser.parse_args()
-    filter_min_cell = 5
-    threshold_expression = 98
 ####### get the gene id, cell barcode, cell coordinates ######
 
-if data_name == 'LUAD_GSM5702473_TD1':
+if args.--tissue_position_file != 'None':
     # read the mtx file
-    temp = sc.read_10x_mtx(args.data_path)
-    print(temp)
-    sc.pp.filter_genes(temp, min_cells=filter_min_cell)
-    print(temp)
-    
+    temp = sc.read_10x_mtx(args.data_from)
+    print('*.mtx file read done')
+    gene_count_before = len(list(temp.var_names) )
+    sc.pp.filter_genes(temp, min_cells=args.filter_min_cell)
+    gene_count_after = len(list(temp.var_names) )
+    print('Gene filtering done. Number of genes reduced from %d to %d'%(gene_count_before, gene_count_after))
     gene_ids = list(temp.var_names) 
     cell_barcode = np.array(temp.obs.index)
     
-    # now read the tissue position file. It has the format: 
-    #df = pd.read_csv('/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/spatial/tissue_positions_list.csv', sep=",",header=None)   # read dummy .tsv file into memory
-    df = pd.read_csv('/cluster/projects/schwartzgroup/fatema/data/LUAD/LUAD_GSM5702473_TD1/GSM5702473_TD1_tissue_positions_list.csv', sep=",",header=None)   # read dummy .tsv file into memory
+    # now read the tissue position file. It has the format:     
+    df = pd.read_csv(args.tissue_position_file, sep=",", header=None)   
     tissue_position = df.values
-    barcode_vs_xy = dict() # record the x and y coord for each spot
+    barcode_vs_xy = dict() # record the x and y coordinates for each spot
     for i in range (0, tissue_position.shape[0]):
         barcode_vs_xy[tissue_position[i][0]] = [tissue_position[i][5], tissue_position[i][4]] #for some weird reason, in the .h5 format, the x and y are swapped
         #barcode_vs_xy[tissue_position[i][0]] = [tissue_position[i][4], tissue_position[i][5]] 
@@ -122,9 +70,9 @@ if data_name == 'LUAD_GSM5702473_TD1':
     
 
 else:
-    adata_h5 = st.Read10X(path=args.data_path, count_file='filtered_feature_bc_matrix.h5') #count_file=args.data_name+'_filtered_feature_bc_matrix.h5' )
+    adata_h5 = st.Read10X(path=args.data_from, count_file='filtered_feature_bc_matrix.h5') #count_file=args.data_name+'_filtered_feature_bc_matrix.h5' )
     print(adata_h5)
-    sc.pp.filter_genes(adata_h5, min_cells=filter_min_cell)
+    sc.pp.filter_genes(adata_h5, min_cells=args.filter_min_cell)
     print(adata_h5)
     gene_ids = list(adata_h5.var_names)
     coordinates = adata_h5.obsm['spatial']
