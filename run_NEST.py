@@ -1,28 +1,14 @@
 import os
 import sys
 import numpy as np
-from sklearn import metrics
-from scipy import sparse
-import pickle
-import pandas as pd
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-#from torch_geometric.nn import GCNConv, ChebConv, GATConv, DeepGraphInfomax, global_mean_pool, global_max_pool  # noqa
-from torch_geometric.data import Data, DataLoader
 from datetime import datetime 
 import time
-
-rootPath = os.path.dirname(sys.path[0])
-os.chdir(rootPath+'/CCC_project')
-
 import random
-
+import argparse
 
 
 if __name__ == "__main__":
-        
-    import argparse
     parser = argparse.ArgumentParser()
     # =========================== args ===============================
     parser.add_argument( '--data_name', type=str, default='V1_Breast_Cancer_Block_A_Section_1', help="'MERFISH' or 'V1_Breast_Cancer_Block_A_Section_1") 
