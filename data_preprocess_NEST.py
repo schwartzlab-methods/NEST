@@ -213,8 +213,8 @@ for i in range (0, cell_vs_gene.shape[0]):
     # different options for choosing the threshold gene expression. I am using np.percentile(y, args.threshold_gene_exp)
 
 ##############################################################################
+# some preprocessing before making the input graph
 count_total_edges = 0
-activated_cell_index = dict()
 
 cells_ligand_vs_receptor = []
 for i in range (0, cell_vs_gene.shape[0]):
@@ -227,21 +227,21 @@ for i in range (0, cell_vs_gene.shape[0]):
         
 start_index = 0 #args.slice
 end_index = len(ligand_list) #min(len(ligand_list), start_index+100)
-included_LR = defaultdict(dict)
+
 for g in range(start_index, end_index): 
     gene = ligand_list[g]
     for i in range (0, cell_vs_gene.shape[0]): # ligand
-        count_rec = 0    
+          
         if cell_vs_gene[i][gene_index[gene]] < cell_percentile[i][3]:
             continue
         
         for j in range (0, cell_vs_gene.shape[0]): # receptor
-            if distance_matrix[i,j] > spot_diameter*4:
+            if distance_matrix[i,j] > args.neighborhood_threshold: #spot_diameter*4
                 continue
 
             for gene_rec in ligand_dict_dataset[gene]:
                 if cell_vs_gene[j][gene_index[gene_rec]] >= cell_percentile[j][3]: # or cell_vs_gene[i][gene_index[gene]] >= cell_percentile[i][4] :#gene_list_percentile[gene_rec][1]: #global_percentile: #
-                    if gene_rec in cell_cell_contact and distance_matrix[i,j] > spot_diameter:
+                    if gene_rec in cell_cell_contact and distance_matrix[i,j] > args.spot_diameter:
                         continue
 
                     communication_score = cell_vs_gene[i][gene_index[gene]] * cell_vs_gene[j][gene_index[gene_rec]]
@@ -252,25 +252,18 @@ for g in range(start_index, end_index):
                         continue	
                         
                     cells_ligand_vs_receptor[i][j].append([gene, gene_rec, communication_score, relation_id])
-                    included_LR[gene][gene_rec] = ''
-                    count_rec = count_rec + 1
                     count_total_edges = count_total_edges + 1
-                    activated_cell_index[i] = ''
-                    activated_cell_index[j] = ''
-
-                            
-
+                    
     print('%d genes done out of %d ligand genes'%(g+1, len(ligand_list)))
 
 
 print('total number of edges in the input graph %d '%count_total_edges)
 ################################################################################
+# input graph generation
 ccc_index_dict = dict()
-row_col = []
-edge_weight = []
-lig_rec = []
-count_edge = 0
-max_local = 0
+row_col = [] # list of input edges, row = from node, col = to node
+edge_weight = [] # 3D edge features in the same order as row_col
+lig_rec = [] # ligand and receptors corresponding to the edges in the same order as row_col
 #local_list = np.zeros((102))
 for i in range (0, len(cells_ligand_vs_receptor)):
     #ccc_j = []
@@ -281,29 +274,19 @@ for i in range (0, len(cells_ligand_vs_receptor)):
                 for k in range (0, len(cells_ligand_vs_receptor[i][j])):
                     gene = cells_ligand_vs_receptor[i][j][k][0]
                     gene_rec = cells_ligand_vs_receptor[i][j][k][1]
-                    count_edge = count_edge + 1
-                    count_local = count_local + 1
-                    #print(count_edge)                      
-                    mean_ccc = cells_ligand_vs_receptor[i][j][k][2]
+                    ligand_receptor_coexpression_score = cells_ligand_vs_receptor[i][j][k][2]
                     row_col.append([i,j])
-                    edge_weight.append([dist_X[i,j], mean_ccc,cells_ligand_vs_receptor[i][j][k][3]])
+                    edge_weight.append([dist_X[i,j], ligand_receptor_coexpression_score, cells_ligand_vs_receptor[i][j][k][3]])
                     lig_rec.append([gene, gene_rec])                      
-                
-                if max_local < count_local:
-                    max_local = count_local
-
-
-print('len row col %d'%len(row_col))
-print('count local %d'%max_local) 
 
 
 
-##########
-#with gzip.open("/cluster/projects/schwartzgroup/fatema/find_ccc/" +args.data_name+'_adjacency_records_GAT_selective_lr_STnCCC_separate_'+'bothAbove_cell99th', 'wb') as fp:  #b, a:[0:5]   
-with gzip.open("/cluster/projects/schwartzgroup/fatema/find_ccc/" +args.data_name+'_adjacency_records_GAT_selective_lr_STnCCC_separate_'+'bothAbove_cell98th_3d', 'wb') as fp:  #b, a:[0:5]  _filtered 
+print('total number of edges in the input graph: %d'%len(row_col))
+
+with gzip.open(args.data_to + args.data_name + '_adjacency_records', 'wb') as fp:  #b, a:[0:5]  _filtered 
     pickle.dump([row_col, edge_weight, lig_rec], fp)
-             
-with gzip.open("/cluster/projects/schwartzgroup/fatema/find_ccc/" +args.data_name+'_cell_vs_gene_quantile_transformed', 'wb') as fp:  #b, a:[0:5]   _filtered
+######### optional #################################################################           
+with gzip.open(args.data_to + args.data_name + '_cell_vs_gene_quantile_transformed', 'wb') as fp:  # we do not need this to use anywhere. But just for debug purpose we are saving this.
 	pickle.dump(cell_vs_gene, fp)
 
 
