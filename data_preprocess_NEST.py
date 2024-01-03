@@ -92,7 +92,7 @@ if __name__ == "__main__":
     ################################################
     
     gene_info=dict()
-    for gene in gene_ids:trigger finger phrase
+    for gene in gene_ids:
         gene_info[gene]=''
     
     gene_index=dict()    

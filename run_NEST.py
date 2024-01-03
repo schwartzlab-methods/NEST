@@ -12,6 +12,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # =========================== must be provided ===============================
     parser.add_argument( '--data_name', type=str, help='Name of the dataset') #default='PDAC_64630', 
+    parser.add_argument( '--model_name', type=str, help='Provide a model name')
     #parser.add_argument( '--num_cells', type=int, help='Number of cells or spots in the dataset')
     #=========================== default is set ======================================
     parser.add_argument( '--num_epoch', type=int, default=50000, help='Number of epochs or iterations for model training')
@@ -25,7 +26,6 @@ if __name__ == "__main__":
     parser.add_argument( '--manual_seed', type=str, default='no')
     parser.add_argument( '--seed', type=int )
     #=========================== optional ======================================
-    parser.add_argument( '--model_name', type=str, default='None', help='Optional. Provide a model name if you want to reload it for retraining')
     parser.add_argument( '--load_init', type=int, default=0, help='Load initial model state for the given model_name')  
     parser.add_argument( '--retrain', type=int, default=0 , help='Load last model state to retrain for the given model_name')
 
@@ -50,19 +50,17 @@ if __name__ == "__main__":
         np.random.seed(args.seed)
 
 
-    start_time = time.time()
     if not os.path.exists(args.embedding_data_path):
         os.makedirs(args.embedding_data_path) 
     if not os.path.exists(args.model_path):
         os.makedirs(args.model_path) 
-    #args.result_path = args.result_path+'/'
-    #if not os.path.exists(args.result_path):
-    #    os.makedirs(args.result_path) 
+
     print ('------------------------Model and Training Details--------------------------')
     print(args) 
 
     
     from train_CCC_gat import CCC_on_ST
+    start_time = time.time()
     CCC_on_ST(args)
     end_time = time.time() - start_time
     print('time elapsed %g min'%(end_time/60))

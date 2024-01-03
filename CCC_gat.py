@@ -10,27 +10,34 @@ import gzip
 
 from GATv2Conv_NEST import GATv2Conv
 
-def get_graph(X, training_data_name):
+def get_graph(training_data):
 
-    # create sparse matrix
-    f = gzip.open(training_data_name , 'rb')
-    row_col, edge_weight, lig_rec = pickle.load(f)
-
-
-    print("row_col %d"%len(row_col))
+    f = gzip.open(training_data , 'rb')
+    row_col, edge_weight, lig_rec, num_cell = pickle.load(f)
+    
     #print(edge_weight)
+
+    # one hot vector used as node feature vector
+    X = np.eye(num_cell, num_cell)
+    np.random.shuffle(X)
+    X_data = X # node feature vector
+    num_feature = X_data.shape[1]
+    
+    print('Node feature matrix: X has dimension ', X_data.shape)
+    print("Total number of edges in the input graph is %d"%len(row_col))
+    
+
     ###########
 
     edge_index = torch.tensor(np.array(row_col), dtype=torch.long).T
     edge_attr = torch.tensor(np.array(edge_weight), dtype=torch.float)
-    print('X shape ')
-    print(X.shape)
-    graph_bags = []
-    graph = Data(x=torch.tensor(X, dtype=torch.float), edge_index=edge_index, edge_attr=edge_attr)
 
+    graph_bags = []
+    graph = Data(x=torch.tensor(X_data, dtype=torch.float), edge_index=edge_index, edge_attr=edge_attr)
     graph_bags.append(graph)
-    print('get graph done')
-    return graph_bags
+
+    print('Input graph generation done')
+    return graph_bags, num_feature
 
 
 class Encoder(nn.Module):
@@ -58,8 +65,7 @@ class Encoder(nn.Module):
         x, attention_scores, attention_scores_unnormalized = self.conv(data.x, data.edge_index, edge_attr=data.edge_attr, return_attention_weights = True)
         self.attention_scores_mine_l1 = attention_scores
         self.attention_scores_mine_unnormalized_l1 = attention_scores_unnormalized
-#        x = F.dropout(x, p=0.5, training=self.training)
-#        x = F.elu(x)
+
 
         # layer 2
         x, attention_scores, attention_scores_unnormalized  = self.conv_2(x, data.edge_index, edge_attr=data.edge_attr, return_attention_weights = True)  # <---- ***
@@ -104,7 +110,7 @@ def train_DGI(args, data_loader, in_channels):
     if args.load:
         DGI_model.load_state_dict(torch.load(DGI_filename))
     else:
-	import datetime
+        import datetime
         start_time = datetime.datetime.now()
         min_loss=10000
         if args.retrain==1:
@@ -123,49 +129,61 @@ def train_DGI(args, data_loader, in_channels):
 
             for data in data_loader:
                 data = data.to(device)
-                '''x_old, attention_score = DGI_model(data=data)
-                print('model output')
-                print(x_old)
-                pos_z = x_old[0]
-                neg_z = x_old[1]
-                summary = x_old[2]'''
-
                 pos_z, neg_z, summary = DGI_model(data=data)
-                #print('epoch %d '%epoch)
-                #print(DGI_model.encoder.attention_scores_mine)
                 DGI_loss = DGI_model.loss(pos_z, neg_z, summary)
                 DGI_loss.backward()
                 DGI_all_loss.append(DGI_loss.item())
                 DGI_optimizer.step()
 
-#                loss_curve[loss_curve_counter] = np.mean(DGI_all_loss)
-#                loss_curve_counter = loss_curve_counter + 1
-
             if ((epoch)%500) == 0:
                 print('Epoch: {:03d}, Loss: {:.4f}'.format(epoch+1, np.mean(DGI_all_loss)))
                 loss_curve[loss_curve_counter] = np.mean(DGI_all_loss)
                 loss_curve_counter = loss_curve_counter + 1
-
+                
                 if np.mean(DGI_all_loss)<min_loss:
+
                     min_loss=np.mean(DGI_all_loss)
+
+                    # save the current model state
                     torch.save(DGI_model.state_dict(), DGI_filename)
                     torch.save(DGI_optimizer.state_dict(), args.model_path+'DGI_optimizer_'+ args.model_name  +'.pth.tar')
-                    save_tupple=[pos_z, neg_z, summary]
-                    saved_attention = DGI_model.encoder.attention_scores_mine
-                    saved_attention_unnormalized = DGI_model.encoder.attention_scores_mine_unnormalized
-                    saved_attention_l1 = DGI_model.encoder.attention_scores_mine_l1
-                    saved_attention_unnormalized_l1 = DGI_model.encoder.attention_scores_mine_unnormalized_l1
-                    print(DGI_model.encoder.attention_scores_mine_unnormalized_l1[0:10])
+                    save_tupple=[pos_z, neg_z, summary] 
 
+                    # save the node embedding
+                    X_embedding = pos_z
+                    X_embedding = X_embedding.cpu().detach().numpy()
+                    X_embedding_filename =  args.embedding_data_path + args.model_name + '_Embed_X.npy'
+                    np.save(X_embedding_filename, X_embedding)
+                    
+                    # save the attention scores
 
+                    X_attention_index = DGI_model.encoder.attention_scores_mine[0]
+                    X_attention_index = X_attention_index.cpu().detach().numpy()
 
+                    # layer 1
+                    X_attention_score_normalized_l1 = DGI_model.encoder.attention_scores_mine_l1[1]
+                    X_attention_score_normalized_l1 = X_attention_score_normalized_l1.cpu().detach().numpy()
+                    # layer 1 unnormalized
+                    X_attention_score_unnormalized_l1 = DGI_model.encoder.attention_scores_mine_unnormalized_l1
+                    X_attention_score_unnormalized_l1 = X_attention_score_unnormalized_l1.cpu().detach().numpy()
 
+                    # layer 2
+                    X_attention_score_normalized = DGI_model.encoder.attention_scores_mine[1]
+                    X_attention_score_normalized = X_attention_score_normalized.cpu().detach().numpy()
+                    # layer 2 unnormalized
+                    X_attention_score_unnormalized = DGI_model.encoder.attention_scores_mine_unnormalized
+                    X_attention_score_unnormalized = X_attention_score_unnormalized.cpu().detach().numpy()
 
+                    print('making the bundle to save')
+                    X_attention_bundle = [X_attention_index, X_attention_score_normalized_l1, X_attention_score_unnormalized, X_attention_score_unnormalized_l1, X_attention_score_normalized]
+                    X_attention_filename =  args.embedding_data_path + args.model_name + '_attention_l1.npy'
+                    np.save(X_attention_filename, X_attention_bundle)
 
+                    logfile=open(args.model_path+'DGI'+ args.model_name+'_loss_curve.csv', 'wb')
+                    np.savetxt(logfile,loss_curve, delimiter=',')
+                    logfile.close()
 
-
-
-
+                    #print(DGI_model.encoder.attention_scores_mine_unnormalized_l1[0:10])
 
 #            if ((epoch)%60000) == 0:
 #                DGI_optimizer = torch.optim.Adam(DGI_model.parameters(), lr=1e-6)  #5 #6
@@ -180,17 +198,6 @@ def train_DGI(args, data_loader, in_channels):
         print("debug loss latest tupple %g"%DGI_loss.item())
         DGI_loss = DGI_model.loss(save_tupple[0], save_tupple[1], save_tupple[2])
         print("debug loss min loss tupple %g"%DGI_loss.item())
-
-        DGI_model.encoder.attention_scores_mine = saved_attention
-        DGI_model.encoder.attention_scores_mine_unnormalized = saved_attention_unnormalized
-
-        DGI_model.encoder.attention_scores_mine_l1 = saved_attention_l1
-        DGI_model.encoder.attention_scores_mine_unnormalized_l1 = saved_attention_unnormalized_l1
-
-
-        logfile=open(args.model_path+'DGI'+ args.model_name+'_loss_curve.csv', 'wb')
-        np.savetxt(logfile,loss_curve, delimiter=',')
-        logfile.close()
 
     return DGI_model
 
