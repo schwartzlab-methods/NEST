@@ -40,6 +40,7 @@ parser.add_argument( '--threshold_gene_exp', type=double, default=98, help='Thre
 parser.add_argument( '--tissue_position_file', type=str, default='None', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
 parser.add_argument( '--spot_diameter', type=double, default=89.43, help='Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel).')
 parser.add_argument( '--split', type=int, default=0 , help='How many split sections?') 
+parser.add_argument( '--neighborhood_threshold', type=int, default=89.43*4 , help='Set neighborhood threshold distance in terms of same unit as spot diameter') 
 parser.add_argument( '--database_path', type=str, default='database/NEST_database.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
 
 
@@ -126,7 +127,10 @@ if args.split>0:
     node_id_sorted_xy = sorted(node_id_sorted_xy, key = lambda x: (x[1], x[2]))
     with gzip.open(metadata_to + args.data_name+'_'+'node_id_sorted_xy', 'wb') as fp:  #b, a:[0:5]   
     	pickle.dump(node_id_sorted_xy, fp)
+
+
 ####################################################################
+# ligand - receptor database 
 df = pd.read_csv('/cluster/home/t116508uhn/64630/NEST_database.csv', sep=",")
 
 '''
@@ -134,88 +138,40 @@ df = pd.read_csv('/cluster/home/t116508uhn/64630/NEST_database.csv', sep=",")
 0        TGFB1     TGFBR1  Secreted Signaling      KEGG: hsa04350
 1        TGFB1     TGFBR2  Secreted Signaling      KEGG: hsa04350
 '''
-################# for running Niches ###############################
+
 ligand_dict_dataset = defaultdict(list)
 cell_cell_contact = dict() 
-   
-cell_chat_file = '/cluster/home/t116508uhn/Human-2020-Jin-LR-pairs_cellchat.csv'
-df = pd.read_csv(cell_chat_file)
-for i in range (0, df["ligand_symbol"].shape[0]):
-    ligand = df["ligand_symbol"][i]
-    #if ligand not in gene_marker_ids:
-    if ligand not in gene_info:
-        continue
-        
-    if df["annotation"][i] == 'ECM-Receptor':    
-        continue
-        
-    receptor_symbol_list = df["receptor_symbol"][i]
-    receptor_symbol_list = receptor_symbol_list.split("&")
-    for receptor in receptor_symbol_list:
-        if receptor in gene_info:
-        #if receptor in gene_marker_ids:
-            ligand_dict_dataset[ligand].append(receptor)
-            #######
-            if df["annotation"][i] == 'Cell-Cell Contact':
-                cell_cell_contact[receptor] = ''
-            #######                
-            
-print(len(ligand_dict_dataset.keys()))
-
-nichetalk_file = '/cluster/home/t116508uhn/NicheNet-LR-pairs.csv'   
-df = pd.read_csv(nichetalk_file)
-for i in range (0, df["from"].shape[0]):
-    ligand = df["from"][i]
-    #if ligand not in gene_marker_ids:
-    if ligand not in gene_info:
-        continue
-    receptor = df["to"][i]
-    #if receptor not in gene_marker_ids:
-    if receptor not in gene_info:
-        continue
-    ligand_dict_dataset[ligand].append(receptor)
-    
-##############################################################
-print('number of ligands %d '%len(ligand_dict_dataset.keys()))
 count_pair = 0
-for gene in list(ligand_dict_dataset.keys()): 
-    ligand_dict_dataset[gene]=list(set(ligand_dict_dataset[gene]))
-    gene_info[gene] = 'included'
-    for receptor_gene in ligand_dict_dataset[gene]:
-        gene_info[receptor_gene] = 'included'
-        count_pair = count_pair + 1
+for i in range (0, df["Ligand"].shape[0]):
+    ligand = df["Ligand"][i]
+    if ligand not in gene_info: # not found in the dataset
+        continue    
         
-print('number of pairs %d '%count_pair)       
+    receptor = df["Receptor"][i]
+    if receptor not in gene_info: # not found in the dataset
+        continue   
+        
+    ligand_dict_dataset[ligand].append(receptor)
+    gene_info[ligand] = 'included'
+    gene_info[receptor] = 'included'
+    count_pair = count_pair + 1
+    
+    if df["Annotation"][i] == 'Cell-Cell Contact':
+        cell_cell_contact[receptor] = '' # keep track of which ccc are labeled as cell-cell-contact
 
-count = 0
+
+print('number of ligand-receptor pairs in this dataset %d '%count_pair) 
+print('number of ligands %d '%len(ligand_dict_dataset.keys()))
+
 included_gene=[]
 for gene in gene_info.keys(): 
     if gene_info[gene] == 'included':
-        count = count + 1
         included_gene.append(gene)
         
-print('number of affected genes %d '%count)
-affected_gene_count = count
-######################################
+print('Total genes in this dataset: %d, number of genes working as ligand or receptor: %d '%(len(gene_ids),len(included_gene)))
 
-lr_gene_index = []
-for gene in gene_info.keys(): 
-    if gene_info[gene] == 'included':
-        lr_gene_index.append(gene_index[gene])
-
-lr_gene_index = sorted(lr_gene_index)
-cell_vs_lrgene = cell_vs_gene[:, lr_gene_index]
-with gzip.open("/cluster/projects/schwartzgroup/fatema/find_ccc/" + 'cell_vs_lrgene_quantile_transformed_'+args.data_name, 'wb') as fp:  #b, a:[0:5]   
-	pickle.dump(cell_vs_lrgene, fp)
-	
-''''''
-######################################
-
-ligand_list = list(ligand_dict_dataset.keys())  
-print('len ligand_list %d'%len(ligand_list))
-total_relation = 0
+# assign id to each entry in the ligand-receptor database
 l_r_pair = dict()
-count = 0
 lr_id = 0
 for gene in list(ligand_dict_dataset.keys()): 
     ligand_dict_dataset[gene]=list(set(ligand_dict_dataset[gene]))
@@ -223,35 +179,38 @@ for gene in list(ligand_dict_dataset.keys()):
     for receptor_gene in ligand_dict_dataset[gene]:
         l_r_pair[gene][receptor_gene] = lr_id 
         lr_id  = lr_id  + 1
-        
-print('total type of l-r pairs found: %d'%lr_id )
+    
 
-
+###################################################################################
+# build physical distance matrix
 from sklearn.metrics.pairwise import euclidean_distances
 distance_matrix = euclidean_distances(coordinates, coordinates)
 
+# assign weight to the neighborhood relations based on neighborhood distance 
 dist_X = np.zeros((distance_matrix.shape[0], distance_matrix.shape[1]))
-for j in range(0, distance_matrix.shape[1]):
-    max_value=np.max(distance_matrix[:,j])
-    min_value=np.min(distance_matrix[:,j])
+for j in range(0, distance_matrix.shape[1]): # look at all the incoming edges to node 'j'
+    max_value=np.max(distance_matrix[:,j]) # max distance of node 'j' to all it's neighbors (incoming)
+    min_value=np.min(distance_matrix[:,j]) # min distance of node 'j' to all it's neighbors (incoming)
     for i in range(distance_matrix.shape[0]):
-        dist_X[i,j] = 1-(distance_matrix[i,j]-min_value)/(max_value-min_value)
+        dist_X[i,j] = 1-(distance_matrix[i,j]-min_value)/(max_value-min_value) # scale the distance of node 'j' to all it's neighbors (incoming) and flip it so that nearest one will have maximum weight.
         	
     #list_indx = list(np.argsort(dist_X[:,j]))
     #k_higher = list_indx[len(list_indx)-k_nn:len(list_indx)]
     for i in range(0, distance_matrix.shape[0]):
-        if distance_matrix[i,j] > spot_diameter*4: #i not in k_higher:
-            dist_X[i,j] = 0 #-1
+        if distance_matrix[i,j] > args.neighborhood_threshold: #i not in k_higher:
+            dist_X[i,j] = 0 # no ccc happening outside threshold distance
             
-cell_rec_count = np.zeros((cell_vs_gene.shape[0]))
-
+#cell_rec_count = np.zeros((cell_vs_gene.shape[0]))
+#####################################################################################
+# Set threshold gene percentile
 cell_percentile = []
 for i in range (0, cell_vs_gene.shape[0]):
     y = sorted(cell_vs_gene[i]) # sort each row/cell
     x = range(1, len(y)+1)
     kn = KneeLocator(x, y, curve='convex', direction='increasing')
     kn_value = y[kn.knee-1]
-    cell_percentile.append([np.percentile(y, 10), np.percentile(y, 20),np.percentile(y, 90), np.percentile(y, threshold_expression), kn_value])
+    cell_percentile.append([np.percentile(y, 10), np.percentile(y, 20),np.percentile(y, 80), np.percentile(y, args.threshold_gene_exp), kn_value]) 
+    # different options for choosing the threshold gene expression. I am using np.percentile(y, args.threshold_gene_exp)
 
 ##############################################################################
 count_total_edges = 0
@@ -265,6 +224,7 @@ for i in range (0, cell_vs_gene.shape[0]):
     for j in range (0, cell_vs_gene.shape[0]):
         cells_ligand_vs_receptor[i].append([])
         cells_ligand_vs_receptor[i][j] = []
+        
 start_index = 0 #args.slice
 end_index = len(ligand_list) #min(len(ligand_list), start_index+100)
 included_LR = defaultdict(dict)
@@ -286,10 +246,11 @@ for g in range(start_index, end_index):
 
                     communication_score = cell_vs_gene[i][gene_index[gene]] * cell_vs_gene[j][gene_index[gene_rec]]
                     relation_id = l_r_pair[gene][gene_rec]
-                    #print("%s - %s "%(gene, gene_rec))
+
                     if communication_score<=0:
-                        print('zero valued ccc score found')
+                        print('zero valued ccc score found. Might be a potential ERROR!! ')
                         continue	
+                        
                     cells_ligand_vs_receptor[i][j].append([gene, gene_rec, communication_score, relation_id])
                     included_LR[gene][gene_rec] = ''
                     count_rec = count_rec + 1
@@ -298,15 +259,11 @@ for g in range(start_index, end_index):
                     activated_cell_index[j] = ''
 
                             
-        cell_rec_count[i] =  count_rec   
-        #print("%d - %d "%(i, count_rec))
-        #print("%d - %d , max %g and min %g "%(i, count_rec, max_score, min_score))
-    
-    print(g)
-    
-print('total number of edges in the input graph %d '%count_total_edges)
 
- 
+    print('%d genes done out of %d ligand genes'%(g+1, len(ligand_list)))
+
+
+print('total number of edges in the input graph %d '%count_total_edges)
 ################################################################################
 ccc_index_dict = dict()
 row_col = []
