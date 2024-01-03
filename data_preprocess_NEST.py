@@ -261,11 +261,11 @@ if __name__ == "__main__":
                         lig_rec.append([gene, gene_rec])                      
     
     
-    
-    print('total number of edges in the input graph: %d'%len(row_col))
+    total_num_cell = cell_vs_gene.shape[0]
+    print('total number of nodes is %d, and edges is %d in the input graph: %d'%(total_num_cell, len(row_col)))
     
     with gzip.open(args.data_to + args.data_name + '_adjacency_records', 'wb') as fp:  #b, a:[0:5]  _filtered 
-        pickle.dump([row_col, edge_weight, lig_rec], fp)
+        pickle.dump([row_col, edge_weight, lig_rec, total_num_cell], fp)
     ######### optional #################################################################           
     with gzip.open(args.data_to + args.data_name + '_cell_vs_gene_quantile_transformed', 'wb') as fp:  # we do not need this to use anywhere. But just for debug purpose we are saving this.
     	pickle.dump(cell_vs_gene, fp)
