@@ -245,6 +245,7 @@ if __name__ == "__main__":
     row_col = [] # list of input edges, row = from node, col = to node
     edge_weight = [] # 3D edge features in the same order as row_col
     lig_rec = [] # ligand and receptors corresponding to the edges in the same order as row_col
+    self_loop_found = defaultdict(dict) # to keep track of self-loops -- used later during visualization plotting
     #local_list = np.zeros((102))
     for i in range (0, len(cells_ligand_vs_receptor)):
         #ccc_j = []
@@ -258,7 +259,10 @@ if __name__ == "__main__":
                         ligand_receptor_coexpression_score = cells_ligand_vs_receptor[i][j][k][2]
                         row_col.append([i,j])
                         edge_weight.append([dist_X[i,j], ligand_receptor_coexpression_score, cells_ligand_vs_receptor[i][j][k][3]])
-                        lig_rec.append([gene, gene_rec])                      
+                        lig_rec.append([gene, gene_rec])   
+                        if i==j: # self-loop
+                            self_loop_found[i][j] = ''
+
     
     
     total_num_cell = cell_vs_gene.shape[0]
@@ -266,8 +270,16 @@ if __name__ == "__main__":
     
     with gzip.open(args.data_to + args.data_name + '_adjacency_records', 'wb') as fp:  #b, a:[0:5]  _filtered 
         pickle.dump([row_col, edge_weight, lig_rec, total_num_cell], fp)
+
+    with gzip.open(args.metadata_to + args.data_name +'_self_loop_record', 'wb') as fp:  #b, a:[0:5]   _filtered
+        pickle.dump(self_loop_found, fp)
+
+    with gzip.open(args.metadata_to + args.data_name +'_barcode_info', 'wb') as fp:  #b, a:[0:5]   _filtered
+        pickle.dump(barcode_info, fp)
+    
     ######### optional #################################################################           
-    with gzip.open(args.data_to + args.data_name + '_cell_vs_gene_quantile_transformed', 'wb') as fp:  # we do not need this to use anywhere. But just for debug purpose we are saving this.
+    # we do not need this to use anywhere. But just for debug purpose we are saving this. We can skip this if we have space issue.
+    with gzip.open(args.data_to + args.data_name + '_cell_vs_gene_quantile_transformed', 'wb') as fp:  
     	pickle.dump(cell_vs_gene, fp)
 
 
