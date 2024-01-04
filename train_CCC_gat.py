@@ -20,7 +20,7 @@ import anndata as ad
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_geometric.data import Data, DataLoader
+from torch_geometric.data import DataLoader
 
 
 rootPath = os.path.dirname(sys.path[0])

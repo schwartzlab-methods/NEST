@@ -1,11 +1,16 @@
 import os
 import sys
 import numpy as np
-import torch
 from datetime import datetime 
 import time
 import random
 import argparse
+import torch
+from torch_geometric.data import DataLoader
+from CCC_gat import get_graph, train_NEST
+
+
+
 
 
 if __name__ == "__main__":
@@ -26,9 +31,9 @@ if __name__ == "__main__":
     parser.add_argument( '--manual_seed', type=str, default='no')
     parser.add_argument( '--seed', type=int )
     #=========================== optional ======================================
-    parser.add_argument( '--load_init', type=int, default=0, help='Load initial model state for the given model_name')  
-    parser.add_argument( '--retrain', type=int, default=0 , help='Load last model state to retrain for the given model_name')
-
+    parser.add_argument( '--load', type=int, default=0, help='Load a previously saved model state')  
+    parser.add_argument( '--load_model_name', type=str, default='None' , help='Provide the model name that you want to reload')
+    #============================================================================
     args = parser.parse_args() 
 
     #parser.add_argument( '--options', type=str)
@@ -58,13 +63,20 @@ if __name__ == "__main__":
     print ('------------------------Model and Training Details--------------------------')
     print(args) 
 
-    
-    from train_CCC_gat import CCC_on_ST
-    start_time = time.time()
-    CCC_on_ST(args)
-    end_time = time.time() - start_time
-    print('time elapsed %g min'%(end_time/60))
-    
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(device)
+
+    # data preparation
+    data_list, num_feature = get_graph(args.training_data)
+    data_loader = DataLoader(data_list, batch_size=1)
+
+    # train the model
+    DGI_model = train_NEST(args, data_loader=data_loader, in_channels=num_feature)
+    # training done
+
+    # you can do something with the model here
+
+
 
 
     

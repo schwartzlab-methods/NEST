@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch_geometric.nn import Linear, DeepGraphInfomax
+from torch_geometric.nn import DeepGraphInfomax #Linear, 
 from torch_geometric.data import Data, DataLoader
 import gzip
 
@@ -90,7 +90,7 @@ def corruption(data):
     return my_data(x, data.edge_index, data.edge_attr)
 
 
-def train_DGI(args, data_loader, in_channels):
+def train_NEST(args, data_loader, in_channels):
 
     loss_curve = np.zeros((args.num_epoch//500+1))
     loss_curve_counter = 0
@@ -106,19 +106,19 @@ def train_DGI(args, data_loader, in_channels):
     #DGI_optimizer = torch.optim.Adam(DGI_model.parameters(), lr=0.005, weight_decay=5e-4)
     DGI_optimizer = torch.optim.Adam(DGI_model.parameters(), lr=args.lr_rate) #1e-5)#5 #6
     #DGI_optimizer = torch.optim.RMSprop(DGI_model.parameters(), lr=1e-5)
-    DGI_filename = args.model_path+'DGI'+ args.model_name  +'.pth.tar'
+    DGI_filename = args.model_path+'DGI_'+ args.model_name  +'.pth.tar'
+
     if args.load:
-        DGI_model.load_state_dict(torch.load(DGI_filename))
+        DGI_load_path = args.model_path+'DGI_'+ args.load_model_name+'.pth.tar'
+        DGI_model.load_state_dict(torch.load(DGI_load_path))
+        DGI_optimizer.load_state_dict(torch.load(args.model_path+'DGI_optimizer_'+ args.load_model_name  +'.pth.tar'))
+
+
     else:
         import datetime
         start_time = datetime.datetime.now()
         min_loss=10000
-        if args.retrain==1:
-            DGI_load_path = args.model_load_path+'DGI'+ args.model_name+'.pth.tar'
-            DGI_model.load_state_dict(torch.load(DGI_load_path))
-            DGI_optimizer.load_state_dict(torch.load(args.model_path+'DGI_optimizer_'+ args.model_name  +'.pth.tar'))
-
-        #print('Saving init model state ...')
+        print('Saving init model state ...')
         torch.save(DGI_model.state_dict(), args.model_path+'DGI_init'+ args.model_name  + '.pth.tar')
         torch.save(DGI_optimizer.state_dict(), args.model_path+'DGI_optimizer_init'+ args.model_name  + '.pth.tar')
         #print('training starts ...')
@@ -139,7 +139,7 @@ def train_DGI(args, data_loader, in_channels):
                 print('Epoch: {:03d}, Loss: {:.4f}'.format(epoch+1, np.mean(DGI_all_loss)))
                 loss_curve[loss_curve_counter] = np.mean(DGI_all_loss)
                 loss_curve_counter = loss_curve_counter + 1
-                
+
                 if np.mean(DGI_all_loss)<min_loss:
 
                     min_loss=np.mean(DGI_all_loss)
@@ -176,10 +176,10 @@ def train_DGI(args, data_loader, in_channels):
 
                     print('making the bundle to save')
                     X_attention_bundle = [X_attention_index, X_attention_score_normalized_l1, X_attention_score_unnormalized, X_attention_score_unnormalized_l1, X_attention_score_normalized]
-                    X_attention_filename =  args.embedding_data_path + args.model_name + '_attention_l1.npy'
+                    X_attention_filename =  args.embedding_path + args.model_name + '_attention.npy'
                     np.save(X_attention_filename, X_attention_bundle)
 
-                    logfile=open(args.model_path+'DGI'+ args.model_name+'_loss_curve.csv', 'wb')
+                    logfile=open(args.model_path+'DGI_'+ args.model_name+'_loss_curve.csv', 'wb')
                     np.savetxt(logfile,loss_curve, delimiter=',')
                     logfile.close()
 
