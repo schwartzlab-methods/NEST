@@ -467,7 +467,8 @@ for k in range (1, len(csv_record_final)-1): # last record is a dummy for histog
     connecting_edges[i][j]=1
         
 graph = csr_matrix(connecting_edges)
-n_components, labels = connected_components(csgraph=graph,directed=True, connection = 'weak',  return_labels=True) # It assigns each SPOT to a component based on what pair it belongs to
+n_components, labels = connected_components(csgraph=graph,directed=True, connection = 'weak',  re
+turn_labels=True) # It assigns each SPOT to a component based on what pair it belongs to
 print('number of connected components %d'%n_components) 
 
 count_points_component = np.zeros((n_components))

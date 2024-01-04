@@ -33,18 +33,34 @@ current_directory = '/cluster/projects/schwartzgroup/fatema/find_ccc/'
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument( '--embedding_data_path', type=str, default='new_alignment/Embedding_data_ccc_rgcn/' , help='The path to attention') #'/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/'
-    parser.add_argument( '--data_name', type=str, default='PDAC_64630', help='The name of dataset')
-    parser.add_argument( '--embedding_path', type=str, default='embedding_data', help='Path to grab the attention scores from') 
+    parser.add_argument( '--data_name', type=str, help='The name of dataset') # default='PDAC_64630',
+    parser.add_argument( '--embedding_path', type=str, default='embedding_data/', help='Path to grab the attention scores from')
+    parser.add_argument( '--metadata_from', type=str, default='metadata/', help='Path to grab the metadata') 
+    parser.add_argument( '--data_from', type=str, default='input_graph/', help='Path to grab the input graph from (to be passed to GAT)')
     args = parser.parse_args()
 
 ##################### get metadata: barcode_info ###################################
  
 
-with gzip.open(args.metadata_to + args.data_name +'_barcode_info', 'rb') as fp:  #b, a:[0:5]   _filtered
+with gzip.open(args.metadata_from + args.data_name +'/'+args.data_name+'_barcode_info', 'rb') as fp:  #b, a:[0:5]   _filtered
     barcode_info = pickle.load(fp)
 
+with gzip.open(args.data_from + args.data_name + '/'+ args.data_name + '_adjacency_records', 'rb') as fp:  #b, a:[0:5]  _filtered 
+    row_col, edge_weight, lig_rec, total_num_cell = pickle.load(fp)
 
+
+datapoint_size = total_num_cell
+lig_rec_dict = []
+for i in range (0, datapoint_size):
+    lig_rec_dict.append([])  
+    for j in range (0, datapoint_size):	
+        lig_rec_dict[i].append([])   
+        lig_rec_dict[i][j] = []
+
+for index in range (0, len(row_col)):
+        i = row_col[index][0]
+        j = row_col[index][1]
+        lig_rec_dict[i][j].append(lig_rec[index])  
 
 
 ############# load output graph #################################################
@@ -80,7 +96,8 @@ for l in [2,3]: #, 3]: # 2 = layer 2, 3 = layer 1
 
         distribution = []
         ##############################################
-        X_attention_filename = args.embedding_data_path + args.data_name + '/' + args.data_name + '_cellchat_nichenet_threshold_distance_bothAbove_cell98th_tanh_3dim_'+filename[run_time]+'attention_l1.npy'
+
+        X_attention_filename = args.embedding_path + args.data_name + '/' +  args.model_name + '_attention.npy'
         X_attention_bundle = np.load(X_attention_filename, allow_pickle=True) #_withFeature
         for index in range (0, X_attention_bundle[0].shape[1]):
             i = X_attention_bundle[0][0][index]

@@ -21,8 +21,8 @@ if __name__ == "__main__":
     #parser.add_argument( '--num_cells', type=int, help='Number of cells or spots in the dataset')
     #=========================== default is set ======================================
     parser.add_argument( '--num_epoch', type=int, default=50000, help='Number of epochs or iterations for model training')
-    parser.add_argument( '--model_path', type=str, default='model', help='Path to save the model state') # We do not need this for output generation  
-    parser.add_argument( '--embedding_path', type=str, default='embedding_data', help='Path to save the node embedding and attention scores') 
+    parser.add_argument( '--model_path', type=str, default='model/', help='Path to save the model state') # We do not need this for output generation  
+    parser.add_argument( '--embedding_path', type=str, default='embedding_data/', help='Path to save the node embedding and attention scores') 
     parser.add_argument( '--hidden', type=int, default=512, help='Hidden layer dimension (dimension of node embedding)')
     parser.add_argument( '--training_data', type=str, default='input_graph/', help='Path to input graph. ')
     parser.add_argument( '--heads', type=int, default=1, help='Number of heads in the attention model')
