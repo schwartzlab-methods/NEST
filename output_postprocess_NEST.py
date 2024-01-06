@@ -37,15 +37,22 @@ if __name__ == "__main__":
     parser.add_argument( '--embedding_path', type=str, default='embedding_data/', help='Path to grab the attention scores from')
     parser.add_argument( '--metadata_from', type=str, default='metadata/', help='Path to grab the metadata') 
     parser.add_argument( '--data_from', type=str, default='input_graph/', help='Path to grab the input graph from (to be passed to GAT)')
+    parser.add_argument( '--total_runs', type=int, help='How many runs for ensemble (at least 2 are preferred)')
+    parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
+    parser.add_argument( '--top_percent', type=int, default=20, help='Top N percentage communications to pick')
     args = parser.parse_args()
 
+    args.metadata_from = args.metadata_from + args.data_name + '/'
+    args.data_from = args.data_from + args.data_name + '/'
+    args.embedding_path  = args.embedding_path + args.data_name + '/'
+    args.output_path = args.output_path + args.data_name + '/'
 ##################### get metadata: barcode_info ###################################
  
 
-with gzip.open(args.metadata_from + args.data_name +'/'+args.data_name+'_barcode_info', 'rb') as fp:  #b, a:[0:5]   _filtered
+with gzip.open(args.metadata_from +args.data_name+'_barcode_info', 'rb') as fp:  #b, a:[0:5]   _filtered
     barcode_info = pickle.load(fp)
 
-with gzip.open(args.data_from + args.data_name + '/'+ args.data_name + '_adjacency_records', 'rb') as fp:  #b, a:[0:5]  _filtered 
+with gzip.open(args.data_from + args.data_name + '_adjacency_records', 'rb') as fp:  #b, a:[0:5]  _filtered 
     row_col, edge_weight, lig_rec, total_num_cell = pickle.load(fp)
 
 
@@ -62,13 +69,18 @@ for index in range (0, len(row_col)):
         j = row_col[index][1]
         lig_rec_dict[i][j].append(lig_rec[index])  
 
+row_col = 0
+edge_weight = 0
+lig_rec = 0
+total_num_cell = 0
+
+gc.collect()
 
 ############# load output graph #################################################
 
-filename = ["r1_", "r2_", "r3_", "r4_", "r5_", "r6_", "r7_", "r8_", "r9_", "r10_"]
-total_runs = 5
-start_index = 0 # 0 #5 if pdac 64630
-
+#filename_suffix = ["_r1_", "r2_", "r3_", "r4_", "r5_", "r6_", "r7_", "r8_", "r9_", "r10_"]
+total_runs = args.total_runs 
+start_index = 0 
 distribution_rank = []
 all_edge_sorted_by_rank = []
 for layer in range (0, 2):
@@ -76,14 +88,12 @@ for layer in range (0, 2):
     all_edge_sorted_by_rank.append([])
 
 layer = -1
-percentage_value = 0
-
 for l in [2,3]: #, 3]: # 2 = layer 2, 3 = layer 1 
     layer = layer + 1
     csv_record_dict = defaultdict(list)
     for run_time in range (start_index, start_index+total_runs):
+        filename_suffix = '_'+ 'r'+str(run_time) +'_'
         gc.collect()
-        #run_time = 2
         run = run_time
         print('run %d'%run)
 
@@ -97,8 +107,8 @@ for l in [2,3]: #, 3]: # 2 = layer 2, 3 = layer 1
         distribution = []
         ##############################################
 
-        X_attention_filename = args.embedding_path + args.data_name + '/' +  args.model_name + '_attention.npy'
-        X_attention_bundle = np.load(X_attention_filename, allow_pickle=True) #_withFeature
+        X_attention_filename = args.embedding_path +  args.model_name + filename_suffix + 'attention.npy'
+        X_attention_bundle = np.load(X_attention_filename, allow_pickle=True) 
         for index in range (0, X_attention_bundle[0].shape[1]):
             i = X_attention_bundle[0][0][index]
             j = X_attention_bundle[0][1][index]
@@ -113,7 +123,7 @@ for l in [2,3]: #, 3]: # 2 = layer 2, 3 = layer 1
             i = X_attention_bundle[0][0][index]
             j = X_attention_bundle[0][1][index]
             scaled_score = (X_attention_bundle[l][index][0]-min_value)/(max_value-min_value)
-            attention_scores[i][j].append(scaled_score) #X_attention_bundle[2][index][0]
+            attention_scores[i][j].append(scaled_score) 
             if min_attention_score > scaled_score:
                 min_attention_score = scaled_score
             distribution.append(scaled_score)
@@ -263,7 +273,7 @@ for l in [2,3]: #, 3]: # 2 = layer 2, 3 = layer 1
 #############################################################################################################################################
 
 ################################ or ###############################################################################################################
-percentage_value = 20 ##100 #20 # top 20th percentile rank, low rank means higher attention score
+percentage_value = args.top_percent #20 ##100 #20 # top 20th percentile rank, low rank means higher attention score
 csv_record_intersect_dict = defaultdict(list)
 edge_score_intersect_dict = defaultdict(list)
 for layer in range (0, 2):
@@ -328,9 +338,6 @@ for k in range (1, len(csv_record)):
 
     
 df = pd.DataFrame(csv_record_final) # output 4
-df.to_csv('/cluster/home/t116508uhn/64630/NEST_combined_rank_product_output_'+args.data_name+'_split_top20percent.csv', index=False, header=False)
-#df.to_csv('/cluster/home/t116508uhn/64630/NEST_combined_rank_product_output_'+args.data_name+'_h2048_top20percent.csv', index=False, header=False)
-#df.to_csv('/cluster/home/t116508uhn/64630/NEST_combined_rank_product_output_'+args.data_name+'_top20percent.csv', index=False, header=False)
-#df.to_csv('/cluster/home/t116508uhn/64630/NEST_combined_rank_product_output_'+args.data_name+'_all.csv', index=False, header=False)
-#df.to_csv('/cluster/home/t116508uhn/64630/NEST_combined_rank_product_output_'+args.data_name+'_all_TcellZone.csv', index=False, header=False)
+df.to_csv(args.output_path + args.data_name+'_top' + str(args.top_percent) + 'percent.csv', index=False, header=False)
+
 
