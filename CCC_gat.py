@@ -12,16 +12,12 @@ from GATv2Conv_NEST import GATv2Conv
 
 def get_graph(training_data):
     """Add Statement of Purpose
-
     Args:
         training_data: Path to the input graph    
     Returns:
         List of torch_geometric.data.Data type: Contains the input graph
         Integer: Dimension of node embedding
     """
-
-
-
     
     f = gzip.open(training_data , 'rb')
     row_col, edge_weight, lig_rec, num_cell = pickle.load(f)
@@ -32,7 +28,7 @@ def get_graph(training_data):
     X = np.eye(num_cell, num_cell)
     np.random.shuffle(X)
     X_data = X # node feature vector
-    num_feature = X_data.shape[1]
+    num_feature = X_data.shape[0]
     
     print('Node feature matrix: X has dimension ', X_data.shape)
     print("Total number of edges in the input graph is %d"%len(row_col))
@@ -53,6 +49,14 @@ def get_graph(training_data):
 
 class Encoder(nn.Module):
     def __init__(self, in_channels, hidden_channels, heads, dropout):
+        """Add Statement of Purpose
+        Args: [to be]
+               
+        Returns: [to be]
+    
+        """
+
+        
         super(Encoder, self).__init__()
         print('incoming channel %d'%in_channels)
 
@@ -71,6 +75,12 @@ class Encoder(nn.Module):
 
 
     def forward(self, data):
+        """Add Statement of Purpose
+        Args: [to be]
+               
+        Returns: [to be]
+    
+        """
 
         # layer 1
         x, attention_scores, attention_scores_unnormalized = self.conv(data.x, data.edge_index, edge_attr=data.edge_attr, return_attention_weights = True)
@@ -90,19 +100,36 @@ class Encoder(nn.Module):
 
 class my_data():
     def __init__(self, x, edge_index, edge_attr):
+        """Add Statement of Purpose
+        Args: [to be]
+               
+        Returns: [to be]
+    
+        """
         self.x = x
         self.edge_index = edge_index
         self.edge_attr = edge_attr
 
 
 def corruption(data):
+    """Add Statement of Purpose
+    Args: [to be]
+           
+    Returns: [to be]
+
+    """
     #print('inside corruption function')
     x = data.x[torch.randperm(data.x.size(0))]
     return my_data(x, data.edge_index, data.edge_attr)
 
 
 def train_NEST(args, data_loader, in_channels):
+    """Add Statement of Purpose
+    Args: [to be]
+           
+    Returns: [to be]
 
+    """
     loss_curve = np.zeros((args.num_epoch//500+1))
     loss_curve_counter = 0
 
