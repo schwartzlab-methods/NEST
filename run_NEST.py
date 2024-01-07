@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument( '--model_name', type=str, help='Provide a model name')
     parser.add_argument( '--run_id', type=int, help='Please provide a running ID, for example: 0, 1, 2, etc. Five runs are recommended.' )
     #=========================== default is set ======================================
-    parser.add_argument( '--num_epoch', type=int, default=50000, help='Number of epochs or iterations for model training')
+    parser.add_argument( '--num_epoch', type=int, default=60000, help='Number of epochs or iterations for model training')
     parser.add_argument( '--model_path', type=str, default='model/', help='Path to save the model state') # We do not need this for output generation  
     parser.add_argument( '--embedding_path', type=str, default='embedding_data/', help='Path to save the node embedding and attention scores') 
     parser.add_argument( '--hidden', type=int, default=512, help='Hidden layer dimension (dimension of node embedding)')

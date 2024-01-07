@@ -15,8 +15,10 @@ import argparse
 #current_dir = 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_from', type=str, default='data/PDAC_64630/outs/' , help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
-    parser.add_argument( '--data_name', type=str, default='PDAC_64630', help='Name of the dataset')
+    ################## Mandatory ####################################################################
+    parser.add_argument( '--data_name', type=str, help='Name of the dataset') # default='PDAC_64630', 
+    ################# default is set ################################################################
+    parser.add_argument( '--data_from', type=str, default='data/' , help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
     parser.add_argument( '--data_to', type=str, default='input_graph/', help='Path to save the input graph (to be passed to GAT)')
     parser.add_argument( '--metadata_to', type=str, default='metadata/', help='Path to save the metadata')
     parser.add_argument( '--filter_min_cell', type=int, default=5 , help='Minimum number of cells for gene filtering') 
@@ -28,6 +30,7 @@ if __name__ == "__main__":
     parser.add_argument( '--database_path', type=str, default='database/NEST_database.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
     args = parser.parse_args()
     
+    args.data_from = args.data_from + args.data_name
     args.data_to = args.data_to + args.data_name
     if not os.path.exists(args.data_to):
         os.makedirs(args.data_to)
