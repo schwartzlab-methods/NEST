@@ -11,7 +11,18 @@ import gzip
 from GATv2Conv_NEST import GATv2Conv
 
 def get_graph(training_data):
+    """Add Statement of Purpose
 
+    Args:
+        training_data: Path to the input graph    
+    Returns:
+        List of torch_geometric.data.Data type: Contains the input graph
+        Integer: Dimension of node embedding
+    """
+
+
+
+    
     f = gzip.open(training_data , 'rb')
     row_col, edge_weight, lig_rec, num_cell = pickle.load(f)
     
