@@ -1,10 +1,10 @@
 
 # NEST
-Requirements:
+## Requirements:
    System requirements: [to be]
    Required packages in python: [to be]
   
-Instruction to run NEST:
+## Instruction to run NEST:
    
 1. Assuming that the spatial dataset is in "data/PDAC_64630/" directory, data preprocessing for input graph generation can be done as follows:  
 
