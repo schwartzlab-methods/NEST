@@ -8,9 +8,8 @@
   
 ## Instruction to run NEST:
    
-1. Assuming that the spatial dataset is in "data/PDAC_64630/" directory, data preprocessing for input graph generation can be done as follows:  
-
-``nohup python -u data_preprocess_NEST.py --dataname='PDAC_64630' > output.log & ``    
+1. Assuming that the spatial dataset is in "data/PDAC_64630/" directory, data preprocessing for input graph generation can be done as follows:  ``
+    nohup python -u data_preprocess_NEST.py --dataname='PDAC_64630' > output.log & ``    
 
 It will create two folders in the current working directories: "input_graph/PDAC_64630/" and "metadata/PDAC_64630/" to save the preprocessed input data. Please use the argument --help to see all available input parameters.  
 
