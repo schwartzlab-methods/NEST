@@ -1,8 +1,8 @@
 
 # NEST
 ## Requirements:
-   System requirements: [to be]
-   Required packages in python: [to be]
+###   System requirements: [to be]
+###   Required packages in python: [to be]
   
 ## Instruction to run NEST:
    
