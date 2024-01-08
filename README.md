@@ -24,12 +24,16 @@ It will create two folders in the current working directories: "input_graph/PDAC
 
 3. To postprocess the model output, i.e., ensemble of multiple runs (through rank of product) and producing list of top 20% highly ranked communications we have to run following commands:
 
-``nohup python -u output_postprocess_NEST.py --dataname='PDAC_64630' --total_runs=5 > output.log & ``
+````
+    nohup python -u output_postprocess_NEST.py --dataname='PDAC_64630' --total_runs=5 > output.log &
+````
 
   In the command, we use --total_runs=5 assuming that the model is run five times. The top 20% highly ranked communications are saved in a file named as 'PDAC_64630_top20percent.csv' in "output/PDAC_64630/".  
 
 4. To visualize the output graph, i.e., finding connected components and ploting them, we run following command:
 
-``nohup python -u output_visualization_NEST.py --dataname='PDAC_64630' > output.log & ``
+````
+    nohup python -u output_visualization_NEST.py --dataname='PDAC_64630' > output.log &
+````
 
   This will generate output in four formats: altair plot, histogram plot, networkx plot, and dot file for pdf generation. 
