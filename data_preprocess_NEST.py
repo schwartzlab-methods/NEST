@@ -212,7 +212,8 @@ if __name__ == "__main__":
         for j in range (0, cell_vs_gene.shape[0]):
             cells_ligand_vs_receptor[i].append([])
             cells_ligand_vs_receptor[i][j] = []
-            
+
+    ligand_list =  list(ligand_dict_dataset.keys())
     start_index = 0 #args.slice
     end_index = len(ligand_list) #min(len(ligand_list), start_index+100)
     
