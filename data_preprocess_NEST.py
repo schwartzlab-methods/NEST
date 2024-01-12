@@ -30,12 +30,16 @@ if __name__ == "__main__":
     parser.add_argument( '--database_path', type=str, default='database/NEST_database.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
     args = parser.parse_args()
     
-    args.data_from = args.data_from + args.data_name
-    args.data_to = args.data_to + args.data_name
+    if args.data_from=='data/':
+        args.data_from = args.data_from + args.data_name
+
+    if args.data_to == 'input_graph/':
+        args.data_to = args.data_to + args.data_name
     if not os.path.exists(args.data_to):
         os.makedirs(args.data_to)
 
-    args.metadata_to = args.metadata_to + args.data_name
+    if args.metadata_to == 'metadata/':
+        args.metadata_to = args.metadata_to + args.data_name
     if not os.path.exists(args.metadata_to):
         os.makedirs(args.metadata_to)
         
