@@ -10,7 +10,7 @@ import pandas as pd
 import gzip
 import argparse
 import os
-
+import scanpy as sc
 
 #current_dir = 
 if __name__ == "__main__":
