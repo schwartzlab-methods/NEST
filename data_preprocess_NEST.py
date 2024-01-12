@@ -26,10 +26,11 @@ if __name__ == "__main__":
     parser.add_argument( '--tissue_position_file', type=str, default='None', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
     parser.add_argument( '--spot_diameter', type=float, default=89.43, help='Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel).')
     parser.add_argument( '--split', type=int, default=0 , help='How many split sections?') 
-    parser.add_argument( '--neighborhood_threshold', type=float, default=89.43*4 , help='Set neighborhood threshold distance in terms of same unit as spot diameter') 
+    parser.add_argument( '--neighborhood_threshold', type=float, default=0 , help='Set neighborhood threshold distance in terms of same unit as spot diameter') 
     parser.add_argument( '--database_path', type=str, default='database/NEST_database.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
     args = parser.parse_args()
-    
+    if args.neighborhood_threshold == 0:
+        args.neighborhood_threshold = args.spot_diameter*4
     if args.data_from=='data/':
         args.data_from = args.data_from + args.data_name
 
@@ -258,7 +259,7 @@ if __name__ == "__main__":
     for i in range (0, len(cells_ligand_vs_receptor)):
         #ccc_j = []
         for j in range (0, len(cells_ligand_vs_receptor)):
-            if distance_matrix[i][j] <= spot_diameter*4: 
+            if distance_matrix[i][j] <= args.spot_diameter*4: 
                 count_local = 0
                 if len(cells_ligand_vs_receptor[i][j])>0:
                     for k in range (0, len(cells_ligand_vs_receptor[i][j])):
