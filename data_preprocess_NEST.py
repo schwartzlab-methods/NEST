@@ -259,7 +259,7 @@ if __name__ == "__main__":
     for i in range (0, len(cells_ligand_vs_receptor)):
         #ccc_j = []
         for j in range (0, len(cells_ligand_vs_receptor)):
-            if distance_matrix[i][j] <= args.spot_diameter*4: 
+            if distance_matrix[i][j] <= args.neighborhood_threshold: 
                 count_local = 0
                 if len(cells_ligand_vs_receptor[i][j])>0:
                     for k in range (0, len(cells_ligand_vs_receptor[i][j])):
