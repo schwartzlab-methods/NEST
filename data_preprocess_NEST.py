@@ -285,6 +285,12 @@ if __name__ == "__main__":
 
     with gzip.open(args.metadata_to + args.data_name +'_barcode_info', 'wb') as fp:  #b, a:[0:5]   _filtered
         pickle.dump(barcode_info, fp)
+
+    
+    # make a csv file with two columns. First column barcodes, second column is the annotation, is avaiable
+    
+    # make a csv file with three or more columns. First column barcodes, the rest are the coordinates
+
     
     ######### optional #################################################################           
     # we do not need this to use anywhere. But just for debug purpose we are saving this. We can skip this if we have space issue.
