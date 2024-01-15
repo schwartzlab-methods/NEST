@@ -31,16 +31,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.neighborhood_threshold == 0:
         args.neighborhood_threshold = args.spot_diameter*4
+	    
     if args.data_from=='data/':
-        args.data_from = args.data_from + args.data_name
+        args.data_from = args.data_from + args.data_name + '/'
 
     if args.data_to == 'input_graph/':
-        args.data_to = args.data_to + args.data_name
+        args.data_to = args.data_to + args.data_name + '/'
     if not os.path.exists(args.data_to):
         os.makedirs(args.data_to)
 
     if args.metadata_to == 'metadata/':
-        args.metadata_to = args.metadata_to + args.data_name
+        args.metadata_to = args.metadata_to + args.data_name + '/'
     if not os.path.exists(args.metadata_to):
         os.makedirs(args.metadata_to)
         
