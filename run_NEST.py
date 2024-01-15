@@ -55,8 +55,8 @@ if __name__ == "__main__":
         np.random.seed(args.seed)
 
 
-    if not os.path.exists(args.embedding_data_path):
-        os.makedirs(args.embedding_data_path) 
+    if not os.path.exists(args.embedding_path):
+        os.makedirs(args.embedding_path) 
     if not os.path.exists(args.model_path):
         os.makedirs(args.model_path) 
 
