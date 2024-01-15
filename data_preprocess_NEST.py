@@ -292,6 +292,6 @@ if __name__ == "__main__":
     	pickle.dump(cell_vs_gene, fp)
 
 
-
-
+# sample command when we provide the outs folder of the visium data instead of keeping it inside 'data/' folder.
+# nohup python -u data_preprocess_NEST.py --data_name='PDAC_6403' --data_from='/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/' --filter_min_cell=4 > output_data_preprocess_PDAC_64630_min_cell_4.log &
 	
