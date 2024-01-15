@@ -42,7 +42,7 @@ if __name__ == "__main__":
     #parser.add_argument( '--datatype', type=str)
 
 
-    args.training_data = args.training_data + args.data_name + '/'
+    args.training_data = args.training_data + args.data_name + '/'  + args.data_name + '_' + 'adjacency_records'
     args.embedding_path = args.embedding_path + args.data_name +'/'
     args.model_path = args.model_path + args.data_name +'/'
     args.model_name = args.model_name + '_' + str(args.run_id)
