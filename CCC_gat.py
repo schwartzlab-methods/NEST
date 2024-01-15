@@ -190,7 +190,7 @@ def train_NEST(args, data_loader, in_channels):
                     # save the node embedding
                     X_embedding = pos_z
                     X_embedding = X_embedding.cpu().detach().numpy()
-                    X_embedding_filename =  args.embedding_data_path + args.model_name + '_Embed_X.npy'
+                    X_embedding_filename =  args.embedding_path + args.model_name + '_Embed_X.npy'
                     np.save(X_embedding_filename, X_embedding)
                     
                     # save the attention scores
