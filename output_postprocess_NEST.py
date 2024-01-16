@@ -43,7 +43,12 @@ if __name__ == "__main__":
     args.metadata_from = args.metadata_from + args.data_name + '/'
     args.data_from = args.data_from + args.data_name + '/'
     args.embedding_path  = args.embedding_path + args.data_name + '/'
+    
     args.output_path = args.output_path + args.data_name + '/'
+    if not os.path.exists(args.output_path):
+        os.makedirs(args.output_path
+
+
 ##################### get metadata: barcode_info ###################################
  
 
