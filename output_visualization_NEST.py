@@ -18,7 +18,7 @@ import networkx as nx
 from networkx.drawing.nx_agraph import write_dot
 import altair as alt
 import altairThemes # assuming you have altairThemes.py at your current directoy or your system knows the path of this altairThemes.py.
-
+import gc
 alt.themes.register("publishTheme", altairThemes.publishTheme)
 # enable the newly registered theme
 alt.themes.enable("publishTheme")
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     # columns are: from_cell, to_cell, ligand_gene, receptor_gene, rank, attention_score, component, from_id, to_id
     df_column_names = list(df.columns)
     if args.top_edge_count != -1:
-        csv_record_final = [df_column_names] + csv_record[0:np.min(args.top_edge_count, len(csv_record))]
+        csv_record_final = [df_column_names] + csv_record[0:min(args.top_edge_count, len(csv_record))]
 
     ## add a dummy row at the end for the convenience of histogram preparation (to keep the color same as altair plot)
     i=0
