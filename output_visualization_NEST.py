@@ -273,9 +273,9 @@ if __name__ == "__main__":
     ###################################  Histogram plotting #################################################################################
 
     df = pd.DataFrame(csv_record_final)
-    df.to_csv(current_directory+'temp_csv.csv', index=False, header=False)
+    df.to_csv('temp_csv.csv', index=False, header=False)
     df = pd.read_csv(current_directory+'temp_csv.csv', sep=",")
-    os.remove(current_directory+'temp_csv.csv') # delete the intermediate file
+    os.remove('temp_csv.csv') # delete the intermediate file
 
 
     df = preprocessDf(df)
