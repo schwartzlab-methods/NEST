@@ -24,7 +24,7 @@ alt.themes.register("publishTheme", altairThemes.publishTheme)
 alt.themes.enable("publishTheme")
 
 
-current_directory = ??
+#current_directory = ??
 
 ##########################################################
 # preprocessDf, plot: these two functions are taken from GW's repository                                                                                                                                                                     /mnt/data0/gw/research/notta_pancreatic_cancer_visium/plots/fatema_signaling/hist.py                                                                                                                                                                                         
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     parser.add_argument( '--metadata_from', type=str, default='metadata/', help='Path to grab the metadata') 
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
     parser.add_argument( '--annotation_file_path', type=str, default='', help='Path to load the annotation file in csv format (if available)')
-    
+    parser.add_argument( '--top_percent', type=int, default=20, help='Top N percentage communications to pick')
     args = parser.parse_args()
 
     args.metadata_from = args.metadata_from + args.data_name + '/'
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         barcode_info = pickle.load(fp)
 
     ###############################  read which spots have self loops ################################################################
-    with gzip.open(args.metadata_to + args.data_name +'_self_loop_record', 'rb') as fp:  #b, a:[0:5]   _filtered
+    with gzip.open(args.metadata_from + args.data_name +'_self_loop_record', 'rb') as fp:  #b, a:[0:5]   _filtered
         self_loop_found = pickle.load(fp)
 
     ####### load annotations ##############################################
