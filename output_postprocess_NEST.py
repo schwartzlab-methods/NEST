@@ -28,13 +28,14 @@ import gc
 ##########################################################
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-
+    ############################### Mandatory parameters #########################################
     parser.add_argument( '--data_name', type=str, help='The name of dataset') # default='PDAC_64630',
     parser.add_argument( '--model_name', type=str, help='Name of the trained model')
+    parser.add_argument( '--total_runs', type=int, help='How many runs for ensemble (at least 2 are preferred)')
+    ############################# Optional parameters ##############################################################
     parser.add_argument( '--embedding_path', type=str, default='embedding_data/', help='Path to grab the attention scores from')
     parser.add_argument( '--metadata_from', type=str, default='metadata/', help='Path to grab the metadata') 
     parser.add_argument( '--data_from', type=str, default='input_graph/', help='Path to grab the input graph from (to be passed to GAT)')
-    parser.add_argument( '--total_runs', type=int, help='How many runs for ensemble (at least 2 are preferred)')
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
     parser.add_argument( '--top_percent', type=int, default=20, help='Top N percentage communications to pick')
     args = parser.parse_args()
