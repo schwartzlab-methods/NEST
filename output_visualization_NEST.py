@@ -274,7 +274,7 @@ if __name__ == "__main__":
 
     df = pd.DataFrame(csv_record_final)
     df.to_csv('temp_csv.csv', index=False, header=False)
-    df = pd.read_csv(current_directory+'temp_csv.csv', sep=",")
+    df = pd.read_csv('temp_csv.csv', sep=",")
     os.remove('temp_csv.csv') # delete the intermediate file
 
 
