@@ -20,8 +20,6 @@ import pandas as pd
 import gzip
 from kneed import KneeLocator
 import copy 
-import altairThemes
-import altair as alt
 import argparse
 import gc
 
