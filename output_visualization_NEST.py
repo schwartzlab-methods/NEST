@@ -306,6 +306,7 @@ if __name__ == "__main__":
 
     g = nx.MultiDiGraph(directed=True) 
     for i in range (0, len(barcode_info)):
+        marker_size = 'circle'
         label_str =  str(i)+'_c:'+str(barcode_info[i][3]) #  label of the node or spot is consists of: spot id, component number
         if args.annotation_file_path != '':
             label_str = label_str +'_'+ barcode_type[barcode_info[i][0]] # also add the type of the spot to the label if annotation is available 
