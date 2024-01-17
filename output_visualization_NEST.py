@@ -55,7 +55,7 @@ def plot(df):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument( '--data_name', type=str, help='The name of dataset') # 
+    parser.add_argument( '--data_name', type=str, help='The name of dataset', required=True) # 
     parser.add_argument( '--top_edge_count', type=int, default=1000 ,help='Number of the top communications to plot. To plot all insert -1') # 
     parser.add_argument( '--metadata_from', type=str, default='metadata/', help='Path to grab the metadata') 
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
