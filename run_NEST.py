@@ -16,9 +16,9 @@ from CCC_gat import get_graph, train_NEST
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # =========================== must be provided ===============================
-    parser.add_argument( '--data_name', type=str, help='Name of the dataset') #default='PDAC_64630', 
-    parser.add_argument( '--model_name', type=str, help='Provide a model name')
-    parser.add_argument( '--run_id', type=int, help='Please provide a running ID, for example: 0, 1, 2, etc. Five runs are recommended.' )
+    parser.add_argument( '--data_name', type=str, help='Name of the dataset', required=True) #default='PDAC_64630', 
+    parser.add_argument( '--model_name', type=str, help='Provide a model name', required=True)
+    parser.add_argument( '--run_id', type=int, help='Please provide a running ID, for example: 0, 1, 2, etc. Five runs are recommended.' , required=True)
     #=========================== default is set ======================================
     parser.add_argument( '--num_epoch', type=int, default=60000, help='Number of epochs or iterations for model training')
     parser.add_argument( '--model_path', type=str, default='model/', help='Path to save the model state') # We do not need this for output generation  
