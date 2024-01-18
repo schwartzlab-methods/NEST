@@ -4,7 +4,7 @@
 ###   System requirements: 
 [to be]
 ###   Required packages in python: 
-[to be]
+[to be] 
   
 ## Instruction to run NEST:
 We use publicly available Visium sample on human lymph node (https://www.10xgenomics.com/datasets/human-lymph-node-1-standard-1-1-0) for the demonstration purpose. 
