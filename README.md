@@ -13,7 +13,7 @@ a. The filtered feature matrix from here: https://cf.10xgenomics.com/samples/spa
 
 b. The spatial imaging data from here: https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_spatial.tar.gz
 
-Both should be kept under the same directory, e.g., data/V1_Human_Lymph_Node_spatial/ directory.
+Both should be kept under the same directory, e.g., data/V1_Human_Lymph_Node_spatial/ directory. We have provided a default ligand-receptor database by merging the records from CellChat and NicheNet database. This is kept under 'database/' directory and will be used by NEST unless some other database is referred by the user.   
    
 1. Assuming that the spatial dataset is in "data/V1_Human_Lymph_Node_spatial/" directory, data preprocessing for input graph generation can be done as follows:
 ````
