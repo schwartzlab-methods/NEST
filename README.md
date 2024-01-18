@@ -10,7 +10,7 @@
    
 1. Assuming that the spatial dataset is in "data/V1_Human_Lymph_Node_spatial/" directory, data preprocessing for input graph generation can be done as follows:
 ````
-    python data_preprocess_NEST.py --data_name='V1_Human_Lymph_Node_spatial' --data_from='/cluster/projects/schwartzgroup/fatema/data/V1_Human_Lymph_Node_spatial/'
+    python data_preprocess_NEST.py --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
 ````
 It will create two folders in the current working directories: "input_graph/V1_Human_Lymph_Node_spatial/" and "metadata/V1_Human_Lymph_Node_spatial/" to save the preprocessed input data. Please use the argument --help to see all available input parameters.  
 
