@@ -7,13 +7,12 @@
 [to be] 
   
 ## Instruction to run NEST:
-We use publicly available Visium sample on human lymph node (https://www.10xgenomics.com/datasets/human-lymph-node-1-standard-1-1-0) for the demonstration purpose. 
-
-Please download the following two files:
+We use publicly available Visium sample on human lymph node (https://www.10xgenomics.com/datasets/human-lymph-node-1-standard-1-1-0) for the demonstration purpose. Please download the following two files:
 
 a. The filtered feature matrix from here: https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.h5
 
 b. The spatial imaging data from here: https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_spatial.tar.gz
+
 Both should be kept under the same directory, e.g., data/V1_Human_Lymph_Node_spatial/ directory.
    
 1. Assuming that the spatial dataset is in "data/V1_Human_Lymph_Node_spatial/" directory, data preprocessing for input graph generation can be done as follows:
