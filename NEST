@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if [ $1 = "preprocess" ] 
+then 
+  shift
+  python data_preprocess_NEST.py $@
+elif [ $1 = "run" ]
+then
+  shift
+  python -u run_NEST.py $@ 
+elif [ $1 = "postprocess" ] 
+then
+  shift
+  python output_postprocess_NEST.py $@
+elif [ $1 = "visualize" ] 
+then
+  shift
+  python output_visualization_NEST.py $@
+fi
+
