@@ -19,6 +19,7 @@ from networkx.drawing.nx_agraph import write_dot
 import altair as alt
 import altairThemes # assuming you have altairThemes.py at your current directoy or your system knows the path of this altairThemes.py.
 import gc
+import copy
 alt.themes.register("publishTheme", altairThemes.publishTheme)
 # enable the newly registered theme
 alt.themes.enable("publishTheme")
@@ -56,23 +57,47 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument( '--data_name', type=str, help='The name of dataset', required=True) # 
-    parser.add_argument( '--top_edge_count', type=int, default=1000 ,help='Number of the top communications to plot. To plot all insert -1') # 
+    parser.add_argument( '--model_name', type=str, help='Name of the trained model', required=True)
+    parser.add_argument( '--top_edge_count', type=int, default=1500 ,help='Number of the top communications to plot. To plot all insert -1') # 
+    parser.add_argument( '--top_percent', type=int, default=20, help='Top N percentage communications to pick')    
     parser.add_argument( '--metadata_from', type=str, default='metadata/', help='Path to grab the metadata') 
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
-    parser.add_argument( '--annotation_file_path', type=str, default='', help='Path to load the annotation file in csv format (if available)')
-    parser.add_argument( '--top_percent', type=int, default=20, help='Top N percentage communications to pick')
-    args = parser.parse_args()
+    parser.add_argument( '--barcode_info_file', type=str, default='', help='Path to load the barcode information file produced during data preprocessing step')
+    parser.add_argument( '--annotation_file_path', type=str, default='', help='Path to load the annotation file in csv format (if available) ')
+    parser.add_argument( '--selfloop_info_file', type=str, default='', help='Path to load the selfloop information file produced during data preprocessing step')
+    parser.add_argument( '--top_ccc_file', type=str, default='', help='Path to load the selected top CCC file produced during data postprocessing step')
+    parser.add_argument( '--output_name', type=str, default='', help='Output file name prefix according to user\'s choice')
 
-    args.metadata_from = args.metadata_from + args.data_name + '/'
-    args.output_path = args.output_path + args.data_name + '/'
+    
+    args = parser.parse_args()
+    if args.metadata_from=='metadata/': # if default one is used, then concatenate the dataname. Otherwise, use the user provided path directly
+        args.metadata_from = args.metadata_from + args.data_name + '/'
+
+    if args.output_path=='output/': # if default one is used, then concatenate the dataname. Otherwise, use the user provided path directly
+        args.output_path = args.output_path + args.data_name + '/'
     print('Top %d communications will be plot by default. To change the count use --top_edge_count parameter'%args.top_edge_count)
+
+    if args.output_name=='':
+        output_name = args.output_path + args.model_name
+    else: 
+        output_name = args.output_path + args.output_name
+    
     ##################### make cell metadata: barcode_info ###################################
-    with gzip.open(args.metadata_from +args.data_name+'_barcode_info', 'rb') as fp:  #b, a:[0:5]   _filtered
-        barcode_info = pickle.load(fp)
+    if args.barcode_info_file=='':
+        with gzip.open(args.metadata_from +args.data_name+'_barcode_info', 'rb') as fp:  #b, a:[0:5]   
+            barcode_info = pickle.load(fp)
+    else:
+        with gzip.open(args.barcode_info_file, 'rb') as fp:  #b, a:[0:5]        
+            barcode_info = pickle.load(fp)    
+
 
     ###############################  read which spots have self loops ################################################################
-    with gzip.open(args.metadata_from + args.data_name +'_self_loop_record', 'rb') as fp:  #b, a:[0:5]   _filtered
-        self_loop_found = pickle.load(fp)
+    if args.selfloop_info_file=='':
+        with gzip.open(args.metadata_from + args.data_name +'_self_loop_record', 'rb') as fp:  #b, a:[0:5]   _filtered
+            self_loop_found = pickle.load(fp)
+    else:
+        with gzip.open(args.selfloop_info_file, 'rb') as fp:  #b, a:[0:5]   _filtered
+            self_loop_found = pickle.load(fp)
 
     ####### load annotations ##############################################
     if args.annotation_file_path != '':
@@ -92,16 +117,25 @@ if __name__ == "__main__":
             barcode_type[barcode_info[i][0]] = ''
 
     ######################### read the NEST output in csv format ####################################################
-    inFile = args.output_path + args.data_name+'_top' + str(args.top_percent) + 'percent.csv'
-    df = pd.read_csv(inFile, sep=",")
+    if args.top_ccc_file == '':
+        inFile = args.output_path + args.model_name+'_top' + str(args.top_percent) + 'percent.csv'
+        df = pd.read_csv(inFile, sep=",")
+    else: 
+        inFile = args.top_ccc_file
+        df = pd.read_csv(inFile, sep=",")
+
+
     csv_record = df.values.tolist() # barcode_info[i][0], barcode_info[j][0], ligand, receptor, edge_rank, label, i, j, score
 
     ## sort the edges based on their rank (column 4), low to high, low being higher attention score
     csv_record = sorted(csv_record, key = lambda x: x[4])
-
     ## add the column names and take first top_edge_count edges
     # columns are: from_cell, to_cell, ligand_gene, receptor_gene, rank, attention_score, component, from_id, to_id
     df_column_names = list(df.columns)
+#    print(df_column_names)
+
+    print(len(csv_record))
+
     if args.top_edge_count != -1:
         csv_record_final = [df_column_names] + csv_record[0:min(args.top_edge_count, len(csv_record))]
 
@@ -162,7 +196,7 @@ if __name__ == "__main__":
     component_dictionary_dummy = dict()
     for record_idx in range (1, len(csv_record_final)-1): #last entry is a dummy for histograms, so ignore it.
         # if at least one spot of the pair is tumor, then plot it
-        if (barcode_type[csv_record_final[record_idx][0]] == 'tumor' or barcode_type[csv_record_final[record_idx][1]] == 'tumor'): #((barcode_type[csv_record_final[record_idx][0]] == 'tumor' and barcode_type[csv_record_final[record_idx][1]] == 'tumor') or (barcode_type[csv_record_final[record_idx][0]] != 'tumor' and barcode_type[csv_record_final[record_idx][1]] != 'tumor')):
+        if barcode_info[ csv_record_final[record_idx][6] ][1] > 10000 and barcode_info[ csv_record_final[record_idx][6] ][2] < 8000:   #(barcode_type[csv_record_final[record_idx][0]] == 'tumor' or barcode_type[csv_record_final[record_idx][1]] == 'tumor'): #((barcode_type[csv_record_final[record_idx][0]] == 'tumor' and barcode_type[csv_record_final[record_idx][1]] == 'tumor') or (barcode_type[csv_record_final[record_idx][0]] != 'tumor' and barcode_type[csv_record_final[record_idx][1]] != 'tumor')):
             csv_record_final_temp.append(csv_record_final[record_idx])
         if csv_record_final[record_idx][5] not in component_dictionary_dummy:
             component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]
@@ -267,7 +301,7 @@ if __name__ == "__main__":
         tooltip=['component_label'] #,'opacity'
     )
 
-    chart.save(args.output_path + args.data_name +'_altair_plot.html')
+    chart.save(output_name +'_altair_plot.html')
     print('Altair plot generation done')
 
     ###################################  Histogram plotting #################################################################################
@@ -277,10 +311,10 @@ if __name__ == "__main__":
     df = pd.read_csv('temp_csv.csv', sep=",")
     os.remove('temp_csv.csv') # delete the intermediate file
 
-
+    print('len of loaded csv for histogram generation is %d'%len(df))
     df = preprocessDf(df)
     p = plot(df)
-    outPath = args.output_path + args.data_name +'_histogram_test.html'
+    outPath = output_name +'_histogram_test.html'
     p.save(outPath)	
     print('Histogram plot generation done')
 
@@ -330,6 +364,10 @@ if __name__ == "__main__":
 
         ligand = csv_record_final[k][2]
         receptor = csv_record_final[k][3]
+
+        #if ligand=='CCL19' and receptor=='CCR7':
+        #    print('CCL19-CCR7')
+
         edge_score = csv_record_final[k][8]
         edge_score = (edge_score-min_score)/(max_score-min_score)   
         title_str =  "L:" + ligand + ", R:" + receptor+ ", "+ str(edge_score) #+
@@ -340,10 +378,10 @@ if __name__ == "__main__":
 
     nt = Network( directed=True, height='1000px', width='100%') #"500px", "500px",, filter_menu=True     
     nt.from_nx(g)
-    nt.save_graph(args.output_path + args.data_name +'_mygraph.html')
+    nt.save_graph(output_name +'_mygraph.html')
     print('Edge graph plot generation done')
     ########################################################################
     # convert it to dot file to be able to convert it to pdf or svg format for inserting into the paper
-    write_dot(g, args.output_path + args.data_name + "_test_interactive.dot")
+    write_dot(g, output_name + "_test_interactive.dot")
     print('dot file generation done')
     print('All done')
