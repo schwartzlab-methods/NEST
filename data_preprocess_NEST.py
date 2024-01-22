@@ -12,16 +12,20 @@ import argparse
 import os
 import scanpy as sc
 
+import altairThemes
+import altair as alt
+
+
 #current_dir = 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     ################## Mandatory ####################################################################
-    parser.add_argument( '--data_name', type=str, help='Name of the dataset') # default='PDAC_64630', 
+    parser.add_argument( '--data_name', type=str, help='Name of the dataset', required=True)  
+    parser.add_argument( '--data_from', type=str, required=True, help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
     ################# default is set ################################################################
-    parser.add_argument( '--data_from', type=str, default='data/' , help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
     parser.add_argument( '--data_to', type=str, default='input_graph/', help='Path to save the input graph (to be passed to GAT)')
     parser.add_argument( '--metadata_to', type=str, default='metadata/', help='Path to save the metadata')
-    parser.add_argument( '--filter_min_cell', type=int, default=5 , help='Minimum number of cells for gene filtering') 
+    parser.add_argument( '--filter_min_cell', type=int, default=1 , help='Minimum number of cells for gene filtering') 
     parser.add_argument( '--threshold_gene_exp', type=float, default=98, help='Threshold percentile for gene expression. Genes above this percentile are considered active.')
     parser.add_argument( '--tissue_position_file', type=str, default='None', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
     parser.add_argument( '--spot_diameter', type=float, default=89.43, help='Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel).')
@@ -29,11 +33,9 @@ if __name__ == "__main__":
     parser.add_argument( '--neighborhood_threshold', type=float, default=0 , help='Set neighborhood threshold distance in terms of same unit as spot diameter') 
     parser.add_argument( '--database_path', type=str, default='database/NEST_database.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
     args = parser.parse_args()
+    
     if args.neighborhood_threshold == 0:
         args.neighborhood_threshold = args.spot_diameter*4
-	    
-    if args.data_from=='data/':
-        args.data_from = args.data_from + args.data_name + '/'
 
     if args.data_to == 'input_graph/':
         args.data_to = args.data_to + args.data_name + '/'
@@ -215,7 +217,7 @@ if __name__ == "__main__":
             cells_ligand_vs_receptor[i].append([])
             cells_ligand_vs_receptor[i][j] = []
 
-    ligand_list =  list(ligand_dict_dataset.keys())
+    ligand_list =  list(ligand_dict_dataset.keys())            
     start_index = 0 #args.slice
     end_index = len(ligand_list) #min(len(ligand_list), start_index+100)
     
@@ -227,7 +229,7 @@ if __name__ == "__main__":
                 continue
             
             for j in range (0, cell_vs_gene.shape[0]): # receptor
-                if distance_matrix[i,j] > args.neighborhood_threshold: #spot_diameter*4
+                if dist_X[i,j]==0: #distance_matrix[i,j] >= args.neighborhood_threshold: #spot_diameter*4
                     continue
     
                 for gene_rec in ligand_dict_dataset[gene]:
@@ -256,11 +258,10 @@ if __name__ == "__main__":
     edge_weight = [] # 3D edge features in the same order as row_col
     lig_rec = [] # ligand and receptors corresponding to the edges in the same order as row_col
     self_loop_found = defaultdict(dict) # to keep track of self-loops -- used later during visualization plotting
-    #local_list = np.zeros((102))
     for i in range (0, len(cells_ligand_vs_receptor)):
         #ccc_j = []
         for j in range (0, len(cells_ligand_vs_receptor)):
-            if distance_matrix[i][j] <= args.neighborhood_threshold: 
+            if dist_X[i,j]>0: #distance_matrix[i][j] <= args.neighborhood_threshold: 
                 count_local = 0
                 if len(cells_ligand_vs_receptor[i][j])>0:
                     for k in range (0, len(cells_ligand_vs_receptor[i][j])):
@@ -269,12 +270,12 @@ if __name__ == "__main__":
                         ligand_receptor_coexpression_score = cells_ligand_vs_receptor[i][j][k][2]
                         row_col.append([i,j])
                         edge_weight.append([dist_X[i,j], ligand_receptor_coexpression_score, cells_ligand_vs_receptor[i][j][k][3]])
-                        lig_rec.append([gene, gene_rec])   
+                        lig_rec.append([gene, gene_rec])
+                                                  
                         if i==j: # self-loop
                             self_loop_found[i][j] = ''
+    
 
-    
-    
     total_num_cell = cell_vs_gene.shape[0]
     print('total number of nodes is %d, and edges is %d in the input graph'%(total_num_cell, len(row_col)))
     
@@ -286,18 +287,11 @@ if __name__ == "__main__":
 
     with gzip.open(args.metadata_to + args.data_name +'_barcode_info', 'wb') as fp:  #b, a:[0:5]   _filtered
         pickle.dump(barcode_info, fp)
-
-    
-    # make a csv file with two columns. First column barcodes, second column is the annotation, is avaiable
-    
-    # make a csv file with three or more columns. First column barcodes, the rest are the coordinates
-
     
     ######### optional #################################################################           
     # we do not need this to use anywhere. But just for debug purpose we are saving this. We can skip this if we have space issue.
     with gzip.open(args.data_to + args.data_name + '_cell_vs_gene_quantile_transformed', 'wb') as fp:  
     	pickle.dump(cell_vs_gene, fp)
-
-
-# sample command when we provide the outs folder of the visium data instead of keeping it inside 'data/' folder.
-# python data_preprocess_NEST.py --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'	
+   
+    
+# nohup python -u data_preprocess_NEST.py --data_name='PDAC_64630_mincell3_th98p5' --data_from='/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/' --filter_min_cell=3 --threshold_gene_exp=98.5 > output_data_preprocess_PDAC_64630_min_cell_3_th98p5.log &
