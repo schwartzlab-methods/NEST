@@ -16,9 +16,9 @@ from CCC_gat import get_graph, train_NEST
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # =========================== must be provided ===============================
-    parser.add_argument( '--data_name', type=str, help='Name of the dataset', required=True) #default='PDAC_64630', 
-    parser.add_argument( '--model_name', type=str, help='Provide a model name', required=True)
-    parser.add_argument( '--run_id', type=int, help='Please provide a running ID, for example: 0, 1, 2, etc. Five runs are recommended.' , required=True)
+    parser.add_argument( '--data_name', type=str, help='Name of the dataset') #default='PDAC_64630', 
+    parser.add_argument( '--model_name', type=str, help='Provide a model name')
+    parser.add_argument( '--run_id', type=int, help='Please provide a running ID, for example: 0, 1, 2, etc. Five runs are recommended.' )
     #=========================== default is set ======================================
     parser.add_argument( '--num_epoch', type=int, default=60000, help='Number of epochs or iterations for model training')
     parser.add_argument( '--model_path', type=str, default='model/', help='Path to save the model state') # We do not need this for output generation  
@@ -42,10 +42,10 @@ if __name__ == "__main__":
     #parser.add_argument( '--datatype', type=str)
 
 
-    args.training_data = args.training_data + args.data_name + '/'  + args.data_name + '_' + 'adjacency_records'
+    args.training_data = args.training_data + args.data_name + '/' + args.data_name + '_' + 'adjacency_records'
     args.embedding_path = args.embedding_path + args.data_name +'/'
     args.model_path = args.model_path + args.data_name +'/'
-    args.model_name = args.model_name + '_' + str(args.run_id)
+    args.model_name = args.model_name + '_r' + str(args.run_id)
 
     print(args.data_name+', '+str(args.heads)+', '+args.training_data+', '+str(args.hidden) )
 
