@@ -28,11 +28,11 @@ import os
 ##########################################################
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    ############################### Mandatory parameters #########################################
-    parser.add_argument( '--data_name', type=str, help='The name of dataset') # default='PDAC_64630',
-    parser.add_argument( '--model_name', type=str, help='Name of the trained model')
-    parser.add_argument( '--total_runs', type=int, help='How many runs for ensemble (at least 2 are preferred)')
-    ############################# Optional parameters ##############################################################
+
+    parser.add_argument( '--data_name', type=str, help='The name of dataset', required=True) # default='PDAC_64630',
+    parser.add_argument( '--model_name', type=str, help='Name of the trained model', required=True)
+    parser.add_argument( '--total_runs', type=int, help='How many runs for ensemble (at least 2 are preferred)', required=True)
+    #######################################################################################################
     parser.add_argument( '--embedding_path', type=str, default='embedding_data/', help='Path to grab the attention scores from')
     parser.add_argument( '--metadata_from', type=str, default='metadata/', help='Path to grab the metadata') 
     parser.add_argument( '--data_from', type=str, default='input_graph/', help='Path to grab the input graph from (to be passed to GAT)')
@@ -43,11 +43,9 @@ if __name__ == "__main__":
     args.metadata_from = args.metadata_from + args.data_name + '/'
     args.data_from = args.data_from + args.data_name + '/'
     args.embedding_path  = args.embedding_path + args.data_name + '/'
-    
     args.output_path = args.output_path + args.data_name + '/'
     if not os.path.exists(args.output_path):
         os.makedirs(args.output_path)
-
 
 ##################### get metadata: barcode_info ###################################
  
@@ -109,8 +107,9 @@ if __name__ == "__main__":
     
             distribution = []
             ##############################################
-    
+            print(args.model_name)     
             X_attention_filename = args.embedding_path +  args.model_name + filename_suffix + 'attention.npy'
+            print(X_attention_filename)
             X_attention_bundle = np.load(X_attention_filename, allow_pickle=True) 
             for index in range (0, X_attention_bundle[0].shape[1]):
                 i = X_attention_bundle[0][0][index]
@@ -211,26 +210,25 @@ if __name__ == "__main__":
                                 csv_record.append([barcode_info[i][0], barcode_info[j][0], lig_rec_dict[i][j][k][0], lig_rec_dict[i][j][k][1], min_attention_score + attention_scores[i][j][k], barcode_info[i][3], i, j])
      
             ###########	
-            #run = 1
-            #csv_record_dict = defaultdict(list)
+          
             print('records found %d'%len(csv_record))
             for i in range (1, len(csv_record)): 
-                key_value = str(csv_record[i][6]) +'-'+ str(csv_record[i][7]) + '-' + csv_record[i][2] + '-' + csv_record[i][3]# + '-'  + str( csv_record[i][5])
+                key_value = str(csv_record[i][6]) +'-'+ str(csv_record[i][7]) + '-' + csv_record[i][2] + '-' + csv_record[i][3]
                 csv_record_dict[key_value].append([csv_record[i][4], run])
-            
+        '''    
         for key_value in csv_record_dict.keys():
             run_dict = defaultdict(list)
-            for scores in csv_record_dict[key_value]:
-                run_dict[scores[1]].append(scores[0])
+            for scores in csv_record_dict[key_value]: # entry count = total_runs 
+                run_dict[scores[1]].append(scores[0]) # [run_id]=score
             
             for runs in run_dict.keys():
-                run_dict[runs] = np.mean(run_dict[runs]) 
+                run_dict[runs] = np.mean(run_dict[runs]) # taking the mean attention score
             
      
-            csv_record_dict[key_value] = []
-            for runs in run_dict.keys():
-                csv_record_dict[key_value].append([run_dict[runs],runs])
-      
+            csv_record_dict[key_value] = [] # make it blank
+            for runs in run_dict.keys(): # has just one mean value for the attention score
+                csv_record_dict[key_value].append([run_dict[runs],runs]) # [score, 0]
+        '''
         #######################################
         
         all_edge_list = []
@@ -240,7 +238,7 @@ if __name__ == "__main__":
             for runs in csv_record_dict[key_value]:
                 edge_score_runs.append(runs[0]) #
             
-            all_edge_list.append(edge_score_runs) # [key_value, score_by_run1, score_by_run2, etc.]
+            all_edge_list.append(edge_score_runs) # [[key_value, score_by_run1, score_by_run2, etc.],...]
     
         ## Find the rank product #####################################################################
         ## all_edge_list has all the edges along with their scores for different runs in following format: 
@@ -251,13 +249,13 @@ if __name__ == "__main__":
         for runs in range (0, total_runs):
             sorted_list_temp = sorted(all_edge_list, key = lambda x: x[runs+1], reverse=True) # sort based on attention score by current run: large to small
             for rank in range (0, len(sorted_list_temp)):
-                edge_rank_dictionary[sorted_list_temp[rank][0]].append(rank+1) # small rank being high attention
+                edge_rank_dictionary[sorted_list_temp[rank][0]].append(rank+1) # small rank being high attention, starting from 1
                 
-        max_weight = len(sorted_list_temp)
+        max_weight = len(all_edge_list) + 1 # maximum possible rank 
         all_edge_vs_rank = []
         for key_val in edge_rank_dictionary.keys():
             rank_product = 1
-            attention_score_list = csv_record_dict[key_value]
+            attention_score_list = csv_record_dict[key_value] # [[score, run_id],...]
             avg_score = 0 #[]
             total_weight = 0
             for i in range (0, len(edge_rank_dictionary[key_val])):
@@ -274,7 +272,7 @@ if __name__ == "__main__":
         all_edge_sorted_by_rank[layer] = sorted(all_edge_vs_rank, key = lambda x: x[1]) # small rank being high attention 
     
     #############################################################################################################################################
-    
+    # for each layer, should I scale the attention scores [0, 1] over all the edges? So that they are comparable or mergeable between layers?
     ################################ or ###############################################################################################################
     percentage_value = args.top_percent #20 ##100 #20 # top 20th percentile rank, low rank means higher attention score
     csv_record_intersect_dict = defaultdict(list)
@@ -282,16 +280,16 @@ if __name__ == "__main__":
     for layer in range (0, 2):
         threshold_up = np.percentile(distribution_rank[layer], percentage_value) #np.round(np.percentile(distribution_rank[layer], percentage_value),2)
         for i in range (0, len(all_edge_sorted_by_rank[layer])):
-            if all_edge_sorted_by_rank[layer][i][1] <= threshold_up:
-                csv_record_intersect_dict[all_edge_sorted_by_rank[layer][i][0]].append(i)
-                edge_score_intersect_dict[all_edge_sorted_by_rank[layer][i][0]].append(all_edge_sorted_by_rank[layer][i][2])
+            if all_edge_sorted_by_rank[layer][i][1] <= threshold_up: # because, lower rank means higher strength
+                csv_record_intersect_dict[all_edge_sorted_by_rank[layer][i][0]].append(i+1) # already sorted by rank. so just use i as the rank 
+                edge_score_intersect_dict[all_edge_sorted_by_rank[layer][i][0]].append(all_edge_sorted_by_rank[layer][i][2]) # score
     ###########################################################################################################################################
     ## get the aggregated rank for all the edges ##
     distribution_temp = []
     for key_value in csv_record_intersect_dict.keys():  
-        arg_index = np.argmin(csv_record_intersect_dict[key_value])
-        csv_record_intersect_dict[key_value] = np.min(csv_record_intersect_dict[key_value]) # smaller rank being the higher attention
-        edge_score_intersect_dict[key_value] = edge_score_intersect_dict[key_value][arg_index]
+        arg_index = np.argmin(csv_record_intersect_dict[key_value]) # layer 0 or 1, whose rank to use # should I take the avg rank instead, and scale the ranks (1 to count(total_edges)) later? 
+        csv_record_intersect_dict[key_value] = np.min(csv_record_intersect_dict[key_value]) # use that rank. smaller rank being the higher attention
+        edge_score_intersect_dict[key_value] = edge_score_intersect_dict[key_value][arg_index] # use that score
         distribution_temp.append(csv_record_intersect_dict[key_value]) 
     
     #################
@@ -341,6 +339,6 @@ if __name__ == "__main__":
     
         
     df = pd.DataFrame(csv_record_final) # output 4
-    df.to_csv(args.output_path + args.data_name+'_top' + str(args.top_percent) + 'percent.csv', index=False, header=False)
+    df.to_csv(args.output_path + args.model_name+'_top' + str(args.top_percent) + 'percent.csv', index=False, header=False)
     
 
