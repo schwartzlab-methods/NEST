@@ -2,7 +2,7 @@
 # NEST
 ## Requirements:
 
-###   Used packages in python:
+###   Used python packages:
 
 python == 3.7.2
 
