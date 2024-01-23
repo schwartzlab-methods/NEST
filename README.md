@@ -6,25 +6,42 @@
 
 ###   Required packages in python:
 python == 3.7.2
-numpy == 1.21.6
-pytorch (with GPU support) == 3.7.2
-torch == 
-torch_geometric==
-torch_sparse==
-torch_scatter==
-pickle == 4.0
-scipy == 1.7.3
-stlearn ==
-qnorm ==
-collections ==
-pandas ==
-gzip ==
-scanpy ==
-altair ==
-csv ==
-matplotlib ==
-gc == 
 
+numpy == 1.21.6
+
+pytorch (with GPU support) == 3.7.2
+
+torch == 
+
+torch_geometric==
+
+torch_sparse==
+
+torch_scatter==
+
+pickle == 4.0
+
+scipy == 1.7.3
+
+stlearn ==
+
+qnorm ==
+
+collections ==
+
+pandas ==
+
+gzip ==
+
+scanpy ==
+
+altair ==
+
+csv ==
+
+matplotlib ==
+
+gc == 
 
   
 ## Instruction to run NEST:
