@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import stlearn as st
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, to_hex, rgb2hex
-from typing import List
+#from typing import List
 import qnorm
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import connected_components
