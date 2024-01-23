@@ -1,50 +1,54 @@
 
 # NEST
 ## Requirements:
-###   System requirements: 
-[to be]
 
-###   Required packages in python:
+###   Used packages in python:
+
 python == 3.7.2
 
 numpy == 1.21.6
 
 pytorch (with GPU support) == 3.7.2
 
-torch == 
+torch == 1.12.0
 
-torch_geometric==
+torch_geometric== '2.1.0'
 
-torch_sparse==
+torch_sparse== '0.6.15'
 
-torch_scatter==
+torch_scatter== '2.0.9'
 
 pickle == 4.0
 
 scipy == 1.7.3
 
-stlearn ==
+stlearn == '0.4.8'
 
-qnorm ==
+qnorm == '0.8.1'
 
-collections ==
+pandas == '1.3.5'
 
-pandas ==
+scanpy == '1.9.1'
 
-gzip ==
+altair == '4.2.0'
 
-scanpy ==
+csv == '1.0'
 
-altair ==
-
-csv ==
-
-matplotlib ==
+matplotlib ==  '3.5.2'
 
 gc == 
 
+gzip ==
+
+collections ==
+
+###   System requirements: 
+[to be]
   
 ## Instruction to run NEST:
+
+
+
 We use publicly available Visium sample on human lymph node (https://www.10xgenomics.com/datasets/human-lymph-node-1-standard-1-1-0) for the demonstration purpose. Please download the following two files:
 
 a. The filtered feature matrix from here: https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.h5
