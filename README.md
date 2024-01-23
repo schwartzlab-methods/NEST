@@ -48,14 +48,14 @@ collections ==
 ### Make the system recognize 'nest' command to run the model:
 
 Download the NEST repository at your desired location and change your current directory to NEST. Make the bash script 'nest' executable by executing following command:  
-''''
+````
 chmod +x nest
-''''
+````
 
 Then copy this executable bash script to your '/usr/local/bin/' or '/usr/bin/' directory so that your system can recognize this command:
-''''
+````
 cp nest /usr/local/bin/
-''''
+````
 
 (Instructions above are to be executed once only)
 
