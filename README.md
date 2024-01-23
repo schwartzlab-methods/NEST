@@ -47,7 +47,7 @@ collections ==
   
 ### Make the system recognize 'nest' command to run the model:
 
-Download the NEST repository at your desired location and change your current directory to NEST. Make the bash script 'nest' executable by executing following command:  
+Download the NEST repository at your desired location and change your current working directory to NEST. Make the bash script 'nest' executable by executing following command:  
 ````
 chmod +x nest
 ````
