@@ -18,7 +18,7 @@ from scipy.sparse.csgraph import connected_components
 from collections import defaultdict
 import pandas as pd
 import gzip
-from kneed import KneeLocator
+#from kneed import KneeLocator
 import copy 
 import argparse
 import gc
