@@ -45,7 +45,7 @@ collections ==
 ###   System requirements: 
 [to be]
   
-## Make the system recognize 'nest' command to run the model:
+### Make the system recognize 'nest' command to run the model:
 
 Download the NEST repository at your desired location and change your current directory to NEST. Make the bash script 'nest' executable by executing following command:  
 ''''
