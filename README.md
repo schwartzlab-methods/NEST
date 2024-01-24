@@ -32,6 +32,8 @@ scanpy == '1.9.1'
 
 altair == '4.2.0'
 
+(Please download this additional package as well : https://github.com/schwartzlab-methods/altair-themes)
+
 csv == '1.0'
 
 matplotlib ==  '3.5.2'
