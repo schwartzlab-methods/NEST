@@ -43,7 +43,7 @@ gzip ==
 collections ==
 
 ###   System requirements: 
-[to be]
+This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server.  
   
 ### Make the system recognize 'nest' command to run the model:
 
