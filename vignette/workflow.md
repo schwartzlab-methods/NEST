@@ -33,3 +33,17 @@ The --data_name parameter is used to decide the target directories to save the p
 Please use the argument --help to see all available input parameters.  
 
 ## Run NEST to generate CCC list
+
+We recommend running the model at least 5 times with different seeds and then ensemble the outputs to get more consistent result. We can run the following commands in the terminal: 
+````
+$ nohup nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log &
+$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=2 > output_human_lymph_node_run2.log &
+$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=3 > output_human_lymph_node_run3.log &
+$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=4 > output_human_lymph_node_run4.log &
+$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=5 > output_human_lymph_node_run5.log &
+````
+If you have enough GPU memory you can start running all of them in parallel. Model running takes couple of hours to finish so it is recommended to run the model in background. If you are using Compute Canada servers then a sample script to submit the gpu job can look like this: 
+```
+to be added
+```
+
