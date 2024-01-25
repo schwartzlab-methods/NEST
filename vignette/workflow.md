@@ -27,8 +27,8 @@ The --data_name parameter is used to decide the target directories to save the p
    - V1_Human_Lymph_Node_spatial_adjacency_records: The input graph
    - V1_Human_Lymph_Node_spatial_cell_vs_gene_quantile_transformed: The quantile normalized gene expression matrix
 2. "metadata/V1_Human_Lymph_Node_spatial/": Contains
-  - V1_Human_Lymph_Node_spatial_barcode_info: A list having the information on barcodes and their coordinates. 
-  - V1_Human_Lymph_Node_spatial_self_loop_record: A dictionary object saving the information on barcodes having autocrine and juxtacrine (in case of spot based data) information. Used later for efficient visualization.      
+   - V1_Human_Lymph_Node_spatial_barcode_info: A list having the information on barcodes and their coordinates.
+   - V1_Human_Lymph_Node_spatial_self_loop_record: A dictionary object saving the information on barcodes having autocrine and juxtacrine (in case of spot based data) information. Used later for efficient visualization.      
   
 Please use the argument --help to see all available input parameters.  
 
