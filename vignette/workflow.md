@@ -55,7 +55,11 @@ to be added
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top40000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top40000.png)
 
+1. Supplying annotations to use different shapes for the cell types in the altair plot
 
+2. Seeing comparatively more stronger CCC by changing --top_edge_count parameter from high to low
+
+   
 
 
 
