@@ -111,7 +111,7 @@ nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Hu
 For detail explanation on the available parameters and their usage, please see the vignettes:
 
 1. [Generate active CCC lists given a spatial transcriptomics data)](https://github.com/schwartzlab-methods/NEST/blob/main/vignette/workflow.html)
-2. [Visualize more active regions in tisse]
+2. [Visualize more active regions in tisse](https://github.com/schwartzlab-methods/NEST/blob/main/vignette/visualize_stronger_ccc_regions.html)
 3. [Filter CCC list for specific cell type or specific region]
    
     
