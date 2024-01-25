@@ -53,6 +53,7 @@ to be added
 
 ## Visualize the list of stronger CCC in different formats
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top40000.png)
+![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top40000.png)
 
 
 
