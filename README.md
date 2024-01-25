@@ -106,3 +106,12 @@ nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Hu
 ````
 
   This will generate output in four formats: altair plot, histogram plot, networkx plot, and dot file for pdf generation. 
+
+
+For detail explanation on the available parameters and their usage, please see the vignettes:
+
+1. [Generate active CCC lists given a spatial transcriptomics data)](https://github.com/schwartzlab-methods/NEST/blob/main/vignette/workflow.html)
+2. [Visualize more active regions in tisse]
+3. [Filter CCC list for specific cell type or specific region]
+   
+    
