@@ -102,6 +102,17 @@ We see that the TGFB1 signaling is more prominent in the middle region with gree
 
 ### Supplying annotations to use different shapes for the cell types in the altair plot
 
+Supplying the annotation file path in a *.csv format can assign different shape to different spot types as shown below: 
+
+````
+nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000 --annotation_file_path='data/V1_Human_Lymph_Node_spatial_annotation.csv'
+````
+
+![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000_annotated.png)
+
+
+
+
 
    
 
