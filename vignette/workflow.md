@@ -84,7 +84,21 @@ The screenshots of the component plot and histograms are provided below (you can
 
 ### Seeing comparatively more stronger CCC by changing --top_edge_count parameter from high to low
 
+If we want to pinpoint the location of particular communications on the tissue or which regions of the tissue involves which set of communications, we can gradually reduce the value of '--top_edge_count' to see more disjoint subgraphs as follows:   
 
+````
+nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=10000
+````
+![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top10000.png)
+![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top10000.png)
+
+````
+nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
+````
+![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000.png)
+![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top3000.png)
+
+We see that the 
 
 ### Supplying annotations to use different shapes for the cell types in the altair plot
 
