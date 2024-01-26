@@ -71,7 +71,7 @@ We can use the CCC list "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_
 nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=40000
 ````
 
-This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 90% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=90 while running the command. This step generates four files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
+This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 90% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=90 while running the command. This step generates following files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
 1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair) [name TO BE changed]
 2. NEST_V1_Human_Lymph_Node_spatial_histogram_test.html (in Altair)
 3. NEST_V1_Human_Lymph_Node_spatial_mygraph.html (in NetworkX)
