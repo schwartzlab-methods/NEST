@@ -71,14 +71,14 @@ We can use the CCC list "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_
 nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=40000
 ````
 
-This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 90% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=90 while running the command. This step generates four files: 
-1. altair plot
-2. histogram plot
-3. networkx plot
-4. dot file for pdf generation.
-5. pdf file 
+This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 90% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=90 while running the command. This step generates four files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
+1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair) [name TO BE changed]
+2. NEST_V1_Human_Lymph_Node_spatial_histogram_test.html (in Altair)
+3. NEST_V1_Human_Lymph_Node_spatial_mygraph.html (in NetworkX)
+4. NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
+5. NEST_V1_Human_Lymph_Node_spatial_ccc_graph.pdf [TO BE]
 
-The screenshots of the altair plot and histograms are provided below (you can find the original files inside the vignette directory). 
+The screenshots of the component plot and histograms are provided below (you can find the original files inside the vignette directory). 
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top40000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top40000.png)
 
