@@ -111,6 +111,6 @@ nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Hu
 For detail explanation on the available parameters and their usage, please see the vignettes:
 
 1. [Generate active CCC lists given a spatial transcriptomics data](vignette/workflow.md)
-2. [Filter CCC list for specific cell type or specific region](vignette/filter_ccc_list_for_type_region.html)
+2. [Filter CCC list for specific region / cell type / specific ligand-receptor pair](vignette/filter_ccc_list_for_type_region.html)
    
     
