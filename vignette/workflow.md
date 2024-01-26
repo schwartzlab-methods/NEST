@@ -36,28 +36,60 @@ Please use the argument --help to see all available input parameters.
 
 We recommend running the model at least 5 times with different seeds and then ensemble the outputs to get more consistent result. We can run the following commands in the terminal: 
 ```
-$ nohup nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log &
-$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=2 > output_human_lymph_node_run2.log &
-$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=3 > output_human_lymph_node_run3.log &
-$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=4 > output_human_lymph_node_run4.log &
-$ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=5 > output_human_lymph_node_run5.log &
+nohup nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=1 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log &
+nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=2 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=2 > output_human_lymph_node_run2.log &
+nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=3 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=3 > output_human_lymph_node_run3.log &
+nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=4 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=4 > output_human_lymph_node_run4.log &
+nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=5 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=5 > output_human_lymph_node_run5.log &
 ```
 If you have enough GPU memory you can start running all of them in parallel. Model running takes couple of hours to finish so it is recommended to run the model in background. If you are using Compute Canada servers then a sample script to submit the gpu job can look like this: 
 ```
 to be added
 ```
 
+It will generate following outputs files:
+
+
+
 
 ## Postprocessing output to generate a list of stronger CCC
 
+To postprocess the model output, i.e., ensemble of multiple runs (through product of ranks of predicted CCCs) and producing list of top 20% highly ranked communications we have to run following commands:
+
+````
+nest postprocess --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
+````
+
+  In the command, we use --total_runs=5 assuming that the model is run five times (if you run the model just once, use --total_runs=1). The top 20% highly ranked communications are saved in a file: "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv". This step uses --top_percent=20 by default. If you would prefer different percentage, e.g., 90%, please pass the parameter -top_percent=90 while running the command.
+
 
 ## Visualize the list of stronger CCC in different formats
+
+We can use the CCC list "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv" for various downstream analysis. Here we show how to visualize those CCC on the tissue surface. Instead of plotting all the CCC (which is ) on the tissue surface, we plot top 40,000 CCC as follows:
+
+To visualize the output graph, i.e., finding connected components and ploting them, we run following command:
+
+````
+nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=40000
+````
+
+This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 90% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=90 while running the command. This step generates four files: 
+1. altair plot
+2. histogram plot
+3. networkx plot
+4. dot file for pdf generation.
+5. pdf file 
+
+The screenshots of the altair plot and histograms are provided below (you can find the original files inside the vignette directory). 
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top40000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top40000.png)
 
+### Seeing comparatively more stronger CCC by changing --top_edge_count parameter from high to low
+
+
+
 ### Supplying annotations to use different shapes for the cell types in the altair plot
 
-### Seeing comparatively more stronger CCC by changing --top_edge_count parameter from high to low
 
    
 
