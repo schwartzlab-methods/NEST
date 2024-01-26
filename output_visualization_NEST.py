@@ -102,14 +102,14 @@ if __name__ == "__main__":
     ####### load annotations ##############################################
     if args.annotation_file_path != '':
         pathologist_label=[]
-        with open(args.annotation_file_path) as file:
-            csv_file = csv.reader(file, delimiter=",")
-            for line in csv_file:
-                pathologist_label.append(line)	
-            
+        annotation_data = pd.read_csv(args.annotation_file_path, sep=",")
+        for i in range (0, len(annotation_data)):
+            pathologist_label.append([annotation_data['Barcode'][i], annotation_data['Type'][i]])
+
         barcode_type=dict() # record the type (annotation) of each spot (barcode)
-        for i in range (1, len(pathologist_label)):
+        for i in range (0, len(pathologist_label)):
             barcode_type[pathologist_label[i][0]] = pathologist_label[i][1]
+
 
     else:
         barcode_type=dict() # record the type (annotation) of each spot (barcode)
