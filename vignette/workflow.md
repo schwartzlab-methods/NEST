@@ -15,7 +15,7 @@ We first preprocess the data before passing it to NEST. It takes two main inputs
 ````
 nest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
 ````
-This method applies Quantile normalization on the gene expression matrix and generates an input graph where each spot in the ST data becomes a vertex in the graph and each vertext is connected with its neighbouring vertices. The neighborhood is decided based on the --neighborhood_threshold parameter and the default value is: spot_diameter*4 (--spot_diameter=89.43 is the default value), i.e., a vertex will be directly connected with all other vertices who are positioned within that distance. Each connection represents a neighbourhood relation (corresponding to a ligand-receptor pair from the database) and number of total connections in an input graph depends on two more parameters:  --threshold_gene_exp and --filter_min_cell. The default values are --threshold_gene_exp=98 (for each cell, genes having expression above 98th percentile are considered active) and --filter_min_cell=5 (gene will be kept if it is expressed in at least 5 spots). 
+This method applies Quantile normalization on the gene expression matrix and generates an input graph where each spot in the ST data becomes a vertex in the graph and each vertex is connected with its neighbouring vertices. The neighborhood is decided based on the --neighborhood_threshold parameter with the default value: spot_diameter*4 (--spot_diameter=89.43 is the default value), i.e., a vertex will be directly connected with all other vertices who are positioned within that distance. Each connection represents a neighbourhood relation (corresponding to a ligand-receptor pair from the database) and number of total connections in an input graph depends on two more parameters:  --threshold_gene_exp and --filter_min_cell. The default values are --threshold_gene_exp=98 (for each cell, genes having expression above 98th percentile are considered active) and --filter_min_cell=5 (gene will be kept if it is expressed in at least 5 spots). 
 
 Lower values for --threshold_gene_exp and --filter_min_cell will generate more connections and higher values will generate less number of connections in the input graph which largly decides how much GPU memory will the model use. We try to generate as many connections as we can to predict more CCC at the end. For example, the results presented in our paper was generated using this preprocessing command:
 ````
@@ -47,14 +47,14 @@ If you have enough GPU memory you can start running all of them in parallel. Mod
 to be added
 ```
 
-It will generate following outputs files:
+It will generate the following output files: [TO BE]
 
 
 
 
 ## Postprocessing output to generate a list of stronger CCC
 
-To postprocess the model output, i.e., ensemble of multiple runs (through product of ranks of predicted CCCs) and producing list of top 20% highly ranked communications we have to run following commands:
+To post-process the model output, i.e., ensemble of multiple runs (through the product of ranks of predicted CCCs) and produce a list of top 20% highly ranked communications, we have to run the following commands:
 
 ````
 nest postprocess --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
@@ -82,9 +82,9 @@ The screenshots of the component plot and histograms are provided below (you can
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top40000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top40000.png)
 
-### Seeing comparatively more stronger CCC by changing --top_edge_count parameter from high to low
+### Seeing comparatively stronger CCC by changing --top_edge_count parameter from high to low
 
-If we want to pinpoint the location of particular communications on the tissue or which regions of the tissue involves which set of communications, we can gradually reduce the value of '--top_edge_count' to see more disjoint subgraphs as follows:   
+If we want to pinpoint the location of particular communications on the tissue or which regions of the tissue involve which set of communications, we can gradually reduce the value of '--top_edge_count' to see more disjoint subgraphs as follows:   
 
 ````
 nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=10000
@@ -98,7 +98,7 @@ nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Hu
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top3000.png)
 
-We see that the 
+We see that the TGFB1 signaling is more prominent in the middle region with green components. 
 
 ### Supplying annotations to use different shapes for the cell types in the altair plot
 
