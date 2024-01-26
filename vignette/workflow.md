@@ -65,7 +65,7 @@ nest postprocess --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_
 
 ## Visualize the list of stronger CCC in different formats
 
-We can use the CCC list "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv" for various downstream analysis. Here we show how to visualize those CCC on the tissue surface. Instead of plotting all the CCC (which is 436,103 and memory consuming) on the tissue surface, we plot top 40,000 CCC as follows:
+We can use the CCC list "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv" for various downstream analysis. Here we show how to visualize those CCC on the tissue surface. Instead of plotting all the CCC (which is 436,103 and highly memory consuming) on the tissue surface, we plot top 40,000 CCC as follows:
 
 ````
 nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=40000
