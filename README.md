@@ -47,13 +47,13 @@ collections ==
 ###   System requirements: 
 This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server, e.g., Compute Canada as well.  
   
-### Make the system recognize 'nest' command to run the model:
+### Setup the system to recognize 'nest' command to run the model:
 
 Download the NEST repository at your desired location and change your current working directory to NEST. Run the following bash script: 
 ````
 sudo bash setup.sh
 ````
-This is to be run once only when nest is run for the first time. The bash script make the bash script 'nest' executable and copies it to your '/usr/local/bin/' so that your system can recognize 'nest' command. 
+This is to be executed once only when nest is run for the first time. The bash script make the bash script 'nest' executable and copies it to your '/usr/local/bin/' so that your system can recognize 'nest' command. 
 
 ## Instruction to run NEST:
 
