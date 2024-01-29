@@ -53,7 +53,7 @@ Download the NEST repository at your desired location and change your current wo
 ````
 sudo bash setup.sh
 ````
-This is to be executed once only when nest is run for the first time. The bash script make the bash script 'nest' executable and copies it to your '/usr/local/bin/' so that your system can recognize 'nest' command. 
+This is to be executed once only when nest is run for the first time. This setup makes the bash script 'nest' executable and copies it to your '/usr/local/bin/' so that your system can recognize 'nest' command. 
 
 ## Instruction to run NEST:
 
