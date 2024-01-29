@@ -49,17 +49,11 @@ This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and 
   
 ### Make the system recognize 'nest' command to run the model:
 
-Download the NEST repository at your desired location and change your current working directory to NEST. Make the bash script 'nest' executable by executing following command:  
+Download the NEST repository at your desired location and change your current working directory to NEST. Run the following bash script: 
 ````
-chmod +x nest
+sudo bash setup.sh
 ````
-
-Then copy this executable bash script to your '/usr/local/bin/' or '/usr/bin/' directory so that your system can recognize this command:
-````
-cp nest /usr/local/bin/
-````
-
-(Instructions above are to be executed once only)
+This is to be run once only when nest is run for the first time. The bash script make the bash script 'nest' executable and copies it to your '/usr/local/bin/' so that your system can recognize 'nest' command. 
 
 ## Instruction to run NEST:
 
