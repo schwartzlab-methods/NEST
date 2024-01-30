@@ -17,6 +17,7 @@ torch_sparse with pytorch 1.12.0 (with GPU support)
 torch_geometric with pytorch 1.12.0 (with GPU support)
 
 (Above three packages can be installed together as: 
+
 pip install torch_scatter torch_sparse torch_geometric -f https://data.pyg.org/whl/torch-1.12.0+cu113.html)
 
 pickle == 4.0
