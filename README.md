@@ -47,7 +47,7 @@ gzip ==
 collections ==
 
 ###   System requirements: 
-This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server, e.g., Compute Canada as well. A brief installation script for Compute Canada is provided here: [compute_canada_readme](compute_canada_readme.md)
+This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Compute Canada as well. A brief installation script for Compute Canada is provided here: [compute_canada_readme](compute_canada_readme.md)
   
 ### Setup the system to recognize 'nest' command to run the model:
 
