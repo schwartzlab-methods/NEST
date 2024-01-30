@@ -32,7 +32,7 @@ avail_wheels "torch*"
 module load cuda [press tab to see the available versions]
 ```
 
-Next, based on the Pytorch and CUDA version, run with wheels link below for installing:
+Next, based on the Pytorch and CUDA version, run with wheels links for installing. Here we are using pytorch 1.13.1 with CUDA 11.7:
 
 ```
 pip3 install torch-scatter -f https://data.pyg.org/whl/torch-1.13.1+cu117.html
@@ -42,3 +42,5 @@ pip3 install torch-geometric -f https://data.pyg.org/whl/torch-1.13.1+cu117.html
 ```
 
 # Submit GPU jobs
+
+[to be]
