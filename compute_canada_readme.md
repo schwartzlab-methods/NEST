@@ -4,7 +4,7 @@ Run following commands to create virtual environment and activate it before inst
 ```
 module load python/3.10
 virtualenv --no-download /project/[group_name]/[user_name]/nest_venv
-source /project/[group_name]/[user_name]/fatema_venv/bin/activate
+source /project/[group_name]/[user_name]/nest_venv/bin/activate
 ```
 Please replace [group_name] and [user_name] with your assigned group and name.
 
