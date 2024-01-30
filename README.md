@@ -8,13 +8,16 @@ python == 3.7.2
 
 numpy == 1.21.6
 
-pytorch (with GPU support) == 3.7.2
+pytorch == 1.12.0 (with GPU support - CUDA 11.3)
 
-torch_sparse (with GPU support) == '0.6.15'
+torch_scatter with pytorch 1.12.0 (with GPU support)
 
-torch_scatter (with GPU support) == '2.0.9'
+torch_sparse with pytorch 1.12.0 (with GPU support)
 
-torch_geometric (with GPU support) == '2.1.0'
+torch_geometric with pytorch 1.12.0 (with GPU support)
+
+(Above three packages can be installed together as: 
+pip install torch_scatter torch_sparse torch_geometric -f https://data.pyg.org/whl/torch-1.12.0+cu113.html)
 
 pickle == 4.0
 
