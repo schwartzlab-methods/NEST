@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print('input data reading')
     if args.tissue_position_file == 'None': # Data is available in Space Ranger output format
         adata_h5 = st.Read10X(path=args.data_from, count_file='filtered_feature_bc_matrix.h5')
-        print('data read done')
+        print('input data read done')
         gene_count_before = len(list(adata_h5.var_names) )    
         sc.pp.filter_genes(adata_h5, min_cells=args.filter_min_cell)
         gene_count_after = len(list(adata_h5.var_names) )  
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         
     
     
-    print('input data reading done.')
+    
     ##################### make metadata: barcode_info ###################################
     i=0
     barcode_info=[]
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         if gene_info[gene] == 'included':
             included_gene.append(gene)
             
-    print('Total genes in this dataset: %d, number of genes working as ligand or receptor: %d '%(len(gene_ids),len(included_gene)))
+    print('Total genes in this dataset: %d, number of genes working as ligand and/or receptor: %d '%(len(gene_ids),len(included_gene)))
     
     # assign id to each entry in the ligand-receptor database
     l_r_pair = dict()
