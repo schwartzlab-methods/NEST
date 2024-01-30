@@ -1,3 +1,4 @@
+print('package loading')
 import numpy as np
 import pickle
 from scipy import sparse
@@ -15,7 +16,7 @@ import scanpy as sc
 import altairThemes
 import altair as alt
 
-
+print('user input reading')
 #current_dir = 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -48,7 +49,7 @@ if __name__ == "__main__":
         os.makedirs(args.metadata_to)
         
     ####### get the gene id, cell barcode, cell coordinates ######
-    
+    print('input data reading')
     if args.tissue_position_file == 'None': # Data is available in Space Ranger output format
         adata_h5 = st.Read10X(path=args.data_from, count_file='filtered_feature_bc_matrix.h5')
         print('data read done')
@@ -93,7 +94,7 @@ if __name__ == "__main__":
         
     
     
-    
+    print('input data reading done.')
     ##################### make metadata: barcode_info ###################################
     i=0
     barcode_info=[]
@@ -127,6 +128,7 @@ if __name__ == "__main__":
     
     ####################################################################
     # ligand - receptor database 
+    print('ligand-receptor database reading.')
     df = pd.read_csv('/cluster/home/t116508uhn/64630/NEST_database.csv', sep=",")
     
     '''
@@ -134,7 +136,8 @@ if __name__ == "__main__":
     0        TGFB1     TGFBR1  Secreted Signaling      KEGG: hsa04350
     1        TGFB1     TGFBR2  Secreted Signaling      KEGG: hsa04350
     '''
-    
+    print('ligand-receptor database reading done.')
+    print('Preprocess start.')
     ligand_dict_dataset = defaultdict(list)
     cell_cell_contact = dict() 
     count_pair = 0
@@ -250,7 +253,7 @@ if __name__ == "__main__":
         print('%d genes done out of %d ligand genes'%(g+1, len(ligand_list)))
     
     
-    print('total number of edges in the input graph %d '%count_total_edges)
+    #print('total number of edges in the input graph %d '%count_total_edges)
     ################################################################################
     # input graph generation
     ccc_index_dict = dict()
@@ -278,7 +281,8 @@ if __name__ == "__main__":
 
     total_num_cell = cell_vs_gene.shape[0]
     print('total number of nodes is %d, and edges is %d in the input graph'%(total_num_cell, len(row_col)))
-    
+    print('preprocess done.')
+    print('write data')
     with gzip.open(args.data_to + args.data_name + '_adjacency_records', 'wb') as fp:  #b, a:[0:5]  _filtered 
         pickle.dump([row_col, edge_weight, lig_rec, total_num_cell], fp)
 
@@ -292,6 +296,7 @@ if __name__ == "__main__":
     # we do not need this to use anywhere. But just for debug purpose we are saving this. We can skip this if we have space issue.
     with gzip.open(args.data_to + args.data_name + '_cell_vs_gene_quantile_transformed', 'wb') as fp:  
     	pickle.dump(cell_vs_gene, fp)
-   
+        
+   print('write data done')
     
 # nohup python -u data_preprocess_NEST.py --data_name='PDAC_64630_mincell3_th98p5' --data_from='/cluster/projects/schwartzgroup/fatema/pancreatic_cancer_visium/210827_A00827_0396_BHJLJTDRXY_Notta_Karen/V10M25-61_D1_PDA_64630_Pa_P_Spatial10x_new/outs/' --filter_min_cell=3 --threshold_gene_exp=98.5 > output_data_preprocess_PDAC_64630_min_cell_3_th98p5.log &
