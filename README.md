@@ -12,11 +12,11 @@ pytorch (with GPU support) == 3.7.2
 
 torch == 1.12.0
 
-torch_geometric== '2.1.0'
+torch_sparse (with GPU support) == '0.6.15'
 
-torch_sparse== '0.6.15'
+torch_scatter (with GPU support) == '2.0.9'
 
-torch_scatter== '2.0.9'
+torch_geometric (with GPU support) == '2.1.0'
 
 pickle == 4.0
 
