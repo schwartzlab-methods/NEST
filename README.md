@@ -10,11 +10,11 @@ numpy == 1.21.6
 
 pytorch == 1.12.0 (with GPU support - CUDA 11.3)
 
-torch_scatter with pytorch 1.12.0 (with GPU support)
+torch_scatter with pytorch 1.12.0 and CUDA 11.3
 
-torch_sparse with pytorch 1.12.0 (with GPU support)
+torch_sparse with pytorch 1.12.0 and CUDA 11.3
 
-torch_geometric with pytorch 1.12.0 (with GPU support)
+torch_geometric with pytorch 1.12.0 and CUDA 11.3
 
 (Above three packages can be installed together as: 
 
