@@ -2,7 +2,6 @@ print('package loading')
 import numpy as np
 import pickle
 from scipy import sparse
-import stlearn as st
 import numpy as np
 import qnorm
 from scipy.sparse import csr_matrix
@@ -12,9 +11,6 @@ import gzip
 import argparse
 import os
 import scanpy as sc
-
-import altairThemes
-import altair as alt
 
 print('user input reading')
 #current_dir = 
@@ -51,7 +47,7 @@ if __name__ == "__main__":
     ####### get the gene id, cell barcode, cell coordinates ######
     print('input data reading')
     if args.tissue_position_file == 'None': # Data is available in Space Ranger output format
-        adata_h5 = st.Read10X(path=args.data_from, count_file='filtered_feature_bc_matrix.h5')
+        adata_h5 = sc.read_visium(path=args.data_from, count_file='filtered_feature_bc_matrix.h5')
         print('input data read done')
         gene_count_before = len(list(adata_h5.var_names) )    
         sc.pp.filter_genes(adata_h5, min_cells=args.filter_min_cell)
