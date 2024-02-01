@@ -111,7 +111,14 @@ nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Hu
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000_annotated.png)
 
 
+### Data preprocess when spatial transcriptomic data comes in non-Visium format
 
+If data comes in a non-Visium format, we suggest to supply two files separately to the data preprocessing step: An *.mtx.gz file (having the Gene expression, Gene ID, and Barcodes) and a tissue position file in a *csv format. 
+
+```
+nest preprocess --data_name='LUAD_TD1' --data_from='data/LUAD_GSM5702473_TD1/' --tissue_position_file='data/LUAD_GSM5702473_TD1/GSM5702473_TD1_tissue_positions_list.csv'
+```
+  
 
 
    
