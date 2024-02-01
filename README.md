@@ -24,8 +24,6 @@ pickle == 4.0
 
 scipy == 1.7.3
 
-stlearn == '0.4.8'
-
 qnorm == '0.8.1'
 
 pandas == '1.3.5'
