@@ -113,12 +113,16 @@ nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Hu
 
 ### Data preprocess when spatial transcriptomic data comes in non-Visium format
 
-If data comes in a non-Visium format, we suggest to supply two files separately to the data preprocessing step: An *.mtx.gz file (having the Gene expression, Gene ID, and Barcodes) and a tissue position file in a *csv format. 
+If data comes in a non-Visium format, we suggest to supply two files separately to the data preprocessing step: An *.mtx.gz file (having the Gene expression, Gene ID, and Barcodes) and a tissue position file in a *csv format. As an example, we request to download the Lung Adenocarcinoma (LUAD) sample from following link and keep under the 'data/' directory: 
 
+[link to be]
+
+Then we can run the preprocess as follows:
 ```
 nest preprocess --data_name='LUAD_TD1' --data_from='data/LUAD_GSM5702473_TD1/' --tissue_position_file='data/LUAD_GSM5702473_TD1/GSM5702473_TD1_tissue_positions_list.csv'
 ```
-  
+
+Similar approach can be followed for single-cell resolution, e.g., MERFISH data. 
 
 
    
