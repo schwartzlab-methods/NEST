@@ -38,6 +38,10 @@ csv == '1.0'
 
 matplotlib ==  '3.5.2'
 
+pyvis == '0.3.0'
+
+networkx == '2.6.3'
+
 gc == 
 
 gzip ==
