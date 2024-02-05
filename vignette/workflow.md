@@ -82,6 +82,8 @@ The screenshots of the component plot and histograms are provided below (you can
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top40000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top40000.png)
 
+Please note that component 1 is dedicated to only those spots that are singleton, i.e., they only have self-loops but do not communicate with neighboring spots. In the plot above, we do not see component 1 because all the spots are talking to neighbors or are inactive (black), but there is no singleton.  
+
 ### Seeing comparatively stronger CCC by changing --top_edge_count parameter from high to low
 
 If we want to pinpoint the location of particular communications on the tissue or which regions of the tissue involve which set of communications, we can gradually reduce the value of '--top_edge_count' to see more disjoint subgraphs as follows:   
