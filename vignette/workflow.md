@@ -60,7 +60,7 @@ To post-process the model output, i.e., ensemble of multiple runs (through the p
 nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
 ````
 
-  In the command, we use --total_runs=5 assuming that the model is run five times (if you run the model just once, use --total_runs=1). The top 20% highly ranked communications are saved in a file: "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv". This step uses --top_percent=20 by default. If you would prefer different percentage, e.g., 90%, please pass the parameter -top_percent=90 while running the command.
+  In the command, we use --total_runs=5 assuming that the model is run five times (if you run the model just once, use --total_runs=1). The top 20% highly ranked communications are saved in a file: "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv". This step uses --top_percent=20 by default. If you would prefer different percentage, e.g., 90%, please pass the parameter --top_percent=90 while running the command.
 
 
 ## Visualize the list of stronger CCC in different formats
