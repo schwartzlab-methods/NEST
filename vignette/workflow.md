@@ -57,7 +57,7 @@ It will generate the following output files: [TO BE]
 To post-process the model output, i.e., ensemble of multiple runs (through the product of ranks of predicted CCCs) and produce a list of top 20% highly ranked communications, we have to run the following commands:
 
 ````
-nest postprocess --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
+nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
 ````
 
   In the command, we use --total_runs=5 assuming that the model is run five times (if you run the model just once, use --total_runs=1). The top 20% highly ranked communications are saved in a file: "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv". This step uses --top_percent=20 by default. If you would prefer different percentage, e.g., 90%, please pass the parameter -top_percent=90 while running the command.
@@ -68,7 +68,7 @@ nest postprocess --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_
 We can use the CCC list "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_top20percent.csv" for various downstream analysis. Here we show how to visualize those CCC on the tissue surface. Instead of plotting all the CCC (which is 436,103 and highly memory consuming) on the tissue surface, we plot top 40,000 CCC as follows:
 
 ````
-nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=40000
+nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=40000
 ````
 
 This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 90% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=90 while running the command. This step generates following files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
@@ -93,7 +93,7 @@ nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Hu
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top10000.png)
 
 ````
-nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
+nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
 ````
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top3000.png)
@@ -105,7 +105,7 @@ We see that the TGFB1 signaling is more prominent in the middle region with gree
 Supplying the annotation file path in a *.csv format can assign different shape to different spot types as shown below: 
 
 ````
-nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000 --annotation_file_path='data/V1_Human_Lymph_Node_spatial_annotation.csv'
+nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000 --annotation_file_path='data/V1_Human_Lymph_Node_spatial_annotation.csv'
 ````
 
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000_annotated.png)
