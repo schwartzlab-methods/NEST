@@ -88,7 +88,7 @@ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --mo
 3. To postprocess the model output, i.e., ensemble of multiple runs (through rank of product) and producing list of top 20% highly ranked communications we have to run following commands:
 
 ````
-nest postprocess --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
+nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
 ````
 
   In the command, we use --total_runs=5 assuming that the model is run five times. The top 20% highly ranked communications are saved in a file named as 'V1_Human_Lymph_Node_spatial_top20percent.csv' in "output/V1_Human_Lymph_Node_spatial/".  
@@ -96,7 +96,7 @@ nest postprocess --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_
 4. To visualize the output graph, i.e., finding connected components and ploting them, we run following command:
 
 ````
-nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial'
+nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial'
 ````
 
   This will generate output in four formats: altair plot, histogram plot, networkx plot, and dot file for pdf generation. 
