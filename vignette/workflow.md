@@ -52,7 +52,7 @@ It will generate the following output files: [TO BE]
 
 
 
-## Postprocessing output to generate a list of stronger CCC
+## Postprocessing output to generate a list of strong CCC
 
 To post-process the model output, i.e., ensemble of multiple runs (through the product of ranks of predicted CCCs) and produce a list of top 20% highly ranked communications, we have to run the following commands:
 
