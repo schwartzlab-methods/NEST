@@ -202,7 +202,7 @@ if __name__ == "__main__":
         component_dictionary_dummy = dict()
         for record_idx in range (1, len(csv_record_final)-1): #last entry is a dummy for histograms, so ignore it.
             if args.filter_by_component!=-1:
-                if csv_record_final[record_idx][5] == args.filter_by_component:
+                if csv_record_final[record_idx][5] == int(args.filter_by_component):
                     csv_record_final_temp.append(csv_record_final[record_idx])                
                 if csv_record_final[record_idx][5] not in component_dictionary_dummy:
                     component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]
