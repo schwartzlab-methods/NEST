@@ -47,21 +47,6 @@ If you have enough GPU memory you can start running all of them in parallel. Mod
 to be added
 ```
 
-This step generates the following four files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
-1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair) 
-2. NEST_V1_Human_Lymph_Node_spatial_histogram_test.html (in Altair)
-3. NEST_V1_Human_Lymph_Node_spatial_mygraph.html (in NetworkX)
-4. NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
- 
-Although the NetworkX plot shows the appealing view of CCC, it can be very big and memory-consuming to open in the browser. Therefore we prefer to convert the corresponding *.dot file to a *.pdf and *.svg file by executing the following bash script: 
-
-```
-bash dot_to_pdf_svg.sh output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
-```
-It will generate two files: edge_graph.svg and edge_graph.pdf, which are easy to view and share. 
-
-
-
 
 ## Postprocessing output to generate a list of strong CCC
 
@@ -82,13 +67,20 @@ We can use the CCC list "output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_
 nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=40000
 ````
 
-This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 10% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=10 while running the command. This step generates following files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
-1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair)
+This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 10% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=10 while running the command. 
+This step generates the following four files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
+1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair) 
 2. NEST_V1_Human_Lymph_Node_spatial_histogram_test.html (in Altair)
 3. NEST_V1_Human_Lymph_Node_spatial_mygraph.html (in NetworkX)
 4. NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
-5. NEST_V1_Human_Lymph_Node_spatial_ccc_graph.pdf [TO BE]
 
+Although the NetworkX plot shows the appealing view of CCC, it can be very big and memory-consuming to open in the browser. Therefore we prefer to convert the corresponding *.dot file to a *.pdf and *.svg file by executing the following bash script: 
+
+```
+bash dot_to_pdf_svg.sh output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
+```
+It will generate two files: edge_graph.svg and edge_graph.pdf, which are easy to view and share. 
+ 
 The screenshots of the component plot and histograms are provided below (you can find the original files inside the vignette directory). 
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top40000.png)
 ![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top40000.png)
