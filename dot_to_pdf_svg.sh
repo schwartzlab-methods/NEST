@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-if [$1 = '']
+if [ $1 = '' ]
 then
 	echo "Please supply the dot file name (along with path) to convert. Program ending."
 
