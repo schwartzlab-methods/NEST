@@ -115,6 +115,17 @@ nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_H
 
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000_annotated.png)
 
+Next, we run the following command to convert the *.dot file to *.pdf and *.png file: 
+
+```
+bash dot_to_pdf_svg.sh output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
+```
+It will generate two files: edge_graph.svg and edge_graph.pdf. The screenshot of the edge_graph.pdf is provided bellow:
+
+
+ 
+
+
 
 ### Data preprocess when spatial transcriptomic data comes in non-Visium format
 
