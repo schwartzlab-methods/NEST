@@ -136,7 +136,7 @@ if __name__ == "__main__":
     ## sort the edges based on their rank (column 4), low to high, low being higher attention score
     csv_record = sorted(csv_record, key = lambda x: x[4])
     ## add the column names and take first top_edge_count edges
-    # columns are: from_cell, to_cell, ligand_gene, receptor_gene, rank, attention_score, component, from_id, to_id
+    # columns are: from_cell, to_cell, ligand_gene, receptor_gene, rank, component, from_id, to_id,  attention_score 
     df_column_names = list(df.columns)
 #    print(df_column_names)
 
@@ -194,26 +194,41 @@ if __name__ == "__main__":
         csv_record_final[record][5] = label
     
     ############################################### Optional filtering ########################################################
-    '''
-    ## change the csv_record_final here if you want histogram for specific components/regions only. e.g., if you want to plot only stroma region, or tumor-stroma regions etc.    ##
-    #region_of_interest = [...] 
-    csv_record_final_temp = []
-    csv_record_final_temp.append(csv_record_final[0])
-    component_dictionary_dummy = dict()
-    for record_idx in range (1, len(csv_record_final)-1): #last entry is a dummy for histograms, so ignore it.
-        # if at least one spot of the pair is tumor, then plot it
-        if barcode_info[ csv_record_final[record_idx][6] ][1] > 10000 and barcode_info[ csv_record_final[record_idx][6] ][2] < 8000:   #(barcode_type[csv_record_final[record_idx][0]] == 'tumor' or barcode_type[csv_record_final[record_idx][1]] == 'tumor'): #((barcode_type[csv_record_final[record_idx][0]] == 'tumor' and barcode_type[csv_record_final[record_idx][1]] == 'tumor') or (barcode_type[csv_record_final[record_idx][0]] != 'tumor' and barcode_type[csv_record_final[record_idx][1]] != 'tumor')):
-            csv_record_final_temp.append(csv_record_final[record_idx])
-        if csv_record_final[record_idx][5] not in component_dictionary_dummy:
-            component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]
+    if args.filter == 1:
+        ## change the csv_record_final here if you want histogram for specific components/regions only. e.g., if you want to plot only stroma region, or tumor-stroma regions etc.    ##
+        #region_of_interest = [...] 
+        csv_record_final_temp = []
+        csv_record_final_temp.append(csv_record_final[0])
+        component_dictionary_dummy = dict()
+        for record_idx in range (1, len(csv_record_final)-1): #last entry is a dummy for histograms, so ignore it.
+            if args.filter_by_component!=-1:
+                if csv_record_final[record_idx][5] == args.filter_by_component:
+                    csv_record_final_temp.append(csv_record_final[record_idx])                
+                if csv_record_final[record_idx][5] not in component_dictionary_dummy:
+                    component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]
+            elif args.filter_by_annotation!='': 
+                if barcode_type[csv_record_final[record_idx][0]] == args.filter_by_annotation and barcode_type[csv_record_final[record_idx][1]] == args.filter_by_annotation: # if from_node == type and to_node == type
+                    csv_record_final_temp.append(csv_record_final[record_idx])   
+                if csv_record_final[record_idx][5] not in component_dictionary_dummy:
+                    component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]                
+            elif args.filter_by_ligand_receptor!='':
+                ligand = (args.filter_by_ligand_receptor).split('-')[0]
+                receptor = (args.filter_by_ligand_receptor).split('-')[1]
+                if csv_record_final[record_idx][2] == ligand and csv_record_final[record_idx][3] == receptor:
+                    csv_record_final_temp.append(csv_record_final[record_idx])                  
+                if csv_record_final[record_idx][5] not in component_dictionary_dummy:
+                    component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]
+            else: # if no 'filter by' options are provided by mistake 
+                csv_record_final_temp.append(csv_record_final[record_idx])
             
-    # insert just one record from each other components so that the color scheme does not change in the altair scatter plot and histogram :-(
-    for component_id in component_dictionary_dummy:
-        csv_record_final_temp.append(component_dictionary_dummy[component_id])
-    
-    csv_record_final_temp.append(csv_record_final[len(csv_record_final)-1])
-    csv_record_final = copy.deepcopy(csv_record_final_temp)
-    '''
+                
+            # insert just one record from each other components so that the color scheme does not change in the altair scatter plot and histogram :-(
+            for component_id in component_dictionary_dummy:
+                csv_record_final_temp.append(component_dictionary_dummy[component_id])
+            
+            csv_record_final_temp.append(csv_record_final[len(csv_record_final)-1])
+            csv_record_final = copy.deepcopy(csv_record_final_temp)
+            
 
     #####################################
     component_list = dict()
