@@ -72,7 +72,7 @@ nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_H
 ````
 
 This step looks for the top 20% CCC list by default, but if you used different percentage, for example, top 10% CCC list in the previous postprocessing step, then please pass the parameter --top_percent=10 while running the command. This step generates following files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
-1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair) [name TO BE changed]
+1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair)
 2. NEST_V1_Human_Lymph_Node_spatial_histogram_test.html (in Altair)
 3. NEST_V1_Human_Lymph_Node_spatial_mygraph.html (in NetworkX)
 4. NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
