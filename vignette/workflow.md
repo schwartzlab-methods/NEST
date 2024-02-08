@@ -47,7 +47,18 @@ If you have enough GPU memory you can start running all of them in parallel. Mod
 to be added
 ```
 
-It will generate the following output files: [TO BE]
+This step generates the following four files under the directory 'output/V1_Human_Lymph_Node_spatial/': 
+1. NEST_V1_Human_Lymph_Node_spatial_component_plot.html (in Altair) 
+2. NEST_V1_Human_Lymph_Node_spatial_histogram_test.html (in Altair)
+3. NEST_V1_Human_Lymph_Node_spatial_mygraph.html (in NetworkX)
+4. NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
+ 
+Although the NetworkX plot shows the appealing view of CCC, it can be very big and memory-consuming to open in the browser. Therefore we prefer to convert the corresponding *.dot file to a *.pdf and *.svg file by executing the following bash script: 
+
+```
+bash dot_to_pdf_svg.sh output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
+```
+It will generate two files: edge_graph.svg and edge_graph.pdf, which are easy to view and share. 
 
 
 
