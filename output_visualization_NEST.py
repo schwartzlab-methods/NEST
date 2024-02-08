@@ -301,7 +301,7 @@ if __name__ == "__main__":
         tooltip=['component_label'] #,'opacity'
     )
 
-    chart.save(output_name +'_altair_plot.html')
+    chart.save(output_name +'_component_plot.html')
     print('Altair plot generation done')
 
     ###################################  Histogram plotting #################################################################################
