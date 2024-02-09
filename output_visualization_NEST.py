@@ -214,8 +214,6 @@ if __name__ == "__main__":
                 receptor = (args.filter_by_ligand_receptor).split('-')[1]
                 if csv_record_final[record_idx][2] == ligand and csv_record_final[record_idx][3] == receptor:
                     csv_record_final_temp.append(csv_record_final[record_idx])                  
-                if csv_record_final[record_idx][5] not in component_dictionary_dummy:
-                    component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]
             else: # if no 'filter by' options are provided by mistake 
                 csv_record_final_temp.append(csv_record_final[record_idx])
             
