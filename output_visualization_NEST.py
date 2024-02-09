@@ -70,7 +70,7 @@ if __name__ == "__main__":
     parser.add_argument( '--filter', type=int, default=0, help='Set --filter=-1 if you want to filter the CCC')
     parser.add_argument( '--filter_by_ligand_receptor', type=str, default='', help='Set ligand-receptor pair, e.g., --filter_by_ligand_receptor="CCL19-CCR7" if you want to filter the CCC by LR pair')
     parser.add_argument( '--filter_by_annotation', type=str, default='', help='Set cell or spot type, e.g., --filter_by_annotation="T-cell" if you want to filter the CCC')
-    parser.add_argument( '--filter_by_component', type=int, default=0, help='Set component id, e.g., --filter_by_component=9 if you want to filter by component id')
+    parser.add_argument( '--filter_by_component', type=int, default=-1, help='Set component id, e.g., --filter_by_component=9 if you want to filter by component id')
     
     
 
