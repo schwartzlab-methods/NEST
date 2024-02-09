@@ -204,8 +204,6 @@ if __name__ == "__main__":
             if args.filter_by_component!=-1:
                 if csv_record_final[record_idx][5] == int(args.filter_by_component):
                     csv_record_final_temp.append(csv_record_final[record_idx])                
-                if csv_record_final[record_idx][5] not in component_dictionary_dummy:
-                    component_dictionary_dummy[csv_record_final[record_idx][5]] = csv_record_final[record_idx]
             elif args.filter_by_annotation!='': 
                 if barcode_type[csv_record_final[record_idx][0]] == args.filter_by_annotation and barcode_type[csv_record_final[record_idx][1]] == args.filter_by_annotation: # if from_node == type and to_node == type
                     csv_record_final_temp.append(csv_record_final[record_idx])   
@@ -221,14 +219,14 @@ if __name__ == "__main__":
             else: # if no 'filter by' options are provided by mistake 
                 csv_record_final_temp.append(csv_record_final[record_idx])
             
-                
-            # insert just one record from each other components so that the color scheme does not change in the altair scatter plot and histogram :-(
-            for component_id in component_dictionary_dummy:
-                csv_record_final_temp.append(component_dictionary_dummy[component_id])
-            
-            csv_record_final_temp.append(csv_record_final[len(csv_record_final)-1])
-            csv_record_final = copy.deepcopy(csv_record_final_temp)
-            
+    
+        # insert just one record from each other components so that the color scheme does not change in the altair scatter plot and histogram :-(
+        for component_id in component_dictionary_dummy:
+            csv_record_final_temp.append(component_dictionary_dummy[component_id])
+        
+        csv_record_final_temp.append(csv_record_final[len(csv_record_final)-1])
+        csv_record_final = copy.deepcopy(csv_record_final_temp)
+                    
 
     #####################################
     component_list = dict()
