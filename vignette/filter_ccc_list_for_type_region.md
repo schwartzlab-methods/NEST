@@ -31,4 +31,3 @@ nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_H
 ```
 
 ![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top400000_ccl19_ccr7.png)
-![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top400000_ccl19_ccr7.png)
