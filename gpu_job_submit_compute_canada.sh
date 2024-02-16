@@ -8,7 +8,7 @@
 #SBATCH --mem=63500M        # Memory proportional to GPUs: 31500 Cedar, 63500 Graham.
 #SBATCH --time=24:00:00
 #SBATCH --job-name=test_job
-#SBATCH --output=V1_human_lymph_log-%j.out
+#SBATCH --output=V1_human_lymph_log-%j.out # see this log to confirm if your model is running. 
 # ---------------------------------------------------------------------
 echo "Current working directory: `pwd`"
 echo "Starting run at: `date`"
@@ -32,7 +32,7 @@ cd /project/[group_name]/[user_name]/NEST
 
 # run your python script with parameters
 echo 'Running NEST'
-nohup nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=1 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log &
+nohup nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=1 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log 
 
 echo 'To track the training progress see the output_human_lymph_node_run1.log under the working directory'
 
