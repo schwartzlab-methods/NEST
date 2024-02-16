@@ -32,11 +32,11 @@ cd /project/[group_name]/[user_name]/NEST
 
 # run your python script with parameters
 echo 'Running NEST'
-nohup nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=1 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log 
+nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=1 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 # you can redirect the output to some log file like this: > output_human_lymph_node_run1.log 
 
-echo 'To track the training progress see the output_human_lymph_node_run1.log under the working directory'
+#echo 'To track the training progress see the output_human_lymph_node_run1.log under the working directory'
 
-echo 'Going to sleep for 24 hours. If the process is finished before that, please kill this job to free up GPU resources. '
-sleep 86400
+#echo 'Going to sleep for 24 hours. If the process is finished before that, please kill this job to free up GPU resources. '
+#sleep 86400
 # ---------------------------------------------------------------------
 echo "Job finished with exit code $? at: `date`"
