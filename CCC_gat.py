@@ -191,7 +191,7 @@ def train_NEST(args, data_loader, in_channels):
                     X_embedding = pos_z
                     X_embedding = X_embedding.cpu().detach().numpy()
                     X_embedding_filename =  args.embedding_path + args.model_name + '_Embed_X.npy'
-                    np.save(X_embedding_filename, X_embedding)
+                    np.save(X_embedding_filename, X_embedding) #/cluster/home/t116508uhn/.local/lib/python3.7/site-packages/numpy/lib/npyio.py:528: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
                     
                     # save the attention scores
 
