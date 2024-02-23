@@ -14,15 +14,15 @@ pytorch == 1.12.0 (with GPU support - CUDA 11.3)
 
 pip install torch==1.12.0+cu113 torchvision==0.13.0+cu113 torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cu113)
 
-torch_scatter with pytorch 1.12.0 and CUDA 11.3
+torch_scatter==2.0.9 with pytorch 1.12.0 and CUDA 11.3
 
-torch_sparse with pytorch 1.12.0 and CUDA 11.3
+torch_sparse==0.6.15 with pytorch 1.12.0 and CUDA 11.3
 
-torch_geometric with pytorch 1.12.0 and CUDA 11.3
+torch_geometric==2.1.0 with pytorch 1.12.0 and CUDA 11.3
 
 (Above three packages can be installed together as: 
 
-pip install torch_scatter torch_sparse torch_geometric -f https://data.pyg.org/whl/torch-1.12.0+cu113.html)
+pip install torch_scatter==2.0.9 torch_sparse==0.6.15 torch_geometric==2.1.0 -f https://data.pyg.org/whl/torch-1.12.0+cu113.html)
 
 pickle == 4.0
 
