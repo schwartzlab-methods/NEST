@@ -107,9 +107,12 @@ if __name__ == "__main__":
             distribution = []
             ##############################################
             print(args.model_name)     
-            X_attention_filename = args.embedding_path +  args.model_name + filename_suffix + 'attention.npy'
+            X_attention_filename = args.embedding_path +  args.model_name + filename_suffix + 'attention' #.npy
             print(X_attention_filename)
-            X_attention_bundle = np.load(X_attention_filename, allow_pickle=True) 
+            #X_attention_bundle = np.load(X_attention_filename, allow_pickle=True) # this is deprecated
+            fp = gzip.open(X_attention_filename, 'rb') as fp:  
+            X_attention_bundle = pickle.load(fp)
+            
             for index in range (0, X_attention_bundle[0].shape[1]):
                 i = X_attention_bundle[0][0][index]
                 j = X_attention_bundle[0][1][index]
