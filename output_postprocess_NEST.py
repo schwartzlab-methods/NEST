@@ -110,7 +110,7 @@ if __name__ == "__main__":
             X_attention_filename = args.embedding_path +  args.model_name + filename_suffix + 'attention' #.npy
             print(X_attention_filename)
             #X_attention_bundle = np.load(X_attention_filename, allow_pickle=True) # this is deprecated
-            fp = gzip.open(X_attention_filename, 'rb') as fp:  
+            fp = gzip.open(X_attention_filename, 'rb')  
             X_attention_bundle = pickle.load(fp)
             
             for index in range (0, X_attention_bundle[0].shape[1]):
