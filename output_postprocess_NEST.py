@@ -90,6 +90,7 @@ if __name__ == "__main__":
     layer = -1
     for l in [2,3]: #, 3]: # 2 = layer 2, 3 = layer 1 
         layer = layer + 1
+        print('layer %d'%layer)
         csv_record_dict = defaultdict(list)
         for run_time in range (start_index, start_index+total_runs):
             filename_suffix = '_'+ 'r'+str(run_time+1) +'_'
@@ -160,13 +161,13 @@ if __name__ == "__main__":
         
             graph = csr_matrix(connecting_edges)
             n_components, labels = connected_components(csgraph=graph,directed=True, connection = 'weak',  return_labels=True) #
-            print('number of component %d'%n_components)
+            #print('number of component %d'%n_components)
         
             count_points_component = np.zeros((n_components))
             for i in range (0, len(labels)):
                  count_points_component[labels[i]] = count_points_component[labels[i]] + 1
         
-            print(count_points_component)
+            #print(count_points_component)
         
             id_label = 2 # initially all are zero. =1 those who have self edge but above threshold. >= 2 who belong to some component
             index_dict = dict()
@@ -175,7 +176,7 @@ if __name__ == "__main__":
                     index_dict[i] = id_label
                     id_label = id_label+1
         
-            print(id_label)
+            print('number of components with multiple datapoints is %d'%id_label)
         
         
             for i in range (0, len(barcode_info)):
