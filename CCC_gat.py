@@ -190,8 +190,11 @@ def train_NEST(args, data_loader, in_channels):
                     # save the node embedding
                     X_embedding = pos_z
                     X_embedding = X_embedding.cpu().detach().numpy()
-                    X_embedding_filename =  args.embedding_path + args.model_name + '_Embed_X.npy'
-                    np.save(X_embedding_filename, X_embedding) #/cluster/home/t116508uhn/.local/lib/python3.7/site-packages/numpy/lib/npyio.py:528: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+                    X_embedding_filename =  args.embedding_path + args.model_name + '_Embed_X'
+                    with gzip.open(X_embedding_filename, 'wb') as fp:  
+                        pickle.dump(X_embedding, fp)
+                        
+                    #np.save(X_embedding_filename, X_embedding) #/cluster/home/t116508uhn/.local/lib/python3.7/site-packages/numpy/lib/npyio.py:528: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
                     
                     # save the attention scores
 
@@ -215,7 +218,9 @@ def train_NEST(args, data_loader, in_channels):
                     print('making the bundle to save')
                     X_attention_bundle = [X_attention_index, X_attention_score_normalized_l1, X_attention_score_unnormalized, X_attention_score_unnormalized_l1, X_attention_score_normalized]
                     X_attention_filename =  args.embedding_path + args.model_name + '_attention.npy'
-                    np.save(X_attention_filename, X_attention_bundle)
+                    # np.save(X_attention_filename, X_attention_bundle) # this is deprecated
+                    with gzip.open(X_attention_filename, 'wb') as fp:  
+                        pickle.dump(X_attention_bundle, fp)
 
                     logfile=open(args.model_path+'DGI_'+ args.model_name+'_loss_curve.csv', 'wb')
                     np.savetxt(logfile,loss_curve, delimiter=',')
