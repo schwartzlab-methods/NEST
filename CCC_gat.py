@@ -190,7 +190,7 @@ def train_NEST(args, data_loader, in_channels):
                     # save the node embedding
                     X_embedding = pos_z
                     X_embedding = X_embedding.cpu().detach().numpy()
-                    X_embedding_filename =  args.embedding_path + args.model_name + '_Embed_X'
+                    X_embedding_filename =  args.embedding_path + args.model_name + '_Embed_X' #.npy
                     with gzip.open(X_embedding_filename, 'wb') as fp:  
                         pickle.dump(X_embedding, fp)
                         
@@ -217,7 +217,7 @@ def train_NEST(args, data_loader, in_channels):
 
                     print('making the bundle to save')
                     X_attention_bundle = [X_attention_index, X_attention_score_normalized_l1, X_attention_score_unnormalized, X_attention_score_unnormalized_l1, X_attention_score_normalized]
-                    X_attention_filename =  args.embedding_path + args.model_name + '_attention.npy'
+                    X_attention_filename =  args.embedding_path + args.model_name + '_attention' #.npy
                     # np.save(X_attention_filename, X_attention_bundle) # this is deprecated
                     with gzip.open(X_attention_filename, 'wb') as fp:  
                         pickle.dump(X_attention_bundle, fp)
