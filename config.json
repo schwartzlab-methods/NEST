@@ -1,0 +1,40 @@
+"config": {
+            "view": {
+                "strokeOpacity": 0, 
+                "strokeWidth": 0.756,
+            },
+            "style": {
+                "guide-title": {
+                    "fontSize": 10.66670036
+                },
+                "guide-label": {
+                    "fontSize": 10.66670036
+                }
+            },
+            "title": {
+                "fontSize": 10.66670036,
+                "font": "Arial",
+                "fontColor": "#000000",
+                "fontWeight": "normal",
+            },
+            "legend": {
+                "titleFontWeight": "normal"
+            },
+            "axis": {
+                "domainColor": "#000000",
+                "domainWidth": 0.756,
+                "grid": false,
+                "gridWidth": 0.756,
+                "labelAngle": 0,
+                "labelFont": "Arial",
+                "labelFontSize": 10.66670036,
+                "tickColor": "#000000",
+                "tickWidth": 0.756,
+                "titleFont": "Arial",
+                "titleFontSize": 10.66670036,
+                "titleFontWeight": "normal",
+            },
+            "header": {
+                "titleFontWeight": "normal",
+            }
+        }
