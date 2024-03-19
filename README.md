@@ -1,4 +1,4 @@
-# NEST ![alt text](https://github.com/schwartzlab-methods/NEST/blob/main/nest_logo.svg)
+# ![alt text](https://github.com/schwartzlab-methods/NEST/blob/main/nest_logo.svg) NEST 
 ## Requirements:
 
 ###   Used python packages:
