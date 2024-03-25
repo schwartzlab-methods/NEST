@@ -278,17 +278,29 @@ if __name__ == "__main__":
     total_num_cell = cell_vs_gene.shape[0]
     print('total number of nodes is %d, and edges is %d in the input graph'%(total_num_cell, len(row_col)))
     print('preprocess done.')
-    print('write data')
-    with gzip.open(args.data_to + args.data_name + '_adjacency_records', 'wb') as fp:  #b, a:[0:5]  _filtered 
+    print('writing data ...')
+
+    ################## input graph #################################################
+    with gzip.open(args.data_to + args.data_name + '_adjacency_records', 'wb') as fp:  
         pickle.dump([row_col, edge_weight, lig_rec, total_num_cell], fp)
 
-    with gzip.open(args.metadata_to + args.data_name +'_self_loop_record', 'wb') as fp:  #b, a:[0:5]   _filtered
+    ################# metadata #####################################################
+    with gzip.open(args.metadata_to + args.data_name +'_self_loop_record', 'wb') as fp: 
         pickle.dump(self_loop_found, fp)
 
-    with gzip.open(args.metadata_to + args.data_name +'_barcode_info', 'wb') as fp:  #b, a:[0:5]   _filtered
+    with gzip.open(args.metadata_to + args.data_name +'_barcode_info', 'wb') as fp:  
         pickle.dump(barcode_info, fp)
     
-    ######### optional #################################################################           
+    ################## required for the nest interactive version ###################
+    df = pd.DataFrame(gene_ids)
+    df.to_csv(args.metadata_to + 'gene_ids_'+args.data_name+'.csv', index=False, header=False)
+    df = pd.DataFrame(cell_barcode)
+    df.to_csv(args.metadata_to + 'cell_barcode_'+args.data_name+'.csv', index=False, header=False)
+    df = pd.DataFrame(coordinates)
+    df.to_csv(args.metadata_to + 'coordinates_'+args.data_name+'.csv', index=False, header=False)
+    
+    
+    ######### optional #############################################################           
     # we do not need this to use anywhere. But just for debug purpose we are saving this. We can skip this if we have space issue.
     with gzip.open(args.data_to + args.data_name + '_cell_vs_gene_quantile_transformed', 'wb') as fp:  
     	pickle.dump(cell_vs_gene, fp)
