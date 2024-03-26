@@ -27,29 +27,30 @@ pickle == 4.0
 
 scipy == 1.7.3
 
-qnorm == '0.8.1'
+qnorm == 0.8.1
 
-pandas == '1.3.5'
+pandas == 1.3.5
 
-scanpy == '1.9.1'
+scanpy == 1.9.1
 
-altair == '4.2.0'
+altair == 4.2.0
 
 (Please download this additional package as well and keep under the same NEST repository: https://github.com/schwartzlab-methods/altair-themes)
 
-csv == '1.0'
+csv == 1.0
 
-matplotlib ==  '3.5.2'
+matplotlib ==  3.5.2
 
-pyvis == '0.3.0'
+pyvis == 0.3.0
 
-networkx == '2.6.3'
+networkx == 2.6.3
 
-gc == 
+collections == 0.1.1
 
-gzip ==
+gc 
 
-collections ==
+gzip 
+
 
 ###   System requirements: 
 This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Compute Canada as well. A brief installation script for Compute Canada is provided here: [compute_canada_readme](compute_canada_readme.md)
