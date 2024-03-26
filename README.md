@@ -120,7 +120,7 @@ nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph
 It will generate two files: edge_graph.svg and edge_graph.pdf in the current working directory, which are easy to view and share. 
 
 ### NEST Interactive
-Finally, you can interactively visualize the cell-cell communication on tissue surface by using NEST Interactive: a web-based data visualization tool. The detailed instructions for running the interactive tool are provided here:   
+Finally, you can interactively visualize the cell-cell communication on tissue surface by using NEST Interactive: a web-based data visualization tool. The detailed instructions for running the interactive tool are provided here: https://github.com/schwartzlab-methods/NEST-interactive
 
 If the platform you are using to run the NEST model also supports web-based data visualization, you can use the same nest command to start the interactive interface. We will need to pass the directory path containing the NEST interactive repository and the port number to start the frontend of the web-based interface. The following files are also to be put in a directory and passed to the interactive interface. 
 
