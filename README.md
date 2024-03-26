@@ -112,12 +112,12 @@ This step generates the following four files under the directory 'output/V1_Huma
 3. NEST_V1_Human_Lymph_Node_spatial_mygraph.html (in NetworkX)
 4. NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
  
-Although the NetworkX plot shows the appealing view of CCC, it can be very big and memory-consuming to open in the browser. Therefore we prefer to convert the corresponding *.dot file to a *.pdf and *.svg file by executing the following bash script (takes input the path of *.dot file as an argument): 
+Although the NetworkX plot shows the appealing view of CCC, it can be very big and memory-consuming to open in the web-browser and inconvenient to share. Therefore we prefer to convert the corresponding *.dot file to a *.pdf and *.svg file by executing the following command (takes input the path of *.dot file as an argument): 
 
 ```
-bash dot_to_pdf_svg.sh output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
+nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
 ```
-It will generate two files: edge_graph.svg and edge_graph.pdf, which are easy to view and share. 
+It will generate two files: edge_graph.svg and edge_graph.pdf in the current working directory, which are easy to view and share. 
 
 
 ## Vignette
