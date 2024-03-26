@@ -94,14 +94,14 @@ If we want to pinpoint the location of particular communications on the tissue o
 ````
 nest visualize --dataname='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=10000
 ````
-![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top10000.png)
-![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top10000.png)
+![png file of the generated altair plot for top 10000 CCC](../images/altair_plot_human_lymph_top10000.png)
+![screenshot of the generated histogram plot for top 10000 CCC](../images/histogram_human_lymph_top10000.png)
 
 ````
 nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name 'NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
 ````
-![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000.png)
-![screenshot of the generated histogram plot for top 40000 CCC](../images/histogram_human_lymph_top3000.png)
+![png file of the generated altair plot for top 3000 CCC](../images/altair_plot_human_lymph_top3000.png)
+![screenshot of the generated histogram plot for top 3000 CCC](../images/histogram_human_lymph_top3000.png)
 
 We see that the TGFB1 signaling is more prominent in the middle region with green components. 
 
@@ -113,7 +113,7 @@ Supplying the annotation file path in a *.csv format can assign different shape 
 nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000 --annotation_file_path='data/V1_Human_Lymph_Node_spatial_annotation.csv'
 ````
 
-![png file of the generated altair plot for top 40000 CCC](../images/altair_plot_human_lymph_top3000_annotated.png)
+![png file of the generated altair plot for top 3000 CCC](../images/altair_plot_human_lymph_top3000_annotated.png)
 
 Next, we run the following command to convert the *.dot file to *.pdf and *.png file: 
 
@@ -121,9 +121,9 @@ Next, we run the following command to convert the *.dot file to *.pdf and *.png 
 nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot
 ```
 
-It will generate two files: edge_graph.svg and edge_graph.pdf. The screenshot of the edge_graph.pdf is provided bellow:
+It will generate two files: edge_graph.svg and edge_graph.pdf. The edge_graph.pdf is provided below:
 
-![png file of the generated altair plot for top 40000 CCC](../images/edge_graph.pdf)
+![pdf file of the generated altair plot for top 3000 CCC](../images/edge_graph.pdf)
 
 ### Data preprocess when spatial transcriptomic data comes in non-Visium format
 
