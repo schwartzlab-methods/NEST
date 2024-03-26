@@ -123,10 +123,7 @@ nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph
 
 It will generate two files: edge_graph.svg and edge_graph.pdf. The screenshot of the edge_graph.pdf is provided bellow:
 
-
- 
-
-
+![png file of the generated altair plot for top 40000 CCC](../images/Screenshot_lymph_top3000.png)
 
 ### Data preprocess when spatial transcriptomic data comes in non-Visium format
 
