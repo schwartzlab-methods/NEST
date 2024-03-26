@@ -22,5 +22,9 @@ then
   cd $1
   shift
   bash nest_interactive $@ 
+elif [ $1 = "output_graph_picture" ] 
+then
+  shift
+  bash dot_to_pdf_svg.sh $@
 fi
 
