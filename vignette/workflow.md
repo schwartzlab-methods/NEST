@@ -129,7 +129,11 @@ It will generate two files: edge_graph.svg and edge_graph.pdf. The screenshot of
 
 ### Data preprocess when spatial transcriptomic data comes in non-Visium format
 
-If data comes in a non-Visium format, we suggest to supply two files separately to the data preprocessing step: An *.mtx.gz file (having the Gene expression, Gene ID, and Barcodes) and a tissue position file in a *csv format. As an example, we request to download the Lung Adenocarcinoma (LUAD) sample from the Gene Expression Omnibus under accession number GSE189487 and keep it under the 'data/' directory: 
+If data comes in a non-Visium format, we suggest to supply two files separately to the data preprocessing step: 
+1. *.mtx.gz file (having the Gene expression, Gene ID, and Barcodes)
+2. Tissue position file in a *csv format.
+
+As an example, we request to download the Lung Adenocarcinoma (LUAD) sample from the Gene Expression Omnibus under accession number GSE189487 and keep it under the 'data/' directory: 
 
 Then we can run the preprocess as follows:
 ```
