@@ -52,7 +52,7 @@ gc
 gzip 
 
 ###   System requirements: 
-This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Compute Canada as well. A brief installation script for Compute Canada is provided here: [compute_canada_readme](compute_canada_readme.md)
+This model is developed on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Digital Alliance as well. A brief installation script for Digital Alliance is provided here: [compute_canada_readme](compute_canada_readme.md)
   
 ### Setup the system to recognize 'nest' command to run the model:
 
@@ -65,7 +65,6 @@ This is to be executed once only when nest is run for the first time. This setup
 ### Singularity Image:
 
 For users' convenience, we have a singularity image with the full installation of the environment for running the NEST model. Users can pull the image using the following command:
-
 ```
 singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
