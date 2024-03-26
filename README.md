@@ -1,5 +1,5 @@
 # ![alt text](https://github.com/schwartzlab-methods/NEST/blob/main/nest_logo.svg) NEST 
-## Requirements:
+
 
 ###   Used python packages:
 
@@ -51,6 +51,13 @@ gc
 
 gzip 
 
+### Singularity Image:
+
+For users' convenience, we have a singularity image with the full installation of the environment for running the NEST model. Users can pull the image using following command:
+
+```
+singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+```
 
 ###   System requirements: 
 This model is tested on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Compute Canada as well. A brief installation script for Compute Canada is provided here: [compute_canada_readme](compute_canada_readme.md)
