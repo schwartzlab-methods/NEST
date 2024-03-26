@@ -42,11 +42,11 @@ nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --se
 nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=4 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=4 > output_human_lymph_node_run4.log &
 nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=5 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=5 > output_human_lymph_node_run5.log &
 ```
-If you have enough GPU memory you can start running all of them in parallel. Model running takes a couple of hours to finish, so running the model in the background is recommended. If you are using Compute Canada servers, then a sample script to submit the GPU job can look like this: 
-```
-to be added
-```
+If you have enough GPU memory you can start running all of them in parallel. Model running takes a couple of hours to finish, so running the model in the background is recommended. 
 
+#### Job submitting on HPC: 
+
+If you are using remote shared GPU clusters, e.g., Compute Canada servers, then a sample script to submit the GPU job is provided here: https://github.com/schwartzlab-methods/NEST/blob/main/gpu_job_submit_compute_canada.sh 
 
 ## Postprocessing output to generate a list of strong CCC
 
