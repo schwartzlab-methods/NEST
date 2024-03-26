@@ -16,5 +16,11 @@ elif [ $1 = "visualize" ]
 then
   shift
   python output_visualization_NEST.py $@
+elif [ $1 = "interactive" ] 
+then
+  shift
+  cd $1
+  shift
+  bash nest_interactive $@ 
 fi
 
