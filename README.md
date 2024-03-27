@@ -142,10 +142,23 @@ For example, if the interactive repository is kept under the current working dir
 ```
 nest interactive nest-interactive-main/ 8080 nest-interactive-main/server/data/files/
 ```
+#### Zoom and pan exploration
+![](images/nest_zoom_small.gif)
 
+#### Ligand-Receptor pair filtering
+![](images/nest_select_small.gif)
+
+#### Vertex (spot or cell) color changing
+![](images/nest_node_color_small.gif)
+
+#### Communication color changing
+![](images/nest_edge_color_small.gif)
+
+#### Increase range of reliable signals
+![](images/nest_edge_increase_small.gif)
 
 ## Vignette
-For detail explanation on the available parameters and their usage, please see the vignettes:
+For a detailed explanation of the available parameters and their usage, please see the vignettes:
 
 1. [Generate active CCC lists given a spatial transcriptomics data](vignette/workflow.md)
 2. [Filter CCC list for specific region / cell type / specific ligand-receptor pair](vignette/filter_ccc_list_for_type_region.md)
