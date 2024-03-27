@@ -56,7 +56,7 @@ Singularity> bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch
 ```
 
 
-However, running the model training like this is never feasible due to the long time required. 
+However, running the model training like this is never feasible due to the long time required (couple of hours to couple of days based on the size of the input data). 
 If you get disconnected from the servers for some reason, your training will also stop. 
 That is why we have two options:
 
