@@ -94,7 +94,7 @@ echo ""
 # module load
 module load singularity/3.11.0
 
-# navigate to the directory that has NEST repo
+# navigate to the directory that has NEST repository
 cd /cluster/projects/prof-group/fatema/NEST/
 echo "Current working directory: `pwd`"
 
