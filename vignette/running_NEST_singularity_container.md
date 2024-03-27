@@ -1,3 +1,12 @@
+
+We can pull the singularity image as follows:
+
+```
+mkdir nest_container 
+cd nest_container
+singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+```
+
 For the demonstration purpose, let us assume that the paths of NEST repository, NEST image, and data are as follows:
 1. NEST repository: /cluster/projects/prof-group/fatema/NEST
 2. NEST image: /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
