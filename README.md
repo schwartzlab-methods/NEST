@@ -68,7 +68,7 @@ For users' convenience, we have a singularity image with the full installation o
 ```
 singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
-No additional installation of any package is required with this image. A vignette for following this approach is provided [here](vignette/running_NEST_singularity_container.md)
+No additional installation of any package is required with this image. A vignette for following this approach is provided [here](vignette/running_NEST_singularity_container.md).
 
 ## Instruction to run NEST:
 
