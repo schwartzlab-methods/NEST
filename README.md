@@ -162,5 +162,6 @@ For a detailed explanation of the available parameters and their usage, please s
 
 1. [Generate active CCC lists given a spatial transcriptomics data](vignette/workflow.md)
 2. [Filter CCC list for specific region / cell type / specific ligand-receptor pair](vignette/filter_ccc_list_for_type_region.md)
+3. [Running the NEST model through singularity image](vignette/running_NEST_singularity_container.md) 
    
     
