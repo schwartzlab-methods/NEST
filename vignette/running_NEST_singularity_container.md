@@ -73,7 +73,7 @@ The contents of gpu_job_container_NEST_human_lymph_node_run1.sh:
 ```
 #!/bin/bash
 # ---------------------------------------------------------------------
-# SLURM script for a job on a digital alliance cluster.
+# SLURM script for a job on a cluster.
 # ---------------------------------------------------------------------
 #SBATCH -c 16
 #SBATCH --mem=30GB
