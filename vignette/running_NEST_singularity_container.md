@@ -25,7 +25,7 @@ open the container shell/terminal using "singularity shell" command and interact
 Here, I am opening the shell as follows:
 
 ```
-singularity shell nest_image.sif
+singularity shell /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
 ```
 Then, on the shell, I execute the usual NEST preprocessing command:
 ```
@@ -44,7 +44,7 @@ Singularity> ls input_graph/V1_Human_Lymph_Node_spatial/
 Now, you can start the model training on the shell. But you have to ensure that it has the access to the GPU. 
 That is why, we have to exit from the current shell and restart the shell using --nv command as follows:
 ```
-$ singularity shell --nv nest_image.sif
+$ singularity shell --nv /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
 ```
 Here, --nv option is used for GPU accessibility. You can see the allocated GPU in the shell as below. 
 ```
@@ -161,4 +161,10 @@ After that we are able to pull the image using the following command:
 ```
 apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
-All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'.
+All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'. Additionally, we may need to set the home directory to the container path as follows:
+
+```
+apptainer shell --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
+```
+If we don't use --home, it may incorrectly look at the system paths for the Python packages.
+
