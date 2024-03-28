@@ -1,7 +1,14 @@
 # ![alt text](https://github.com/schwartzlab-methods/NEST/blob/main/nest_logo.svg) NEST 
 
+### Singularity Image:
 
-###   Used python packages:
+For users' convenience, we have a singularity image with the full installation of the environment for running the NEST model. Users can pull the image using the following command:
+```
+singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+```
+No additional installation of any package is required with this image. A vignette for following this approach is provided [here](vignette/running_NEST_singularity_container.md). This container is tested on Digital Alliance (formerly known as Compute Canada) as well. For the users who want to install the environment themselves, we provide the list of required Python packages and supported systems below.  
+
+###   Used Python packages:
 
 python == 3.7.2
 
@@ -52,7 +59,7 @@ gc
 gzip 
 
 ###   System requirements: 
-This model is developed on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Digital Alliance as well. A brief installation script for Digital Alliance is provided here: [compute_canada_readme](compute_canada_readme.md)
+This model is developed on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Digital Alliance as well. A brief installation script of Python packages for Digital Alliance is provided here: [compute_canada_readme](compute_canada_readme.md)
   
 ### Setup the system to recognize 'nest' command to run the model:
 
@@ -61,14 +68,6 @@ Download the NEST repository at your desired location and change your current wo
 sudo bash setup.sh
 ````
 This is to be executed once only when nest is run for the first time. This setup makes the bash script 'nest' executable and copies it to your '$HOME/.local/bin/' so that your system can recognize 'nest' command. However, if you are running the model in a remote server where you don't have permission to make such changes, you can skip this step and let the 'nest' command be preceded by the 'bash' command for all the instructions provided below. 
-
-### Singularity Image:
-
-For users' convenience, we have a singularity image with the full installation of the environment for running the NEST model. Users can pull the image using the following command:
-```
-singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
-```
-No additional installation of any package is required with this image. A vignette for following this approach is provided [here](vignette/running_NEST_singularity_container.md).
 
 ## Instruction to run NEST:
 
