@@ -65,7 +65,7 @@ That is why we have two options:
 ```
 nohup singularity run --nv /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 500 --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_NEST_V1_Human_Lymph_Node_spatial_run1.log &
 ```
-2. If we are using high performing computing (HPC) service then we have to submit the job to the cluster as follows (the parameters might vary depending on the system):
+2. If we are using high performance computing (HPC) service with Slurm for cluster management and job scheduling, then we have to submit the job to the cluster as follows (the parameters might vary depending on the system):
 ``` 
 sbatch -A prof-group_gpu -p gpu --gres=gpu:1 --constraint gpu32g gpu_job_container_NEST_human_lymph_node_run1.sh
 ```
@@ -157,8 +157,8 @@ apptainer remote use SylabsCloud
 apptainer remote list
 ```
 
-After that we are able to pull the image using following command:
+After that we are able to pull the image using the following command:
 ```
 apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
-All the Singularity commands also works with Apptainer. 
+All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'. 
