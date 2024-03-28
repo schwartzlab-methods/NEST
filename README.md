@@ -1,5 +1,7 @@
 # ![alt text](https://github.com/schwartzlab-methods/NEST/blob/main/nest_logo.svg) NEST 
 
+[NEST: Spatially-mapped cell-cell communication patterns using a deep learning-based attention mechanism](https://www.biorxiv.org/content/10.1101/2024.03.19.585796v1)
+
 ### Singularity Image:
 
 For users' convenience, we have a singularity image with the full installation of the environment for running the NEST model. Users can pull the image using the following command:
