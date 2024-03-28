@@ -161,4 +161,4 @@ After that we are able to pull the image using the following command:
 ```
 apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
-All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'. 
+All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'.
