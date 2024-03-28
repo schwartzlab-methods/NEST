@@ -7,6 +7,7 @@ mkdir nest_container
 cd nest_container
 singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
+[** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.]
 
 ### Running NEST model through the downloaded singularity image
 
@@ -140,4 +141,24 @@ $ singularity run /cluster/projects/prof-group/fatema/nest_container/nest_image.
 It will generate edge_graph.pdf and edge_graph.svg in the current working directory.
 
 
+### Pulling the Singularity image on Digital Alliance using Apptainer
+```
+module load apptainer
+apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+```
+The command might show the following error:
+
+FATAL:   Unable to get library client configuration: remote has no library client (see https://apptainer.org/docs/user/latest/endpoint.html#no-default-remote)
+
+In that case, execute the following commands to resolve the error (details are provided on the official site: https://apptainer.org/docs/user/1.0/endpoint.html#restoring-pre-apptainer-library-behavior):
+```
+apptainer remote add --no-login SylabsCloud cloud.sylabs.io
+apptainer remote use SylabsCloud
+apptainer remote list
+```
+
+After that we are able to pull the image using following command:
+```
+apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+```
 
