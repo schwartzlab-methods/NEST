@@ -56,6 +56,7 @@ if __name__ == "__main__":
         gene_ids = list(adata_h5.var_names)
         coordinates = adata_h5.obsm['spatial']
         cell_barcode = np.array(adata_h5.obs.index)
+        print('Number of barcodes: %d'%cell_barcode.shape[0])
         print('Applying quantile normalization')
         temp = qnorm.quantile_normalize(np.transpose(sparse.csr_matrix.toarray(adata_h5.X)))  #https://en.wikipedia.org/wiki/Quantile_normalization
         cell_vs_gene = np.transpose(temp)      
@@ -70,6 +71,7 @@ if __name__ == "__main__":
         print('Gene filtering done. Number of genes reduced from %d to %d'%(gene_count_before, gene_count_after))
         gene_ids = list(temp.var_names) 
         cell_barcode = np.array(temp.obs.index)
+        print('Number of barcodes: %d'%cell_barcode.shape[0])
         print('Applying quantile normalization')
         temp = qnorm.quantile_normalize(np.transpose(sparse.csr_matrix.toarray(temp.X)))  #https://en.wikipedia.org/wiki/Quantile_normalization
         cell_vs_gene = np.transpose(temp)  
