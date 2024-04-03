@@ -61,7 +61,7 @@ gc
 gzip 
 
 ###   System requirements: 
-This model is developed on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Digital Alliance as well. A brief installation script of Python packages for Digital Alliance is provided here: [compute_canada_readme](compute_canada_readme.md)
+This model is developed on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Digital Alliance (already tested) as well. A brief installation script of Python packages for Digital Alliance is provided here: [compute_canada_readme](compute_canada_readme.md)
   
 ### Setup the system to recognize 'nest' command to run the model:
 
