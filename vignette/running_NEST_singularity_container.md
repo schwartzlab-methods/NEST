@@ -162,20 +162,95 @@ After that we are able to pull the image using the following command:
 apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
 All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'. Few things to note:
-1. We may have to navigate to the parent directory that has all three: NEST repository, NEST container, and data.
+1. We may have to move the NEST repository and data to the NEST container so that those are visible to the container while running. 
 ```
-cd /cluster/projects/prof-group/fatema/
+cd /projects/def-prof-group/fatema/
+mv /projects/def-prof-group/fatema/NEST /cluster/projects/prof-group/fatema/nest_container/
 ```
+Therefore, the paths of NEST repository, NEST image, and data are as follows:
+  1. NEST repository: /projects/def-prof-group/fatema/nest_container/NEST
+  2. NEST image: /projects/def-prof-group/fatema/nest_container/nest_image.sif
+  3. Data: /projects/def-prof-group/fatema/nest_container/NEST/data/
+   
 2. Additionally, we may need to set the home directory to the container path as follows:
 ```
-apptainer shell --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
+apptainer shell --home=/projects/def-prof-group/fatema/nest_container/ /projects/def-prof-group/fatema/nest_container/nest_image.sif
 ```
 It will open the Singularity shell as the image is a Singularity image. 
 If we don't use --home, it may incorrectly look at the system paths for the Python packages. 
-Inside the shell, you can navigate to the NEST directory for running the commands. 
+
+#### NEST Preprocessing:
 ```
-Singularity> cd NEST
-Singularity> bash nest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
+cd /projects/def-prof-group/fatema/nest_container/NEST
+
+apptainer run --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
 ```
 
+#### Running NEST model: 
+We write a shell script `gpu_job_digital_alliance_container.sh’ as follows:
+```
+#!/bin/bash
+# ---------------------------------------------------------------------
+# SLURM script for a GPU job on Graham at Digital Alliance cluster.
+# ---------------------------------------------------------------------
+#SBATCH --account=def-prof-group
+#SBATCH --gres=gpu:v100:2    	# Request 2 v100 GPUs
+#SBATCH --constraint=cascade,v100 # They will be cascaded to offer 32 GB
+#SBATCH --cpus-per-task=16  # CPU Cores
+#SBATCH --mem=32000M    	# CPU Memory
+#SBATCH --time=72:00:00
+#SBATCH --job-name=human_lymph_r1
+#SBATCH --output=human_lymph_r1.out
+# ---------------------------------------------------------------------
+echo "Current working directory: `pwd`"
+echo "Starting run at: `date`"
+# ---------------------------------------------------------------------
+echo ""
+echo "Job Array ID / Job ID: $SLURM_ARRAY_JOB_ID / $SLURM_JOB_ID"
+echo "This is job $SLURM_ARRAY_TASK_ID out of $SLURM_ARRAY_TASK_COUNT jobs."
+echo ""
+# ---------------------------------------------------------------------
+
+echo "available gpu:"
+nvidia-smi
+
+echo "Current working directory: `pwd`"
+# change current working directory to NEST
+cd /project/def-prof-group/fatema/nest_container/NEST/
+echo "Current working directory: `pwd`"
+
+# load necessary modules
+module load apptainer
+
+# run your python script with parameters using singularity
+echo "lymph. Going to start process: run 1"
+
+apptainer run --nv --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000>
+
+# ---------------------------------------------------------------------
+echo "Job finished with exit code $? at: `date`"
+
+```
+Please change the parameters and paths to the NEST repository as required. We may save this script here: /project/prof-group/fatema/gpu_job_digital_alliance_container.sh
+
+Then navigate to that directory and submit the job as follows:
+```
+cd /project/def-prof-group/fatema/
+sbatch gpu_job_digital_alliance_container.sh
+```
+Job status can be viewed as follows:
+```
+squeue -u fatema
+```
+This is for one run. We will run five times and then proceed for postprocessing.
+
+#### NEST postprocessing:
+```
+apptainer run --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --total_runs=5
+```
+
+#### NEST visualization:
+```
+apptainer run --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
+```
 
