@@ -7,7 +7,7 @@ mkdir nest_container
 cd nest_container
 singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
-[** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.](https://github.com/schwartzlab-methods/NEST/blob/main/vignette/running_NEST_singularity_container.md#pulling-the-singularity-image-on-digital-alliance-using-apptainer)
+[** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.]
 
 ### Running NEST model through the downloaded singularity image
 
@@ -141,7 +141,8 @@ $ singularity run /cluster/projects/prof-group/fatema/nest_container/nest_image.
 It will generate edge_graph.pdf and edge_graph.svg in the current working directory.
 
 
-### Pulling the Singularity image on Digital Alliance using Apptainer
+### Running NEST container on Digital Alliance using Apptainer
+#### Pulling the Singularity image on Digital Alliance using Apptainer
 ```
 module load apptainer
 apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
