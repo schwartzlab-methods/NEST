@@ -7,7 +7,7 @@ mkdir nest_container
 cd nest_container
 singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
-[** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.]
+[** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.](https://github.com/schwartzlab-methods/NEST/blob/main/vignette/running_NEST_singularity_container.md#running-nest-container-on-digital-alliance-using-apptainer)
 
 ### Running NEST model through the downloaded singularity image
 
