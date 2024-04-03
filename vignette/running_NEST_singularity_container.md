@@ -164,24 +164,27 @@ apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
 All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'. Few things to note:
 1. We may have to move the NEST repository and data to the NEST container so that those are visible to the container while running. 
 ```
-cd /projects/def-prof-group/fatema/
-mv /projects/def-prof-group/fatema/NEST /cluster/projects/prof-group/fatema/nest_container/
+cd /project/def-prof-group/fatema/
+mv /project/def-prof-group/fatema/NEST /cluster/projects/prof-group/fatema/nest_container/
 ```
 Therefore, the paths of NEST repository, NEST image, and data are as follows:
-NEST repository: /projects/def-prof-group/fatema/nest_container/NEST
-NEST image: /projects/def-prof-group/fatema/nest_container/nest_image.sif
-Data: /projects/def-prof-group/fatema/nest_container/NEST/data/
+
+NEST repository: /project/def-prof-group/fatema/nest_container/NEST
+
+NEST image: /project/def-prof-group/fatema/nest_container/nest_image.sif
+
+Data: /project/def-prof-group/fatema/nest_container/NEST/data/
    
 2. Additionally, we may need to set the home directory to the container path as follows:
 ```
-apptainer shell --home=/projects/def-prof-group/fatema/nest_container/ /projects/def-prof-group/fatema/nest_container/nest_image.sif
+apptainer shell --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif
 ```
 It will open the Singularity shell as the image is a Singularity image. 
 If we don't use --home, it may incorrectly look at the system paths for the Python packages. 
 
 #### NEST Preprocessing:
 ```
-cd /projects/def-prof-group/fatema/nest_container/NEST
+cd /project/def-prof-group/fatema/nest_container/NEST
 
 apptainer run --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
 ```
