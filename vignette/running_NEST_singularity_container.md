@@ -168,9 +168,9 @@ cd /projects/def-prof-group/fatema/
 mv /projects/def-prof-group/fatema/NEST /cluster/projects/prof-group/fatema/nest_container/
 ```
 Therefore, the paths of NEST repository, NEST image, and data are as follows:
-  1. NEST repository: /projects/def-prof-group/fatema/nest_container/NEST
-  2. NEST image: /projects/def-prof-group/fatema/nest_container/nest_image.sif
-  3. Data: /projects/def-prof-group/fatema/nest_container/NEST/data/
+NEST repository: /projects/def-prof-group/fatema/nest_container/NEST
+NEST image: /projects/def-prof-group/fatema/nest_container/nest_image.sif
+Data: /projects/def-prof-group/fatema/nest_container/NEST/data/
    
 2. Additionally, we may need to set the home directory to the container path as follows:
 ```
