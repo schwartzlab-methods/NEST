@@ -198,7 +198,7 @@ We write a shell script `gpu_job_digital_alliance_container.sh’ as follows:
 # SLURM script for a GPU job on Graham at Digital Alliance cluster.
 # ---------------------------------------------------------------------
 #SBATCH --account=def-prof-group
-#SBATCH --gres=gpu:v100:2    	# Request 2 v100 GPUs
+#SBATCH --gres=gpu:v100:1    	# Request 2 v100 GPUs
 #SBATCH --constraint=cascade,v100 # They will be cascaded to offer 32 GB
 #SBATCH --cpus-per-task=16  # CPU Cores
 #SBATCH --mem=32000M    	# CPU Memory
