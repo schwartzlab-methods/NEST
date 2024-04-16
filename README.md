@@ -167,8 +167,8 @@ nest interactive nest-interactive-main/ 8080 nest-interactive-main/server/data/f
 ## Vignette
 For a detailed explanation of the available parameters and their usage, please see the vignettes:
 
-1. [Generate active CCC lists given a spatial transcriptomics data](vignette/workflow.md)
-2. [Filter CCC list for specific region / cell type / specific ligand-receptor pair](vignette/filter_ccc_list_for_type_region.md)
+1. [Main workflow: Generate active CCC lists given a spatial transcriptomics data](vignette/workflow.md)
+2. [Downstream analysis to filter CCC list for specific region / cell type / specific ligand-receptor pair](vignette/filter_ccc_list_for_type_region.md)
 3. [Running the NEST model through singularity image](vignette/running_NEST_singularity_container.md) 
    
     
