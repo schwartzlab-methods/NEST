@@ -15,7 +15,7 @@ def get_graph(training_data):
     Args:
         training_data: Path to the input graph    
     Returns:
-        List of torch_geometric.data.Data type: Contains the input graph
+        List of torch_geometric.data.Data type: Loaded input graph
         Integer: Dimension of node embedding
     """
     
@@ -44,7 +44,10 @@ def get_graph(training_data):
     graph_bags.append(graph)
 
     print('Input graph generation done')
-    return graph_bags, num_feature
+
+    data_loader = DataLoader(graph_bags, batch_size=1) moved to get_graph
+    
+    return data_loader, num_feature
 
 
 class Encoder(nn.Module):
