@@ -7,14 +7,7 @@ from matplotlib.colors import LinearSegmentedColormap, to_hex, rgb2hex
 from typing import List
 import matplotlib.pyplot as plt
 import numpy as np
-
 import altair as alt
-import altairThemes
-# register the custom theme under a chosen name
-alt.themes.register("publishTheme", altairThemes.publishTheme)
-# enable the newly registered theme
-alt.themes.enable("publishTheme")
-
 
 def publishTheme():
     """The publish theme, standardizing some sizes."""
