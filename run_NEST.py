@@ -67,12 +67,13 @@ if __name__ == "__main__":
     print(device)
 
     # data preparation
-    data_list, num_feature = get_graph(args.training_data)
-    data_loader = DataLoader(data_list, batch_size=1)
-
+    data_loader, num_feature = get_graph(args.training_data)    
     # train the model
     DGI_model = train_NEST(args, data_loader=data_loader, in_channels=num_feature)
     # training done
+
+
+
 
     # you can do something with the model here
 
