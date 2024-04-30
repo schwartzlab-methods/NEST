@@ -2,7 +2,20 @@
 # (initally) By
 # Gregory W. Schwartz
 # https://github.com/schwartzlab-methods/altair-themes
+'''
+Use:
 
+sys.path.append("/path/to/parent/directory/of/altairThemes.py")
+
+if True:  # In order to bypass isort when saving
+    import altairThemes
+
+# register the custom theme under a chosen name
+alt.themes.register("publishTheme", altairThemes.publishTheme)
+
+# enable the newly registered theme
+alt.themes.enable("publishTheme")
+'''
 from matplotlib.colors import LinearSegmentedColormap, to_hex, rgb2hex
 from typing import List
 import matplotlib.pyplot as plt
