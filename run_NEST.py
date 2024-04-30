@@ -30,6 +30,8 @@ if __name__ == "__main__":
     parser.add_argument( '--lr_rate', type=float, default=0.00001)
     parser.add_argument( '--manual_seed', type=str, default='no')
     parser.add_argument( '--seed', type=int )
+    parser.add_argument( '--split', type=int, default=0)
+    parser.add_argument( '--total_subgraphs', type=int, default=4)
     #=========================== optional ======================================
     parser.add_argument( '--load', type=int, default=0, help='Load a previously saved model state')  
     parser.add_argument( '--load_model_name', type=str, default='None' , help='Provide the model name that you want to reload')
@@ -76,7 +78,7 @@ if __name__ == "__main__":
     elif args.split == 1:
         from CCC_gat_split import get_graph, train_NEST
         # data preparation
-        graph_bag, num_feature = get_graph(args.training_data)    
+        graph_bag, num_feature = get_split_graph(args.training_data, )    
         # train the model
         DGI_model = train_NEST(args, graph_bag=graph_bag, in_channels=num_feature)
         # training done
