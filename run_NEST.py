@@ -78,7 +78,7 @@ if __name__ == "__main__":
     elif args.split == 1:
         from CCC_gat_split import get_graph, train_NEST
         # data preparation
-        graph_bag, num_feature = get_split_graph(args.training_data, )    
+        graph_bag, num_feature = get_split_graph(args.training_data, args.total_subgraphs)    
         # train the model
         DGI_model = train_NEST(args, graph_bag=graph_bag, in_channels=num_feature)
         # training done
