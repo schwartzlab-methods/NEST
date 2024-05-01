@@ -44,7 +44,7 @@ Singularity> ls input_graph/V1_Human_Lymph_Node_spatial/
 Now, you can start the model training on the shell. But you have to ensure that it has the access to the GPU. 
 That is why, we have to exit from the current shell and restart the shell using --nv command as follows:
 ```
-$ singularity shell --nv /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
+$ singularity shell --nv --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
 ```
 Here, --nv option is used for GPU accessibility. You can see the allocated GPU in the shell as below. 
 ```
@@ -63,7 +63,7 @@ That is why we have two options:
 
 1. We can run the job in the background using “singularity run” command as follows:
 ```
-nohup singularity run --nv /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 500 --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_NEST_V1_Human_Lymph_Node_spatial_run1.log &
+nohup singularity run --nv --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 500 --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_NEST_V1_Human_Lymph_Node_spatial_run1.log &
 ```
 2. If we are using high performance computing (HPC) service with Slurm for cluster management and job scheduling, then we have to submit the job to the cluster as follows (the parameters might vary depending on the system):
 ``` 
@@ -107,15 +107,15 @@ nvidia-smi
 # run your python script with parameters using singularity
 echo "lymph. Going to start process: run 1"
 
-singularity run --nv /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000 --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1
+singularity run --nv --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000 --manual_seed='yes' --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1
 
 
 echo "Job finished with exit code $? at: `date`"
 ```
 
-After the training is finished, we run postprocessing. Usually, we run the training 5 times and then postprocess those 5 runs. For running postprocessing, we can open the singularity shell as before, or just use the “singularity run” command as below: 
+After the training is finished, we run postprocessing. Usually, we run the training 5 times with five DIFFERENT seeds and --run_id starting from 1 to 5, and then postprocess those 5 runs. For running postprocessing, we can open the singularity shell as before, or just use the “singularity run” command as below: 
 ```
-$ singularity run /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --total_runs=5
+$ singularity run --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --total_runs=5
 ```
 
 After the postprocessing is done, we can find the list of top 20% communications (strength or attention score is over 80th percentile) inside the output/ directory:
@@ -136,7 +136,7 @@ $ ls output/V1_Human_Lymph_Node_spatial/
 
 Then we can convert the *.dot file to pdf and svg as follows:
 ```
-$ singularity run /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot 
+$ singularity run --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot 
 ```
 It will generate edge_graph.pdf and edge_graph.svg in the current working directory.
 
@@ -229,7 +229,7 @@ module load apptainer
 # run your python script with parameters using singularity
 echo "lymph. Going to start process: run 1"
 
-apptainer run --nv --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000>
+apptainer run --nv --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000  --manual_seed='yes' --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1 
 
 # ---------------------------------------------------------------------
 echo "Job finished with exit code $? at: `date`"
@@ -246,7 +246,7 @@ Job status can be viewed as follows:
 ```
 squeue -u fatema
 ```
-This is for one run. We will run five times and then proceed for postprocessing.
+This is for one run. Usually, we run the training 5 times with five DIFFERENT seeds and --run_id starting from 1 to 5, and then postprocess those 5 runs. And then proceed for postprocessing.
 
 #### NEST postprocessing:
 ```
