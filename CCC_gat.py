@@ -45,7 +45,7 @@ def get_graph(training_data):
 
     print('Input graph generation done')
 
-    data_loader = DataLoader(graph_bags, batch_size=1) moved to get_graph
+    data_loader = DataLoader(graph_bags, batch_size=1) # moved to get_graph
     
     return data_loader, num_feature
 
