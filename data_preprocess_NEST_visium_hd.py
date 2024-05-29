@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser.add_argument( '--threshold_gene_exp', type=float, default=98.5, help='Threshold percentile for gene expression. Genes above this percentile are considered active.')
     parser.add_argument( '--tissue_position_file', type=str, default='/cluster/projects/schwartzgroup/fatema/data/Visium_HD_Human_Colon_Cancer_square_002um_outputs/spatial/tissue_positions.parquet', help='If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file.')
     parser.add_argument( '--spot_diameter', type=float, default=37.04, help='Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel).')
-    parser.add_argument( '--split', type=int, default=0 , help='How many split sections?') 
+    parser.add_argument( '--split', type=int, default=1, help='Will you apply split options. Set 1 if yes.') 
     parser.add_argument( '--distance_measure', type=str, default='knn' , help='Set neighborhood cutoff criteria')
     parser.add_argument( '--k', type=int, default=50 , help='Set neighborhood cutoff number')    
     parser.add_argument( '--neighborhood_threshold', type=float, default=0, help='Set neighborhood threshold distance in terms of same unit as spot diameter') 
@@ -57,12 +57,11 @@ if __name__ == "__main__":
     if not os.path.exists(args.metadata_to):
         os.makedirs(args.metadata_to)
     
-    data_path = args.data_from + args.data_name+ '/' + 'count_area_filtered_adata_p75.h5ad'
   
     ####### get the gene id, cell barcode, cell coordinates ######
     print('input data reading')
 
-    adata_h5 = anndata.read_h5ad(data_path)
+    adata_h5 = anndata.read_h5ad(args.data_from + 'count_area_filtered_adata_p75.h5ad')
     print('input data read done')
     gene_count_before = len(list(adata_h5.var_names) )    
     sc.pp.filter_genes(adata_h5, min_cells=args.filter_min_cell)
@@ -75,7 +74,7 @@ if __name__ == "__main__":
     temp = qnorm.quantile_normalize(np.transpose(sparse.csr_matrix.toarray(adata_h5.X)))  #https://en.wikipedia.org/wiki/Quantile_normalization
     cell_vs_gene = np.transpose(temp)      
 
-    fp = gzip.open(args.metadata_to + args.data_name + '_coordinate_barcode', 'rb')
+    fp = gzip.open(args.data_from + args.data_name + '_coordinate_barcode', 'rb')
     coordinates, cell_barcode = pickle.load(fp)
      
     
@@ -162,13 +161,15 @@ if __name__ == "__main__":
     # build physical distance matrix
     from sklearn.metrics.pairwise import euclidean_distances
     distance_matrix = np.zeros((len(cell_id), len(cell_id)))
-    print('calculating euclidean distance')
+    print('calculating Euclidean distance')
     for partition_id in range (1, 6+1):
         distance_matrix[:,(len(cell_id)*(partition_id-1))//6 :(len(cell_id)*partition_id)//6] = euclidean_distances(coordinates, coordinates[(len(cell_id)*(partition_id-1))//6 :(len(cell_id)*partition_id)//6])
         print("%d to %d"%((len(cell_id)*(partition_id-1))//6, (len(cell_id)*partition_id)//6))
     
     
     # assign weight to the neighborhood relations based on neighborhood distance ################
+    print('Assign weight to the neighborhood relations based on neighborhood distance. This is a time consuming step.')
+    '''
     dist_X = np.zeros((distance_matrix.shape[0], distance_matrix.shape[1]))
     for j in range(0, distance_matrix.shape[1]): # look at all the incoming edges to node 'j'
         max_value=np.max(distance_matrix[:,j]) # max distance of node 'j' to all it's neighbors (incoming)
@@ -197,9 +198,10 @@ if __name__ == "__main__":
     print('dist_X_list length is %d'%len(dist_X_list)) #len is 595,460
     #with gzip.open(args.metadata_to + args.data_name + '_distance_weight', 'wb') as fp:  
     #    pickle.dump(dist_X_list, fp)
+    '''
     #############################################################################################
-    #with gzip.open(args.metadata_to + args.data_name + '_distance_weight', 'rb') as fp:  
-    #    dist_X_list = pickle.load(fp)    
+    with gzip.open('metadata/Visium_HD_Human_Colon_Cancer_square_002um_outputs/Visium_HD_Human_Colon_Cancer_square_002um_outputs_distance_weight', 'rb') as fp:  
+        dist_X_list = pickle.load(fp)    
 
     dist_X_dict = defaultdict(dict)
     for k in range (0, len(dist_X_list)):
@@ -288,10 +290,32 @@ if __name__ == "__main__":
     ##############################################################################
     active_nodes = dict()
     if args.ROI == 1:
+        print('Picking the active nodes inside region of interest (ROI)')
         for i in range (0, len(barcode_info)):
-            if (x_min <= barcode_info[i][1] and barcode_info[i][1] <= x_max) and  (y_min <= barcode_info[i][2] and barcode_info[i][2] <= y_max):
+            if (args.x_min <= barcode_info[i][1] and barcode_info[i][1] <= args.x_max) and  (args.y_min <= barcode_info[i][2] and barcode_info[i][2] <= args.y_max):
                 active_nodes[i] = ''        
 
+    ############################ Now plot it to see how does it look ###################
+        
+        data_list=dict()
+        data_list['X']=[]
+        data_list['Y']=[]     
+    
+        for i in range (0, len(barcode_info)):    
+            if i in active_nodes:
+                data_list['X'].append(barcode_info[i][1])
+                data_list['Y'].append(barcode_info[i][2])
+    
+       
+        data_list_pd = pd.DataFrame(data_list)
+        chart = alt.Chart(data_list_pd).mark_point(filled=True, opacity = 1).encode(
+            alt.X('X', scale=alt.Scale(zero=False)),
+            alt.Y('Y', scale=alt.Scale(zero=False)),
+        )
+        chart.save('/cluster/home/t116508uhn/' + args.data_name +'_tissue_altair_plot_ROI.html')
+        print('Altair plot generation done: '+'/cluster/home/t116508uhn/' + args.data_name +'_tissue_altair_plot_ROI.html')    
+        
+        
     ##############################################################################
     # some preprocessing before making the input graph
     if args.ROI == 1:
