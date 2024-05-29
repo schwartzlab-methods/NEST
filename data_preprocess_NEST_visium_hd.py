@@ -12,7 +12,6 @@ import argparse
 import os
 import scanpy as sc
 import anndata
-from shapely import MultiPoint, centroid
 #import altair as alt
 
 print('user input reading')
@@ -20,8 +19,8 @@ print('user input reading')
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     ################## Mandatory ####################################################################
-    parser.add_argument( '--data_name', type=str, help='Name of the dataset', default="Visium_HD_Human_Colon_Cancer_square_002um_outputs")  
-    parser.add_argument( '--data_from', type=str, default='/cluster/projects/schwartzgroup/fatema/data/', help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
+    parser.add_argument( '--data_name', type=str, help='Name of the dataset', default="Visium_HD_Human_Colon_Cancer_square_002um_outputs_full")  
+    parser.add_argument( '--data_from', type=str, default='/cluster/projects/schwartzgroup/fatema/NEST/data/segmented_visium_hd_CRC/', help='Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix.')
     ################# default is set ################################################################
     parser.add_argument( '--data_to', type=str, default='input_graph/', help='Path to save the input graph (to be passed to GAT)')
     parser.add_argument( '--metadata_to', type=str, default='metadata/', help='Path to save the metadata')
