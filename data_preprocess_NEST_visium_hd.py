@@ -340,9 +340,6 @@ if __name__ == "__main__":
                     if i not in dist_X_dict or j not in dist_X_dict[i]: #dist_X[i,j]==0: 
                         continue
     
-                    if coordinates[i][0] > 54000 or coordinates[j][0] > 54000: # if the x coordinate of cell i or j is above 54000, skip
-                        continue
-    
                     #print('%d, %d'%(i, j))
                     
                     for gene_rec in ligand_dict_dataset[gene]:
@@ -394,9 +391,7 @@ if __name__ == "__main__":
                 for j in range (0, cell_vs_gene.shape[0]): # receptor
                     if i not in dist_X_dict or j not in dist_X_dict[i]: #dist_X[i,j]==0: 
                         continue
-    
-                    if coordinates[i][0] > 54000 or coordinates[j][0] > 54000: # if the x coordinate of cell i or j is above 54000, skip
-                        continue
+
     
                     #print('%d, %d'%(i, j))
                     
@@ -477,9 +472,6 @@ if __name__ == "__main__":
 
     with gzip.open(args.metadata_to + args.data_name +'_barcode_info', 'wb') as fp:  
         pickle.dump(barcode_info, fp)
-
-    with gzip.open(args.metadata_to + args.data_name + '_id_barcode_coord', 'wb') as fp: # mapping between unsegmented and segmented data
-        pickle.dump(id_barcode_coord, fp)
 
     #### needed if split data is used ##############
     if args.split>0:
