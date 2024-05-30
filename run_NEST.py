@@ -33,15 +33,8 @@ if __name__ == "__main__":
     parser.add_argument( '--total_subgraphs', type=int, default=1) # if split, then more than 1
     #=========================== optional ======================================
     parser.add_argument( '--load', type=int, default=0, help='Load a previously saved model state')  
-    parser.add_argument( '--load_model_name', type=str, default='None' , help='Provide the model name that you want to reload')
     #============================================================================
     args = parser.parse_args() 
-
-    #parser.add_argument( '--options', type=str)
-    #parser.add_argument( '--withFeature', type=str, default='r1') 
-    #parser.add_argument( '--workflow_v', type=int, default=1)
-    #parser.add_argument( '--datatype', type=str)
-
 
     args.training_data = args.training_data + args.data_name + '/' + args.data_name + '_' + 'adjacency_records'
     args.embedding_path = args.embedding_path + args.data_name +'/'
