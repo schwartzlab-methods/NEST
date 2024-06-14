@@ -9,6 +9,10 @@ Both should be kept under the same directory, e.g., data/V1_Human_Lymph_Node_spa
 
 Change your current working directory to the downloaded NEST repository to run our model.
 
+## Expected run time
+
+For a requested 35 Intel Xeon CPUs @ 2.4 Ghz with 150 GB memory, `nest preprocess` takes 5 minutes and `nest postprocess` takes 4 minutes. `nest run` takes 13 hours on a requested with 32GB memory and a 28 GB NVIDIA Tesla V100 GPU.
+
 ## Data preprocessing 
 
 We first preprocess the data before passing it to NEST. It takes two main inputs: spatial transcriptomics dataset and a ligand-receptor database. Assuming that the spatial dataset is in "data/V1_Human_Lymph_Node_spatial/" directory and the ligand-receptor database is in 'database/NEST_database.csv', data preprocessing for input graph generation can simply be done as follows:
