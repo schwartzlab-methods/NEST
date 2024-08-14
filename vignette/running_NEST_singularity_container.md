@@ -25,7 +25,7 @@ open the container shell/terminal using "singularity shell" command and interact
 Here, I am opening the shell as follows:
 
 ```
-singularity shell /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
+singularity shell --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
 ```
 Then, on the shell, I execute the usual NEST preprocessing command:
 ```
@@ -126,7 +126,7 @@ NEST_V1_Human_Lymph_Node_spatial_top20percent.csv
 
 Then we run visualization script for this list as below:
 ```
-$ singularity run /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
+$ singularity run --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
 ```
 We will find the visualization files in the same output/ directory.
 ```
