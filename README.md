@@ -158,6 +158,8 @@ nest interactive nest-interactive-main/ 8080 nest-interactive-main/server/data/f
 #### Increase range of reliable signals
 ![](images/nest_edge_increase_small.gif)
 
+## [User Guide](vignette/user_guide.md)
+
 ## Dataset
 1. Human Lymph Node: https://www.10xgenomics.com/datasets/human-lymph-node-1-standard-1-0-0
 2. Mouse Hypothalamic Preoptic region: https://datadryad.org/stash/dataset/doi:10.5061/dryad.8t8s248}
