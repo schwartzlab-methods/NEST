@@ -49,9 +49,21 @@
     --top_percent = Top N percentage communications to pick. Type is Float. default=20.
     
 
-
-## Result Postprocess 
-### Arguments
-
 ## Output Visualize 
 ### Arguments
+    --data_name = The name of dataset. Type is String.  Required.
+    --model_name = Name of the trained model. Type is String. Required.
+    --top_edge_count = Number of the top communications to plot. To plot all insert -1. Type is Int. default=1500.
+    --top_percent = Top N percentage communications to pick. Type is Int. default=20    
+    --metadata_from = Path to grab the metadata. Type is String. default='metadata/' 
+    --output_path = Path to save the visualization results, e.g., histograms, graph etc. Type is String. default='output/'
+    --barcode_info_file = Path to load the barcode information file produced during data preprocessing step. Type is String. default=''
+    --annotation_file_path = Path to load the annotation file in csv format (if available). Type is String. default=''
+    --selfloop_info_file = Path to load the selfloop information file produced during data preprocessing step. Type is String. default=''
+    --top_ccc_file = Path to load the selected top CCC file produced during data postprocessing step. Type is String. default=''
+    --output_name = Output file name prefix according to user's choice. Type is String.  default=''
+    --filter = Set --filter=1 if you want to filter the CCC. Type is Int. default=0
+    --filter_by_ligand_receptor = Set ligand-receptor pair, e.g., --filter_by_ligand_receptor="CCL19-CCR7" if you want to filter the CCC by LR pair. Type is String. default=''
+    --filter_by_annotation = Set cell or spot type, e.g., --filter_by_annotation="T-cell" if you want to filter the CCC. Type is String. default=''
+    --filter_by_component = Set component id, e.g., --filter_by_component=9 if you want to filter by component id. Type is String. Type is Int.  default=-1
+    --histogram_attention_score = Set --histogram_attention_score=1 if you want to sort the histograms of CCC by attention score. Type is String. default=-1
