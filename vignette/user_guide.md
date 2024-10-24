@@ -12,7 +12,7 @@
     --neighborhood_threshold = Set neighborhood threshold distance in terms of same unit as spot diameter. Type is float. If not set, then it is set to four times of the spot diameter.
     --database_path = Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database. Type is String. default='database/NEST_database.csv'
 
-## Model Run ###
+## Model Run 
 ### Arguments
     --data_name = Name of the dataset. Type is String. Required.  
     --model_name = Provide a model name. Type is String. Required. 
@@ -35,6 +35,19 @@
     #=========================== optional ======================================
     --load = Set 1 to load a previously saved model state. Type is Int. default=0.  
     --load_model_name = Provide the model name that you want to reload. Type is String. default='None'
+
+## Model Prediction Ensemble 
+### Arguments
+    --data_namec = The name of dataset. Type is String. Required.
+    --model_name = Name of the trained model.  Type is String. Required.
+    --total_runs = How many runs for ensemble (at least 2 are preferred). Type is Int. Required.
+    #######################################################################################################
+    --embedding_path = Path to grab the attention scores from.  Type is String. default='embedding_data/'
+    --metadata_from =  Path to grab the metadata.  Type is String. default='metadata/' 
+    --data_from = Path to grab the input graph from (to be passed to GAT).  Type is String. default='input_graph/'
+    --output_path = Path to save the visualization results, e.g., histograms, graph etc.  Type is String. default='output/'
+    --top_percent = Top N percentage communications to pick. Type is Float. default=20.
+    
 
 
 ## Result Postprocess 
