@@ -1,3 +1,5 @@
+We provide the arguments for running various steps of CellNEST model along with the preferred values as default. 
+
 ## Data Preprocess 
 ### Arguments
     --data_name = Name of the dataset. Type is String. Required
@@ -46,7 +48,7 @@ We have the following optional arguments for integrating intracellular pathways 
 
 ## Model Prediction Ensemble 
 ### Arguments
-    --data_namec = The name of dataset. Type is String. Required.
+    --data_name = The name of dataset. Type is String. Required.
     --model_name = Name of the trained model.  Type is String. Required.
     --total_runs = How many runs for ensemble (at least 2 are preferred). Type is Int. Required.
     #######################################################################################################
