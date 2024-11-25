@@ -34,5 +34,10 @@ elif [ $1 = "extract_relay" ]
 then
   shift
   python extract_relay_nest.py $@
+elif [ $1 = "preprocess_intra" ] 
+then
+  shift
+  python data_preprocess_intra_NEST.py $@
 fi
+
 
