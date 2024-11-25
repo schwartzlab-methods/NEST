@@ -14,6 +14,7 @@
 
 
 We have the following optional arguments for integrating intracellular pathways with the ligand-receptor coexpression:
+### Arguments for integrating intracellular signaling with inter-cellular signals
     --intra_database_path = Provide your desired ligand-receptor database path here. Default database is a postprocessed NicheNet database as explained in the paper. Type is String. Default='database/nichenet_pathways_NEST.csv'. 
     --add_intra = Set it to 1 for intracellular signaling pathway. Type is Int. Default=1
     --num_hops = Maximum number of hops for intracellular signaling pathway search. Type is Int. Default=10
