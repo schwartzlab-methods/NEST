@@ -41,8 +41,8 @@ if __name__ == "__main__":
     parser.add_argument( '--data_from', type=str, default='input_graph/', help='Path to grab the input graph from (to be passed to GAT)')
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
     parser.add_argument( '--top_percent', type=int, default=20, help='Top N percentage communications to pick')
-    parser.add_argument( '--cutoff_MAD', type=int, default=-1, help='Filter out communications having deviation higher than MAD')
-    parser.add_argument( '--cutoff_z_score', type=float, default=1.97, help='Filter out communications having z_score less than user-specified value')
+    parser.add_argument( '--cutoff_MAD', type=int, default=-1, help='Set it to 1 to filter out communications having deviation higher than MAD')
+    parser.add_argument( '--cutoff_z_score', type=float, default=-1, help='Set it to 1 to filter out communications having z_score less than 1.97 value')
     
     args = parser.parse_args()
 
@@ -440,12 +440,12 @@ if __name__ == "__main__":
         df.to_csv(args.output_path + args.model_name+'_MAD_cutoff.csv', index=False, header=False)
         
     ##### save the file for downstream analysis ########
-    if cutoff_z_score !=-1:
+    if args.cutoff_z_score !=-1:
         z_score_distribution = stats.zscore(score_distribution)
         csv_record_final = []
         csv_record_final.append(csv_record[0])
         for k in range (1, len(csv_record)):
-            if z_score_distribution[k-1] >= args.cutoff_z_score:       
+            if z_score_distribution[k-1] >= 1.97: #args.cutoff_z_score:       
                 csv_record_final.append(csv_record[k])
     
         df = pd.DataFrame(csv_record_final) # output 4
