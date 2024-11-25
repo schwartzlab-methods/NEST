@@ -87,7 +87,12 @@ Change your current working directory to the downloaded NEST repository. Then ex
 ````
 nest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
 ````
-It will create two folders in the current working directories: "input_graph/V1_Human_Lymph_Node_spatial/" and "metadata/V1_Human_Lymph_Node_spatial/" to save the preprocessed input data. Please use the argument --help to see all available input parameters.  
+It will create two folders in the current working directories: "input_graph/V1_Human_Lymph_Node_spatial/" and "metadata/V1_Human_Lymph_Node_spatial/" to save the preprocessed input data. Additionally, if you want to integrate intracellular pathway with ligand-receptor coexpression, please use following command with additional parameter: --add_intra=1
+```
+nest preprocess_intra --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/' --add_intra=1
+```
+
+Please use the argument --help to see all available input parameters.  
 
 2. To train a NEST model on the preprocessed 'V1_Human_Lymph_Node_spatial' data use following command with preferred model name. If the same experiment if repeated multiple times for model ensemble, each time a different run_id should be used and the run_id is expected to be consecutive. For example, if it is run five times then the run_id for the five runs should be 1, 2, 3, 4, and 5 respectively. By default the model will be trained for 80,000 epochs. Please use the argument --help to see all available input parameters. Please note that, the script will use GPU if avaiable, otherwise it will use CPU. Since this is a time consuming step, we suggest to run this step in the background and print the outputs in a separate log file as follows:
 
