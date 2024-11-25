@@ -1,4 +1,4 @@
-We provide the arguments for running various steps of CellNEST model along with the preferred values as default. 
+We provide the arguments for running various steps of CellNEST model along with the preferred values as default. Most of the arguments are self-explanatory. The parameters that may need changing are discussed. 
 
 ## Data Preprocess 
 ### Arguments
@@ -47,6 +47,8 @@ We have the following optional arguments for integrating intracellular pathways 
     --load = Set 1 to load a previously saved model state. Type is Int. Default=0.  
     --load_model_name = Provide the model name that you want to reload. Type is String. Default='None'
 
+Most of the parameters can be kept at default. Set --manual_seed='Yes' if you want to reproduce the results using user defined --seed. For details explanation on the required arguments please see the vignette.  
+
 ## Model Prediction Ensemble 
 ### Arguments
     --data_name = The name of dataset. Type is String. Required.
@@ -59,8 +61,9 @@ We have the following optional arguments for integrating intracellular pathways 
     --output_path = Path to save the visualization results, e.g., histograms, graph etc.  Type is String. Default='output/'
     --top_percent = Top N percentage communications to pick. Type is Float. Default=20.
     --cutoff_MAD = Filter out communications having deviation higher than MAD. Type is Int. Default=-1
-    --cutoff_z_score = Filter out communications having z_score less than user-specified value. Type is Int. Default=-1
+    --cutoff_z_score = Filter out communications having z_score less than user-specified value. Type is Int. Default=1.97
     
+By default top 20% (--top_percent=20) CCC are kept, and the rest are discarded as most of the true connections are detected within top 20% based on synthetic data. Increasing this value will result in a lot of false positives. If you want to filter based on median absolute deviation or z scores (1.97), please use --cutoff_MAD or --cutoff_z_score, respectively. 
 
 ## Output Visualize 
 ### Arguments
