@@ -72,7 +72,7 @@ if __name__ == "__main__":
     parser.add_argument( '--filter_by_ligand_receptor', type=str, default='', help='Set ligand-receptor pair, e.g., --filter_by_ligand_receptor="CCL19-CCR7" if you want to filter the CCC by LR pair')
     parser.add_argument( '--filter_by_annotation', type=str, default='', help='Set cell or spot type, e.g., --filter_by_annotation="T-cell" if you want to filter the CCC')
     parser.add_argument( '--filter_by_component', type=int, default=-1, help='Set component id, e.g., --filter_by_component=9 if you want to filter by component id')
-    parser.add_argument( '--histogram_attention_score', type=int, default=-1, help='Set --histogram_attention_score=1 if you want to sort the histograms of CCC by attention score')
+    parser.add_argument( '--sort_by_attentionScore', type=int, default=-1, help='Set --sort_by_attentionScore=1 if you want to sort the histograms of CCC by attention score')
     
     
     
@@ -374,7 +374,7 @@ if __name__ == "__main__":
 
   
     ###############################################################################################################  
-    if args.histogram_attention_score==1:
+    if args.sort_by_attentionScore==1:
         lr_score = defaultdict(list)
         for i in range (1, len(csv_record_final)-1):    
             lr_score[csv_record_final[i][2]+'-'+csv_record_final[i][3]].append(csv_record_final[i][8])
