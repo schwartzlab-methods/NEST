@@ -42,7 +42,7 @@ if __name__ == "__main__":
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
     parser.add_argument( '--top_percent', type=int, default=20, help='Top N percentage communications to pick')
     parser.add_argument( '--cutoff_MAD', type=int, default=-1, help='Filter out communications having deviation higher than MAD')
-    parser.add_argument( '--cutoff_z_score', type=int, default=-1, help='Filter out communications having z_score less than user-specified value')
+    parser.add_argument( '--cutoff_z_score', type=float, default=1.97, help='Filter out communications having z_score less than user-specified value')
     
     args = parser.parse_args()
 
