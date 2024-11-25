@@ -60,10 +60,10 @@ Most of the parameters can be kept at default. Set --manual_seed='Yes' if you wa
     --data_from = Path to grab the input graph from (to be passed to GAT).  Type is String. Default='input_graph/'
     --output_path = Path to save the visualization results, e.g., histograms, graph etc.  Type is String. Default='output/'
     --top_percent = Top N percentage communications to pick. Type is Float. Default=20.
-    --cutoff_MAD = Filter out communications having deviation higher than MAD. Type is Int. Default=-1
-    --cutoff_z_score = Filter out communications having z_score less than user-specified value. Type is Int. Default=1.97
+    --cutoff_MAD = Set it 1 to keep the communication having deviation lower than MAD. Type is Int. Default=-1
+    --cutoff_z_score = Set it 1 to keep the communication having z_score higher than 1.97. Type is Int. Default=-1
     
-By default top 20% (--top_percent=20) CCC are kept, and the rest are discarded as most of the true connections are detected within top 20% based on synthetic data. Increasing this value will result in a lot of false positives. If you want to filter based on median absolute deviation or z scores (1.97), please use --cutoff_MAD or --cutoff_z_score, respectively. 
+By default top 20% (--top_percent=20) CCC are kept, and the rest are discarded as most of the true connections are detected within top 20% based on synthetic data. Increasing this value will result in a lot of false positives. If you want to filter based on median absolute deviation (MAD) or z scores (1.97), please use --cutoff_MAD=1 or --cutoff_z_score=1, respectively. 
 
 ## Output Visualize 
 ### Arguments
@@ -83,3 +83,5 @@ By default top 20% (--top_percent=20) CCC are kept, and the rest are discarded a
     --filter_by_annotation = Set cell or spot type, e.g., --filter_by_annotation="T-cell" if you want to filter the CCC. Type is String.
     --filter_by_component = Set component id, e.g., --filter_by_component=9 if you want to filter by component id. Type is String. Type is Int.  Default=-1
     --sort_by_attentionScore = Set --histogram_attention_score=1 if you want to sort the histograms of CCC by attention score. Type is String. Default=-1
+
+--top_edge_count is a crucial parameter, and the effect of varying this parameter is explained with figures in the vignette. Additionally, --filter should be set 1 if you want to filter the CCC by user-specified ligand-receptor, spot/cell type annotation, or components, which are all explained in vignette. All other parameters can be kept at default.   
