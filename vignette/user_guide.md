@@ -17,15 +17,12 @@ We provide the arguments for running various steps of CellNEST model along with 
 Varying --filter_min_cell does not bring a big change in the output, and we recommend using a higher value for it to reduce GPU memory consumption. --threshold_gene_exp is a crucial parameter, and we recommend keeping it around 98%. Making it too low will result in too big input graph and may not fit in the GPU. On the other hand, keeping it too high causes the risk of losing important genes. --spot_diameter is set for Visium Spatial Transcriptomics data. If other data format is used, please see the vignette for details. All other parameters can be kept at the default setting unless special circumstances arise, like splitting the input graph using --split to accommodate a very large input dataset.
 
 
-We have the following optional arguments for integrating intracellular pathways with the ligand-receptor coexpression:
+We have the following optional arguments for integrating intracellular pathways with the ligand-receptor coexpression and recommend keeping the parameters at their default values:
 ### Arguments for integrating intracellular signaling with inter-cellular signals
     --intra_database_path = Provide your desired ligand-receptor database path here. Default database is a postprocessed NicheNet database as explained in the paper. Type is String. Default='database/nichenet_pathways_NEST.csv'. 
     --add_intra = Set it to 1 for intracellular signaling pathway. Type is Int. Default=1
     --num_hops = Maximum number of hops for intracellular signaling pathway search. Type is Int. Default=10
-    --threshold_gene_exp_intra = Threshold percentile for gene expression. Genes above this percentile are considered active. Type is float. Default=20
-
-
-
+    --threshold_gene_exp_intra = Threshold percentile for gene expression. Genes above this percentile are considered active. This should be kept very low to detect most of the intracellular signals. Type is float. Default=20% 
 
 ## Model Run 
 ### Arguments
