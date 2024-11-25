@@ -56,6 +56,8 @@ We have the following optional arguments for integrating intracellular pathways 
     --data_from = Path to grab the input graph from (to be passed to GAT).  Type is String. Default='input_graph/'
     --output_path = Path to save the visualization results, e.g., histograms, graph etc.  Type is String. Default='output/'
     --top_percent = Top N percentage communications to pick. Type is Float. Default=20.
+    --cutoff_MAD = Filter out communications having deviation higher than MAD. Type is Int. Default=-1
+    --cutoff_z_score = Filter out communications having z_score less than user-specified value. Type is Int. Default=-1
     
 
 ## Output Visualize 
@@ -75,4 +77,4 @@ We have the following optional arguments for integrating intracellular pathways 
     --filter_by_ligand_receptor = Set ligand-receptor pair, e.g., --filter_by_ligand_receptor="CCL19-CCR7" if you want to filter the CCC by LR pair. Type is String. 
     --filter_by_annotation = Set cell or spot type, e.g., --filter_by_annotation="T-cell" if you want to filter the CCC. Type is String.
     --filter_by_component = Set component id, e.g., --filter_by_component=9 if you want to filter by component id. Type is String. Type is Int.  Default=-1
-    --histogram_attention_score = Set --histogram_attention_score=1 if you want to sort the histograms of CCC by attention score. Type is String. Default=-1
+    --sort_by_attentionScore = Set --histogram_attention_score=1 if you want to sort the histograms of CCC by attention score. Type is String. Default=-1
