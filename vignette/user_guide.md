@@ -29,7 +29,6 @@ We have the following optional arguments for integrating intracellular pathways 
     --run_id = Please provide a running ID, for example: 0, 1, 2, etc. Five runs are recommended. Type is Int.
     #=========================== default is set ======================================
     --num_epoch = Number of epochs or iterations for model training. Number of epochs or iterations for model training. Type is Int. Default=60000
-    
     --model_path = Path to save the model state. Type is String. Default='model/'  
     --embedding_path = Path to save the node embedding and attention scores. Type is String. Default='embedding_data/'
     --hidden = Hidden layer dimension or dimension of node embedding. Type is Int. Default=512
