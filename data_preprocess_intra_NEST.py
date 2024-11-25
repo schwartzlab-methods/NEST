@@ -33,7 +33,7 @@ if __name__ == "__main__":
     parser.add_argument( '--neighborhood_threshold', type=float, default=0 , help='Set neighborhood threshold distance in terms of same unit as spot diameter') 
     parser.add_argument( '--database_path', type=str, default='database/NEST_database.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
     parser.add_argument( '--intra_database_path', type=str, default='database/nichenet_pathways_NEST.csv' , help='Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database.') 
-    parser.add_argument( '--add_intra', type=int, default=0 , help='Set it to 1 for intracellular signaling pathway')
+    parser.add_argument( '--add_intra', type=int, default=1 , help='Set it to 1 for intracellular signaling pathway')
     parser.add_argument( '--num_hops', type=int, default=10 , help='Maximum number of hops for intra signaling pathway')
     parser.add_argument( '--threshold_gene_exp_intra', type=float, default=20, help='Threshold percentile for gene expression. Genes above this percentile are considered active.')
     #parser.add_argument( '--species', type=str, default='Human', help='Species of the input sample')
