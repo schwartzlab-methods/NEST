@@ -34,7 +34,7 @@ elif [ $1 = "relay_confidence" ]
 then
   shift
   python relay_confidence.py $@
-elif [ $1 = "extract_relay" ] 
+elif [ $1 = "relay_extract" ] 
 then
   shift
   python extract_relay_nest.py $@
