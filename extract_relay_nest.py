@@ -55,10 +55,11 @@ def plot(df):
 ####################### Set the name of the sample you want to visualize ###################################
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument( '--data_name', type=str, default='LUAD_TD1', help='The name of dataset') # 
-    parser.add_argument( '--barcode_info_file', type=str, default='NEST_figures_input_LUAD/LUAD_TD1_barcode_info', help='Path to load the barcode information file produced during data preprocessing step')
+    parser.add_argument( '--data_name', type=str, required = True, help='The name of dataset') # 
+    parser.add_argument( '--metadata', type=str, default='metadata/', help='The name of dataset') #
+    parser.add_argument( '--barcode_info_file', type=str, default='', help='Path to load the barcode information file produced during data preprocessing step')
     parser.add_argument( '--annotation_file_path', type=str, default='', help='Path to load the annotation file in csv format (if available) ') #_ayah_histology
-    parser.add_argument( '--selfloop_info_file', type=str, default='NEST_figures_input_LUAD/LUAD_TD1_self_loop_record', help='Path to load the selfloop information file produced during data preprocessing step')
+    parser.add_argument( '--selfloop_info_file', type=str, default='', help='Path to load the selfloop information file produced during data preprocessing step')
     parser.add_argument( '--top_ccc_file', type=str, default='NEST_figures_input_LUAD/LUAD_TD1_ccc_list_top5000.csv', help='Path to load the selected top CCC file produced during data postprocessing step')
     parser.add_argument( '--output_name', type=str, default='NEST_figures_output/', help='Output file name prefix according to user\'s choice')
     args = parser.parse_args()
@@ -69,11 +70,17 @@ if __name__ == "__main__":
     output_name = args.output_name
     
     ##################### make cell metadata: barcode_info ###################################
-    with gzip.open(args.barcode_info_file, 'rb') as fp:  #b, a:[0:5]        
+    if args.barcode_info_file == '':
+        args.barcode_info_file = args.metadata + args.data_name + '/' + args.data_name + '_barcode_info_file'
+        
+    with gzip.open(args.barcode_info_file, 'rb') as fp:     
         barcode_info = pickle.load(fp)    
 
     ###############################  read which spots have self loops ###############################################################
-    with gzip.open(args.selfloop_info_file, 'rb') as fp:  #b, a:[0:5]   _filtered
+    if args.selfloop_info_file = '':
+    	args.selfloop_info_file = args.metadata + args.data_name + '/' + args.data_name + '_self_loop_record'
+        
+    with gzip.open(args.selfloop_info_file, 'rb') as fp: 
         self_loop_found = pickle.load(fp)
 
     ####### load annotations ##############################################
