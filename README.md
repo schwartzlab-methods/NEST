@@ -137,7 +137,7 @@ It will generate two files: edge_graph.svg and edge_graph.pdf in the current wor
 Additionally, the following three commands will output the relay patterns, cell type identification for those, and associated confidence score:
 
 ```
-nest extract_relay --data_name='V1_Human_Lymph_Node_spatial' --metadata='metadata/' --top_ccc_file='output/V1_Human_Lymph_Node_spatial/V1_Human_Lymph_Node_spatial_ccc_list_top3000.csv' --output_path='relay_validation_sample_data/lymph_node/'
+nest relay_extract --data_name='V1_Human_Lymph_Node_spatial' --metadata='metadata/' --top_ccc_file='output/V1_Human_Lymph_Node_spatial/V1_Human_Lymph_Node_spatial_ccc_list_top3000.csv' --output_path='relay_validation_sample_data/lymph_node/'
 ```
 
 ```
