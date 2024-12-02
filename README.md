@@ -141,12 +141,12 @@ nest extract_relay --data_name='V1_Human_Lymph_Node_spatial' --metadata='metadat
 ```
 
 ```
-nest relay_celltype --input_dir='relay_validation_sample_data/lymph_node/' --output_dir='NEST_figures_output/' --annotation_file='relay_validation_sample_data/lymph_node/fractional_abundances_by_spot.csv' --modality='spot'
+nest relay_celltype --input_path='relay_validation_sample_data/lymph_node/' --output_path='NEST_figures_output/' --annotation_file='relay_validation_sample_data/lymph_node/fractional_abundances_by_spot.csv' --modality='spot'
 
 ```
 
 ```
-nest relay_confidence --input_path='relay_validation_sample_data/lymph_node/' --output_path='NEST_figures_output/relay_deisha_plots/' --organism='human' --database_dir='database/'
+nest relay_confidence --input_path='relay_validation_sample_data/lymph_node/' --output_path='NEST_figures_output/' --organism='human' --database_dir='database/'
 ```
 
 ### NEST Interactive
