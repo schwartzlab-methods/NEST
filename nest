@@ -30,6 +30,10 @@ elif [ $1 = "relay_celltype" ]
 then
   shift
   python relay_cell_type.py $@
+elif [ $1 = "relay_confidence" ] 
+then
+  shift
+  python relay_confidence.py $@
 elif [ $1 = "extract_relay" ] 
 then
   shift
