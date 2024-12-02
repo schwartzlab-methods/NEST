@@ -60,14 +60,14 @@ if __name__ == "__main__":
     parser.add_argument( '--barcode_info_file', type=str, default='', help='Path to load the barcode information file produced during data preprocessing step')
     parser.add_argument( '--annotation_file_path', type=str, default='', help='Path to load the annotation file in csv format (if available) ') #_ayah_histology
     parser.add_argument( '--selfloop_info_file', type=str, default='', help='Path to load the selfloop information file produced during data preprocessing step')
-    parser.add_argument( '--top_ccc_file', type=str, default='NEST_figures_input_LUAD/LUAD_TD1_ccc_list_top5000.csv', help='Path to load the selected top CCC file produced during data postprocessing step')
-    parser.add_argument( '--output_name', type=str, default='NEST_figures_output/', help='Output file name prefix according to user\'s choice')
+    parser.add_argument( '--top_ccc_file', type=str, required = True, help='Path to load the selected top CCC file produced during data postprocessing step')
+    parser.add_argument( '--output_path', type=str, default='NEST_figures_output/', help='Output file name prefix according to user\'s choice')
     args = parser.parse_args()
 
 
 
 
-    output_name = args.output_name
+    output_path = args.output_path
     
     ##################### make cell metadata: barcode_info ###################################
     if args.barcode_info_file == '':
@@ -196,14 +196,14 @@ if __name__ == "__main__":
         x=alt.X("Relay Patterns:N", axis=alt.Axis(labelAngle=45), sort='-y'),
         y='Pattern Abundance (#)'
     )
-    chart.save(output_name + args.data_name +'_pattern_distribution.html')
+    chart.save(output_path + args.data_name +'_pattern_distribution.html')
     ######################### save as table format and numpy format ########
-   #data_list_pd.to_csv(output_name + args.data_name +'_top20p_topEdge'+str(args.top_edge_count)+'_relay_count.csv', index=False)
-    data_list_pd.to_csv(output_name + args.data_name +'_relay_count.csv', index=False)
-    with gzip.open(output_name + args.data_name + '_pattern_distribution_cell_info', 'wb') as fp: 
+   #data_list_pd.to_csv(output_path + args.data_name +'_top20p_topEdge'+str(args.top_edge_count)+'_relay_count.csv', index=False)
+    data_list_pd.to_csv(output_path + args.data_name +'_relay_count.csv', index=False)
+    with gzip.open(output_path + args.data_name + '_pattern_distribution_cell_info', 'wb') as fp: 
 	    pickle.dump(pattern_distribution_cell_info, fp)
 
-    with gzip.open(output_name + args.data_name + '_pattern_distribution_cell_info', 'rb') as fp:  
+    with gzip.open(output_path + args.data_name + '_pattern_distribution_cell_info', 'rb') as fp:  
 	    pattern_distribution_cell_info = pickle.load(fp)
 
     pattern_list = list(pattern_distribution_cell_info.keys()) 
@@ -272,10 +272,10 @@ if __name__ == "__main__":
 
     nt = Network( directed=True, height='1000px', width='100%') #"500px", "500px",, filter_menu=True     
     nt.from_nx(g)
-    nt.save_graph(output_name + args.data_name +'_relay_mygraph.html')
+    nt.save_graph(output_path + args.data_name +'_relay_mygraph.html')
     print('Edge graph plot generation done')
     ########################################################################
     # convert it to dot file to be able to convert it to pdf or svg format for inserting into the paper
-    write_dot(g, output_name + args.data_name + "_relay_test_interactive.dot")
+    write_dot(g, output_path + args.data_name + "_relay_test_interactive.dot")
     print('dot file generation done')
 
