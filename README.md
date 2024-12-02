@@ -133,6 +133,22 @@ nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph
 ```
 It will generate two files: edge_graph.svg and edge_graph.pdf in the current working directory, which are easy to view and share. 
 
+
+Additionally, the following three commands will output the relay patterns, cell type identification for those, and associated confidence score:
+
+```
+nest extract_relay --data_name='V1_Human_Lymph_Node_spatial' --metadata='metadata/' --top_ccc_file='output/V1_Human_Lymph_Node_spatial/V1_Human_Lymph_Node_spatial_ccc_list_top3000.csv' --output_path='NEST_figures_output/'
+```
+
+```
+nest relay_celltype --input_dir='relay_validation_sample_data/lymph_node/' --output_dir='NEST_figures_output/' --annotation_file='relay_validation_sample_data/lymph_node/fractional_abundances_by_spot.csv' --modality='spot'
+
+```
+
+```
+nest relay_confidence --input_path='relay_validation_sample_data/lymph_node/' --output_path='NEST_figures_output/relay_deisha_plots/' --organism='human' --database_dir='database/'
+```
+
 ### NEST Interactive
 Finally, you can interactively visualize the cell-cell communication on tissue surface by using NEST Interactive: a web-based data visualization tool. The detailed instructions for running the interactive tool are provided here: https://github.com/schwartzlab-methods/NEST-interactive
 
