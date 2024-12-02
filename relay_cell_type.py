@@ -183,3 +183,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+########## sample input ##########################
+'''
+relay_cell_type.py --input_dir='relay_validation_sample_data/lymph_node/' --output_dir='NEST_figures_output/' 
+    --annotation_file='relay_validation_sample_data/lymph_node/fractional_abundances_by_spot.csv' --modality='spot' 
+'''
