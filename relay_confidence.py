@@ -101,7 +101,7 @@ def query_relay_network(
                         grn_score = next((score for score, tfs in tf_dict.items() if putative_path[-1] in tfs), None)
                         total_score = ppi_score * grn_score
                         if total_score > best_score:
-                            best_total_score, best_path = -math.log(total_score), putative_path
+                            best_total_score, best_path = total_score, putative_path
                 if best_path:
                     result.update({
                         "path": "; ".join(best_path),
