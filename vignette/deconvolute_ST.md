@@ -13,7 +13,7 @@ import anndata as ad
 CytoSPACE needs scRNA-seq gene expression file to be provided in a *.csv format with genes (rows) by cells (columns) format. 
 For details, please see the official site of [CytoSPACE](https://github.com/digitalcytometry/cytospace#input-files)
 
-We downloaded the scRNA-seq for human lymph node from [here](https://cell2location.cog.sanger.ac.uk/paper/integrated_lymphoid_organ_scrna/RegressionNBV4Torch_57covariates_73260cells_10237genes/sc.h5ad) and saved under 'data/scRNAseq_lymph/' directory. We write the following function to convert the downloaded format into CytoSPACE required format:
+We download the scRNA-seq for human lymph node from [here](https://cell2location.cog.sanger.ac.uk/paper/integrated_lymphoid_organ_scrna/RegressionNBV4Torch_57covariates_73260cells_10237genes/sc.h5ad) and save under 'data/scRNAseq_lymph/' directory. We write the following function to convert the downloaded format into CytoSPACE required format:
 
 ```
 # Written By
