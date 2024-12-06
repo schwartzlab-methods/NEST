@@ -1,6 +1,6 @@
 # ![alt text](https://github.com/schwartzlab-methods/NEST/blob/main/nest_logo.svg) NEST 
 
-Publication: [NEST: Spatially-mapped cell-cell communication patterns using a deep learning-based attention mechanism](https://www.biorxiv.org/content/10.1101/2024.03.19.585796v1)
+Preprint: [NEST: Spatially-mapped cell-cell communication patterns using a deep learning-based attention mechanism](https://www.biorxiv.org/content/10.1101/2024.03.19.585796v1)
 
 ### Singularity Image:
 
