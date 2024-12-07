@@ -133,6 +133,13 @@ cellnest output_graph_picture output/V1_Human_Lymph_Node_spatial/CellNEST_V1_Hum
 ```
 It will generate two files: edge_graph.svg and edge_graph.pdf in the current working directory, which are easy to view and share. 
 
+CellNEST also supports plotting downstream TF genes for a receptor gene, such as "CCR7" for the lymph node sample using the following command:
+```
+cellnest downstream --adata_path='data/V1_Human_Lymph_Node_spatial/V1_Human_Lymph_Node_filtered_feature_bc_matrix' --positions_path='data/V1_Human_Lymph_Node_spatial/spatial/tissue_positions_list' --gene='CCR7' 
+```
+This will plot the downstream average gene expression of the top 20% TF of 'CCR7' and save the result at "output/downstreamGene_CCR7.html" 
+
+
 
 Additionally, the following three commands will output the relay patterns, cell type identification for those, and associated confidence score:
 
@@ -148,6 +155,7 @@ cellnest relay_celltype --input_path='relay_validation_sample_data/lymph_node/' 
 ```
 cellnest relay_confidence --input_path='relay_validation_sample_data/lymph_node/' --output_path='CellNEST_figures_output/' --organism='human' --database_dir='database/'
 ```
+
 
 ### CellNEST Interactive
 Finally, you can interactively visualize the cell-cell communication on tissue surface by using CellNEST Interactive: a web-based data visualization tool. The detailed instructions for running the interactive tool are provided here: https://github.com/schwartzlab-methods/nest-interactive
