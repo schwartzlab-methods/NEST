@@ -60,8 +60,8 @@ Then we read the scRNA-seq file and call this function.
 ```
 in_dir = 'data/scRNAseq_lymph/'
 out_dir = 'data/scRNAseq_lymph/CytoSPACE_format/'
-adata_sc = sc.read(os.path.join(in_dir, "Moffit_Combined.h5ad"))
-cytospaceRef(adata_sc, out_dir, "max_moffitt")
+adata_sc = sc.read(os.path.join(in_dir, "sc.h5ad"))
+cytospaceRef(adata_sc, out_dir, "Subset")
 ```
 
 Let us assume we have the Spatial Transcriptomics data for [human lymph node](https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.tar.gz) in a standard Visium format in this path 'data/V1_Human_Lymph_Node/'. 
