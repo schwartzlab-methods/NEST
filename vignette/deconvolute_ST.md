@@ -1,4 +1,4 @@
-## Running NEST on Spatial Transcriptomics data after deconvolution
+## Running CellNEST on Spatial Transcriptomics data after deconvolution
 We integrate scRNA-seq data with Spatial Transcriptomics data for deconvoluting spots into single cells using [CytoSPACE](https://github.com/digitalcytometry/cytospace). 
 We first import the necessary Python libraries.
 
@@ -82,26 +82,26 @@ Now, we will execute the following commands to run CellNEST model on this data.
 
 Preprocess:
 ```
-nest preprocess --data_name='lymph_deconvolution' --data_from='data/V1_Human_Lymph_Node/deconvolution/assigned_expression/' --tissue_position_file='data/V1_Human_Lymph_Node/deconvolution/assigned_locations.csv'
+cellnest preprocess --data_name='lymph_deconvolution' --data_from='data/V1_Human_Lymph_Node/deconvolution/assigned_expression/' --tissue_position_file='data/V1_Human_Lymph_Node/deconvolution/assigned_locations.csv'
 ```
 
 Model run: 
 ```
-nohup nest run --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='NEST_lymph_deconvolution' --run_id=1 > output_lymph_deconvolution_run1.log &
-nohup nest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='NEST_lymph_deconvolution' --run_id=2 > output_lymph_deconvolution_run2.log &
-nohup nest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='NEST_lymph_deconvolution' --run_id=3 > output_lymph_deconvolution_run3.log &
-nohup nest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='NEST_lymph_deconvolution' --run_id=4 > output_lymph_deconvolution_run4.log &
-nohup nest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='NEST_lymph_deconvolution' --run_id=5 > output_lymph_deconvolution_run5.log &
+nohup cellnest run --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='CellNEST_lymph_deconvolution' --run_id=1 > output_lymph_deconvolution_run1.log &
+nohup cellnest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='CellNEST_lymph_deconvolution' --run_id=2 > output_lymph_deconvolution_run2.log &
+nohup cellnest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='CellNEST_lymph_deconvolution' --run_id=3 > output_lymph_deconvolution_run3.log &
+nohup cellnest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='CellNEST_lymph_deconvolution' --run_id=4 > output_lymph_deconvolution_run4.log &
+nohup cellnest run  --data_name='lymph_deconvolution'  --num_epoch 60000 --model_name='CellNEST_lymph_deconvolution' --run_id=5 > output_lymph_deconvolution_run5.log &
 ```
 
 Postprocess:
 ```
-nest postprocess --data_name='lymph_deconvolution' --model_name='NEST_lymph_deconvolution' --total_runs=5 
+cellnest postprocess --data_name='lymph_deconvolution' --model_name='CellNEST_lymph_deconvolution' --total_runs=5 
 ```
 
 Visualize:
 ```
-nest visualize --data_name='lymph_deconvolution' --model_name='NEST_lymph_deconvolution'
+cellnest visualize --data_name='lymph_deconvolution' --model_name='CellNEST_lymph_deconvolution'
 ```
 
 You will find the results under: 'output/lymph_deconvolution/'
