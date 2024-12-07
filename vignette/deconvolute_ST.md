@@ -19,8 +19,7 @@ Next, we download the scRNA-seq for human lymph node from [here](https://cell2lo
 We write the following functions to convert the downloaded format into CytoSPACE required format:
 
 ```
-# Written By
-# Deisha Paliwal
+# Written by Deisha Paliwal
 
 # Retrieve raw counts from anndata object 
 def getRawCounts(
