@@ -78,23 +78,23 @@ adata_impute.write('data/MERFISH_imputed/MERFISH_and_RNA.h5ad', compression='gzi
 
 We recommend users to see the original Uniport site for the details on gene imputation by integrating scRNAseq data. 
 
-Then we call NEST's preprocess, run, post-process, and visualization steps as follows:
+Then we call CellNEST's preprocess, run, post-process, and visualization steps as follows:
 ```
-nest preprocess --data_name='MERFISH_imputed' --data_from='data/MERFISH_imputed/' --tissue_position_file='data/MERFISH_imputed/MERFISH_tissue_positions_list.csv'
-```
-
-```
-nohup nest run --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='NEST_MERFISH_imputed' --run_id=1 > output_MERFISH_imputed_run1.log &
-nohup nest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='NEST_MERFISH_imputed' --run_id=2 > output_MERFISH_imputed_run2.log &
-nohup nest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='NEST_MERFISH_imputed' --run_id=3 > output_MERFISH_imputed_run3.log &
-nohup nest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='NEST_MERFISH_imputed' --run_id=4 > output_MERFISH_imputed_run4.log &
-nohup nest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='NEST_MERFISH_imputed' --run_id=5 > output_MERFISH_imputed_run5.log &
+cellnest preprocess --data_name='MERFISH_imputed' --data_from='data/MERFISH_imputed/' --tissue_position_file='data/MERFISH_imputed/MERFISH_tissue_positions_list.csv'
 ```
 
 ```
-nest postprocess --data_name='MERFISH_imputed' --model_name='NEST_MERFISH_imputed' --total_runs=5 
+nohup cellnest run --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='CellNEST_MERFISH_imputed' --run_id=1 > output_MERFISH_imputed_run1.log &
+nohup cellnest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='CellNEST_MERFISH_imputed' --run_id=2 > output_MERFISH_imputed_run2.log &
+nohup cellnest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='CellNEST_MERFISH_imputed' --run_id=3 > output_MERFISH_imputed_run3.log &
+nohup cellnest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='CellNEST_MERFISH_imputed' --run_id=4 > output_MERFISH_imputed_run4.log &
+nohup cellnest run  --data_name='MERFISH_imputed'  --num_epoch 60000 --model_name='CellNEST_MERFISH_imputed' --run_id=5 > output_MERFISH_imputed_run5.log &
 ```
 
 ```
-nest visualize --data_name='MERFISH_imputed' --model_name='NEST_MERFISH_imputed'
+cellnest postprocess --data_name='MERFISH_imputed' --model_name='CellNEST_MERFISH_imputed' --total_runs=5 
+```
+
+```
+cellnest visualize --data_name='MERFISH_imputed' --model_name='CellNEST_MERFISH_imputed'
 ```
