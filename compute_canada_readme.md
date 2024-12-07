@@ -3,8 +3,8 @@
 Run following commands to create virtual environment and activate it before installing python libraries:
 ```
 module load python/3.10
-virtualenv --no-download /project/[group_name]/[user_name]/nest_venv
-source /project/[group_name]/[user_name]/nest_venv/bin/activate
+virtualenv --no-download /project/[group_name]/[user_name]/cellnest_venv
+source /project/[group_name]/[user_name]/cellnest_venv/bin/activate
 ```
 Please replace [group_name] and [user_name] with your assigned group and name.
 
@@ -47,13 +47,13 @@ There is a sample shell script written for submitting GPU job as follows:
 ```
 sbatch gpu_job_submit_compute_canada.sh
 ```
-Please see the 'gpu_job_submit_compute_canada.sh' in the NEST repository to understand the requested GPU resources. This will execute just one run of NEST. If enough GPU is available, multiple NEST runs can be executed in parallel by replacing the contents of line 35 with the following:
+Please see the 'gpu_job_submit_compute_canada.sh' in the CellNEST repository to understand the requested GPU resources. This will execute just one run of CellNEST. If enough GPU is available, multiple CellNEST runs can be executed in parallel by replacing the contents of line 35 with the following:
 ```
-nohup nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=1 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log &
-nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=2 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=2 > output_human_lymph_node_run2.log &
-nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=3 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=3 > output_human_lymph_node_run3.log &
-nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=4 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=4 > output_human_lymph_node_run4.log &
-nohup nest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=5 --model_name 'NEST_V1_Human_Lymph_Node_spatial' --run_id=5 > output_human_lymph_node_run5.log &
+nohup cellnest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=1 --model_name 'CellNEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log &
+nohup cellnest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=2 --model_name 'CellNEST_V1_Human_Lymph_Node_spatial' --run_id=2 > output_human_lymph_node_run2.log &
+nohup cellnest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=3 --model_name 'CellNEST_V1_Human_Lymph_Node_spatial' --run_id=3 > output_human_lymph_node_run3.log &
+nohup cellnest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=4 --model_name 'CellNEST_V1_Human_Lymph_Node_spatial' --run_id=4 > output_human_lymph_node_run4.log &
+nohup cellnest run  --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 80000 --seed=5 --model_name 'CellNEST_V1_Human_Lymph_Node_spatial' --run_id=5 > output_human_lymph_node_run5.log &
 ```
 
 
