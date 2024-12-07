@@ -13,7 +13,9 @@ import anndata as ad
 CytoSPACE needs scRNA-seq gene expression file to be provided in a *.csv format with genes (rows) by cells (columns) format. 
 For details, please see the official site of [CytoSPACE](https://github.com/digitalcytometry/cytospace#input-files)
 
-We download the scRNA-seq for human lymph node from [here](https://cell2location.cog.sanger.ac.uk/paper/integrated_lymphoid_organ_scrna/RegressionNBV4Torch_57covariates_73260cells_10237genes/sc.h5ad) and save under 'data/scRNAseq_lymph/' directory. We write the following function to convert the downloaded format into CytoSPACE required format:
+We download the Visium data for [human lymph node](https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.tar.gz) in a standard Visium format in this path 'data/lymph/'. 
+
+We download the scRNA-seq for human lymph node from [here](https://cell2location.cog.sanger.ac.uk/paper/integrated_lymphoid_organ_scrna/RegressionNBV4Torch_57covariates_73260cells_10237genes/sc.h5ad) and save under 'data/lymph/' directory. We write the following functions to convert the downloaded format into CytoSPACE required format:
 
 ```
 # Written By
@@ -66,23 +68,47 @@ def cytospaceRef(
     # remove special characters 
     cell_type_df["CellType"] = cell_type_df["CellType"].str.replace(r"[^a-zA-Z0-9 ]", " ", regex = True)
     cell_type_df.to_csv(os.path.join(outFolder, f"sc_cell_types.csv"), index = False)
+
+# Write Visium data to a CSV file in the format expected by CytoSPACE 
+def cytospaceSpatial(
+        adata: ad.AnnData, 
+        outFolder: str
+    ) -> None:
+    adata.var_names_make_unique()
+    counts = getRawCounts(adata)
+    counts_df = pd.DataFrame(
+        counts.T,
+        index = adata.var_names,
+        columns = adata.obs_names
+    )
+    counts_df.index.name = "GENES"
+    # write counts to CSV file 
+    counts_df.to_csv(os.path.join(outFolder, f"spatial_counts.csv"))
+    coordinates = adata.obsm["spatial"]
+    coordinates_df = pd.DataFrame(coordinates, index = adata.obs_names, columns=["row", "col"])
+    coordinates_df.reset_index(inplace = True) 
+    coordinates_df.rename(columns={"index": "SpotID"}, inplace = True)
+    # write coordinates to CSV file 
+    coordinates_df.to_csv(os.path.join(outFolder, f"spatial_coordinates.csv"), index = False)
 ```
 
-Then we read the scRNA-seq file and call this function.
+Then, we prepare the formatted inputs for the single-cell and spatial data: 
 ```
-in_dir = 'data/scRNAseq_lymph/'
-out_dir = 'data/scRNAseq_lymph/CytoSPACE_format/'
+in_dir = 'data/lymph/'
+out_dir = 'data/lymph/CytoSPACE_format/'
 adata_sc = sc.read(os.path.join(in_dir, "sc.h5ad"))
+adata_spatial = sc.read_visium(in_dir)
 cytospaceRef(adata_sc, out_dir, "Subset")
+cytospaceSpatial(adata_spatial, out_dir)
 ```
 
-Let us assume we have the Spatial Transcriptomics data for [human lymph node](https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.tar.gz) in a standard Visium format in this path 'data/V1_Human_Lymph_Node/'. 
 Then we call CytoSPACE as follows:
 ```
  cytospace \
-    --scRNA-path data/scRNAseq_lymph/CytoSPACE_format/sc_counts.csv \
-    --cell-type-path data/scRNAseq_lymph/CytoSPACE_format/sc_cell_types.csv \
-    --spaceranger-path data/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.tar.gz
+    --scRNA-path data/lymph/CytoSPACE_format/sc_counts.csv \
+    --cell-type-path data/lymph/CytoSPACE_format/sc_cell_types.csv \
+    --st-path data/lymph/CytoSPACE_format/spatial_counts.csv \
+    --coordinates-path data/lymph/CytoSPACE_format/spatial_coordinates.csv
 ```
 
 We will use following two outputs of CytoSPACE:
