@@ -42,6 +42,11 @@ elif [ $1 = "preprocess_intra" ]
 then
   shift
   python data_preprocess_intra_NEST.py $@
+elif [ $1 = "downstream" ] 
+then
+  shift
+  python plot_downstream_genes.py $@
 fi
+
 
 
