@@ -19,11 +19,23 @@ We download the scRNA-seq for human lymph node from [here](https://cell2location
 # Written By
 # Deisha Paliwal
 
+# Retrieve raw counts from anndata object 
+def getRawCounts(
+        adata: ad.AnnData
+    ):
+    if "raw_counts" in adata.layers:
+        mat = adata.layers["raw_counts"]
+    else:
+        mat = adata.X
+    counts = mat.todense() if hasattr(mat, "todense") else mat
+
+    return counts
+
 # Write single-cell RNA-seq atlas to a CSV file in the format expected by CytoSPACE 
 def cytospaceRef(
         adata: ad.AnnData, 
         outFolder: str, 
-        ct_col: str
+        ct_col: str # column in adata.obs containing annotations 
     ) -> None:
     adata.var_names_make_unique()
     # sample 10,000 cells at equal cell type proportions 
