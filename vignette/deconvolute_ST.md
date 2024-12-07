@@ -13,9 +13,11 @@ import anndata as ad
 CytoSPACE needs scRNA-seq gene expression file to be provided in a *.csv format with genes (rows) by cells (columns) format. 
 For details, please see the official site of [CytoSPACE](https://github.com/digitalcytometry/cytospace#input-files)
 
-We download the Visium data for [human lymph node](https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.tar.gz) in a standard Visium format and save it here: 'data/lymph/'. 
+We download the Visium data for [human lymph node](https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.tar.gz) in a standard Visium format and save it here: 'data/lymph/' 
 
-We download the scRNA-seq for human lymph node from [here](https://cell2location.cog.sanger.ac.uk/paper/integrated_lymphoid_organ_scrna/RegressionNBV4Torch_57covariates_73260cells_10237genes/sc.h5ad) and save it here: 'data/lymph/' directory. We write the following functions to convert the downloaded format into CytoSPACE required format:
+We download the scRNA-seq for human lymph node from [here](https://cell2location.cog.sanger.ac.uk/paper/integrated_lymphoid_organ_scrna/RegressionNBV4Torch_57covariates_73260cells_10237genes/sc.h5ad) and save it here: 'data/lymph/' 
+
+We write the following functions to convert the downloaded format into CytoSPACE required format:
 
 ```
 # Written By
