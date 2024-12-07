@@ -6,7 +6,7 @@ Preprint: [NEST: Spatially-mapped cell-cell communication patterns using a deep 
 
 For users' convenience, we have a singularity image with the full installation of the environment for running the CellNEST model. Users can pull the image using the following command:
 ```
-singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+singularity pull cellnest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
 No additional installation of any package is required with this image. A vignette for following this approach is provided [here](vignette/running_NEST_singularity_container.md). This is tested on Digital Alliance as well. For the users who want to install the environment themselves, we provide the list of required Python packages and supported systems below.  
 
