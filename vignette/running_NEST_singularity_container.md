@@ -1,35 +1,35 @@
-### Pulling the nest_image.sif
+### Pulling the cellnest_image.sif
 
 We can pull the singularity image as follows:
 
 ```
-mkdir nest_container 
-cd nest_container
-singularity pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+mkdir cellnest_container 
+cd cellnest_container
+singularity pull cellnest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
 [** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.](https://github.com/schwartzlab-methods/NEST/blob/main/vignette/running_NEST_singularity_container.md#running-nest-container-on-digital-alliance-using-apptainer)
 
-### Running NEST model through the downloaded singularity image
+### Running CellNEST model through the downloaded singularity image
 
-For the demonstration purpose, let us assume that the paths of NEST repository, NEST image, and data are as follows:
-1. NEST repository: /cluster/projects/prof-group/fatema/NEST
-2. NEST image: /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
-3. Data: /cluster/projects/prof-group/fatema/NEST/data/
+For the demonstration purpose, let us assume that the paths of CellNEST repository, CellNEST image, and data are as follows:
+1. CellNEST repository: /cluster/projects/prof-group/fatema/CellNEST
+2. CellNEST image: /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif
+3. Data: /cluster/projects/prof-group/fatema/CellNEST/data/
 
-I will be referring to these while running the commands. First, we navigate to the NEST repository:
+I will be referring to these while running the commands. First, we navigate to the CellNEST repository:
 ```
-cd /cluster/projects/prof-group/fatema/NEST
+cd /cluster/projects/prof-group/fatema/CellNEST
 ```
-Then we run NEST container. We can use "singularity run" to directly execute the NEST commands, or 
-open the container shell/terminal using "singularity shell" command and interactively run the NEST commands there. 
+Then we run CellNEST container. We can use "singularity run" to directly execute the CellNEST commands, or 
+open the container shell/terminal using "singularity shell" command and interactively run the CellNEST commands there. 
 Here, I am opening the shell as follows:
 
 ```
-singularity shell --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
+singularity shell --home=/cluster/projects/prof-group/fatema/cellnest_container/ /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif
 ```
-Then, on the shell, I execute the usual NEST preprocessing command:
+Then, on the shell, I execute the usual CellNEST preprocessing command:
 ```
-Singularity> bash nest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='/cluster/projects/prof-group/fatema/NEST/data/V1_Human_Lymph_Node_spatial/'
+Singularity> bash cellnest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='/cluster/projects/prof-group/fatema/CellNEST/data/V1_Human_Lymph_Node_spatial/'
 ```
 
 
@@ -44,7 +44,7 @@ Singularity> ls input_graph/V1_Human_Lymph_Node_spatial/
 Now, you can start the model training on the shell. But you have to ensure that it has the access to the GPU. 
 That is why, we have to exit from the current shell and restart the shell using --nv command as follows:
 ```
-$ singularity shell --nv --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
+$ singularity shell --nv --home=/cluster/projects/prof-group/fatema/cellnest_container/ /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif
 ```
 Here, --nv option is used for GPU accessibility. You can see the allocated GPU in the shell as below. 
 ```
@@ -53,7 +53,7 @@ Singularity> nvidia-smi
 
 Then you can start training as below: 
 ```
-Singularity> bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 500 --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1
+Singularity> bash cellnest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 500 --seed=1 --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --run_id=1
 ```
 
 
@@ -63,14 +63,14 @@ That is why we have two options:
 
 1. We can run the job in the background using “singularity run” command as follows:
 ```
-nohup singularity run --nv --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 500 --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_NEST_V1_Human_Lymph_Node_spatial_run1.log &
+nohup singularity run --nv --home=/cluster/projects/prof-group/fatema/cellnest_container/ /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 500 --seed=1 --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_CellNEST_V1_Human_Lymph_Node_spatial_run1.log &
 ```
 2. If we are using high performance computing (HPC) service with Slurm for cluster management and job scheduling, then we have to submit the job to the cluster as follows (the parameters might vary depending on the system):
 ``` 
-sbatch -A prof-group_gpu -p gpu --gres=gpu:1 --constraint gpu32g gpu_job_container_NEST_human_lymph_node_run1.sh
+sbatch -A prof-group_gpu -p gpu --gres=gpu:1 --constraint gpu32g gpu_job_container_CellNEST_human_lymph_node_run1.sh
 ```
 
-The contents of gpu_job_container_NEST_human_lymph_node_run1.sh:
+The contents of gpu_job_container_CellNEST_human_lymph_node_run1.sh:
 ```
 #!/bin/bash
 # ---------------------------------------------------------------------
@@ -79,7 +79,7 @@ The contents of gpu_job_container_NEST_human_lymph_node_run1.sh:
 #SBATCH -c 16
 #SBATCH --mem=30GB
 #SBATCH --time=72:00:00
-#SBATCH --job-name=NEST_lymph
+#SBATCH --job-name=CellNEST_lymph
 #SBATCH --output=some_name-%j.out
 # ---------------------------------------------------------------------
 echo "Current working directory: `pwd`"
@@ -95,11 +95,11 @@ echo ""
 # module load
 module load singularity/3.11.0
 
-# navigate to the directory that has NEST repository
-cd /cluster/projects/prof-group/fatema/NEST/
+# navigate to the directory that has CellNEST repository
+cd /cluster/projects/prof-group/fatema/CellNEST/
 echo "Current working directory: `pwd`"
 
-# nest_image.sif is here: /cluster/projects/prof-group/fatema/nest_container/nest_image.sif
+# cellnest_image.sif is here: /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif
 
 # checking the available gpu memory before starting the training
 nvidia-smi
@@ -107,7 +107,7 @@ nvidia-smi
 # run your python script with parameters using singularity
 echo "lymph. Going to start process: run 1"
 
-singularity run --nv --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000 --manual_seed='yes' --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1
+singularity run --nv --home=/cluster/projects/prof-group/fatema/cellnest_container/ /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000 --manual_seed='yes' --seed=1 --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --run_id=1
 
 
 echo "Job finished with exit code $? at: `date`"
@@ -115,18 +115,18 @@ echo "Job finished with exit code $? at: `date`"
 
 After the training is finished, we run postprocessing. Usually, we run the training 5 times with five DIFFERENT seeds and --run_id starting from 1 to 5, and then postprocess those 5 runs. For running postprocessing, we can open the singularity shell as before, or just use the “singularity run” command as below: 
 ```
-$ singularity run --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --total_runs=5
+$ singularity run --home=/cluster/projects/prof-group/fatema/cellnest_container/ /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --total_runs=5
 ```
 
 After the postprocessing is done, we can find the list of top 20% communications (strength or attention score is over 80th percentile) inside the output/ directory:
 ```
 $ ls output/V1_Human_Lymph_Node_spatial/
-NEST_V1_Human_Lymph_Node_spatial_top20percent.csv
+CellNEST_V1_Human_Lymph_Node_spatial_top20percent.csv
 ```
 
 Then we run visualization script for this list as below:
 ```
-$ singularity run --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
+$ singularity run --home=/cluster/projects/prof-group/fatema/cellnest_container/ /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
 ```
 We will find the visualization files in the same output/ directory.
 ```
@@ -136,16 +136,16 @@ $ ls output/V1_Human_Lymph_Node_spatial/
 
 Then we can convert the *.dot file to pdf and svg as follows:
 ```
-$ singularity run --home=/cluster/projects/prof-group/fatema/nest_container/ /cluster/projects/prof-group/fatema/nest_container/nest_image.sif bash nest output_graph_picture output/V1_Human_Lymph_Node_spatial/NEST_V1_Human_Lymph_Node_spatial_test_interactive.dot 
+$ singularity run --home=/cluster/projects/prof-group/fatema/cellnest_container/ /cluster/projects/prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest output_graph_picture output/V1_Human_Lymph_Node_spatial/CellNEST_V1_Human_Lymph_Node_spatial_test_interactive.dot 
 ```
 It will generate edge_graph.pdf and edge_graph.svg in the current working directory.
 
 
-### Running NEST container on Digital Alliance using Apptainer
+### Running CellNEST container on Digital Alliance using Apptainer
 #### Pulling the Singularity image on Digital Alliance using Apptainer
 ```
 module load apptainer
-apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+apptainer pull cellnest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
 The command might show the following error:
 
@@ -160,37 +160,37 @@ apptainer remote list
 
 After that we are able to pull the image using the following command:
 ```
-apptainer pull nest_image.sif library://fatema/collection/nest_image.sif:latest
+apptainer pull cellnest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
 All the Singularity commands mentioned above also work with Apptainer if the 'singularity' term is replaced with 'apptainer'. Few things to note:
-1. We may have to move the NEST repository and data to the NEST container so that those are visible to the container while running. 
+1. We may have to move the CellNEST repository and data to the CellNEST container so that those are visible to the container while running. 
 ```
 cd /project/def-prof-group/fatema/
-mv /project/def-prof-group/fatema/NEST /cluster/projects/prof-group/fatema/nest_container/
+mv /project/def-prof-group/fatema/CellNEST /cluster/projects/prof-group/fatema/cellnest_container/
 ```
-Therefore, the paths of NEST repository, NEST image, and data are as follows:
+Therefore, the paths of CellNEST repository, CellNEST image, and data are as follows:
 
-NEST repository: /project/def-prof-group/fatema/nest_container/NEST
+CellNEST repository: /project/def-prof-group/fatema/cellnest_container/CellNEST
 
-NEST image: /project/def-prof-group/fatema/nest_container/nest_image.sif
+CellNEST image: /project/def-prof-group/fatema/cellnest_container/cellnest_image.sif
 
-Data: /project/def-prof-group/fatema/nest_container/NEST/data/
+Data: /project/def-prof-group/fatema/cellnest_container/CellNEST/data/
    
 2. Additionally, we may need to set the home directory to the container path as follows:
 ```
-apptainer shell --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif
+apptainer shell --home=/project/def-prof-group/fatema/cellnest_container/ /project/def-prof-group/fatema/cellnest_container/cellnest_image.sif
 ```
 It will open the Singularity shell as the image is a Singularity image. 
 If we don't use --home, it may incorrectly look at the system paths for the Python packages. 
 
-#### NEST Preprocessing:
+#### CellNEST Preprocessing:
 ```
-cd /project/def-prof-group/fatema/nest_container/NEST
+cd /project/def-prof-group/fatema/cellnest_container/CellNEST
 
-apptainer run --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
+apptainer run --home=/project/def-prof-group/fatema/cellnest_container/ /project/def-prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
 ```
 
-#### Running NEST model: 
+#### Running CellNEST model: 
 We write a shell script `gpu_job_digital_alliance_container.sh’ as follows:
 ```
 #!/bin/bash
@@ -219,8 +219,8 @@ echo "available gpu:"
 nvidia-smi
 
 echo "Current working directory: `pwd`"
-# change current working directory to NEST
-cd /project/def-prof-group/fatema/nest_container/NEST/
+# change current working directory to CellNEST
+cd /project/def-prof-group/fatema/cellnest_container/CellNEST/
 echo "Current working directory: `pwd`"
 
 # load necessary modules
@@ -229,13 +229,13 @@ module load apptainer
 # run your python script with parameters using singularity
 echo "lymph. Going to start process: run 1"
 
-apptainer run --nv --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000  --manual_seed='yes' --seed=1 --model_name='NEST_V1_Human_Lymph_Node_spatial' --run_id=1 
+apptainer run --nv --home=/project/def-prof-group/fatema/cellnest_container/ /project/def-prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000  --manual_seed='yes' --seed=1 --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --run_id=1 
 
 # ---------------------------------------------------------------------
 echo "Job finished with exit code $? at: `date`"
 
 ```
-Please change the parameters and paths to the NEST repository as required. We may save this script here: /project/prof-group/fatema/gpu_job_digital_alliance_container.sh
+Please change the parameters and paths to the CellNEST repository as required. We may save this script here: /project/prof-group/fatema/gpu_job_digital_alliance_container.sh
 
 Then navigate to that directory and submit the job as follows:
 ```
@@ -248,13 +248,13 @@ squeue -u fatema
 ```
 This is for one run. Usually, we run the training 5 times with five DIFFERENT seeds and --run_id starting from 1 to 5, and then postprocess those 5 runs. And then proceed for postprocessing.
 
-#### NEST postprocessing:
+#### CellNEST postprocessing:
 ```
-apptainer run --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --total_runs=5
+apptainer run --home=/project/def-prof-group/fatema/cellnest_container/ /project/def-prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --total_runs=5
 ```
 
-#### NEST visualization:
+#### CellNEST visualization:
 ```
-apptainer run --home=/project/def-prof-group/fatema/nest_container/ /project/def-prof-group/fatema/nest_container/nest_image.sif bash nest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='NEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
+apptainer run --home=/project/def-prof-group/fatema/cellnest_container/ /project/def-prof-group/fatema/cellnest_container/cellnest_image.sif bash cellnest visualize --data_name='V1_Human_Lymph_Node_spatial' --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --top_edge_count=3000
 ```
 
