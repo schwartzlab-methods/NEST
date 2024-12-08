@@ -10,55 +10,8 @@ singularity pull cellnest_image.sif library://fatema/collection/nest_image.sif:l
 ```
 No additional installation of any package is required with this image. A vignette for following this approach is provided [here](vignette/running_NEST_singularity_container.md). This is tested on Digital Alliance as well. For the users who want to install the environment themselves, we provide the list of required Python packages and supported systems below.  
 
-###   Used Python packages:
-
-python == 3.7.2
-
-numpy == 1.21.6
-
-pytorch == 1.12.0 (with GPU support - CUDA 11.3)
-
-(Can be done as follows: 
-
-pip install torch==1.12.0+cu113 torchvision==0.13.0+cu113 torchaudio==0.12.0 --extra-index-url https://download.pytorch.org/whl/cu113)
-
-torch_scatter==2.0.9 with pytorch 1.12.0 and CUDA 11.3
-
-torch_sparse==0.6.15 with pytorch 1.12.0 and CUDA 11.3
-
-torch_geometric==2.1.0 with pytorch 1.12.0 and CUDA 11.3
-
-(Above three packages can be installed together as: 
-
-pip install torch_scatter==2.0.9 torch_sparse==0.6.15 torch_geometric==2.1.0 -f https://data.pyg.org/whl/torch-1.12.0+cu113.html)
-
-pickle == 4.0
-
-scipy == 1.7.3
-
-qnorm == 0.8.1
-
-pandas == 1.3.5
-
-scanpy == 1.9.1
-
-altair == 4.2.0
-
-(Please download this additional package as well and keep under the same CellNEST repository: https://github.com/schwartzlab-methods/altair-themes)
-
-csv == 1.0
-
-matplotlib ==  3.5.2
-
-pyvis == 0.3.0
-
-networkx == 2.6.3
-
-collections == 0.1.1
-
-gc 
-
-gzip 
+###   Used Python packages: 
+[Python libraries](https://github.com/schwartzlab-methods/CellNEST/blob/main/requirements.txt)
 
 ###   System requirements: 
 This model is developed on CentOS 7 and GPU servers with versions: Nvidia P100 and V100. This model is expected to run on any Linux server with GPU nodes, e.g., Digital Alliance (already tested) as well. A brief installation script of Python packages for Digital Alliance is provided [here](install_on_digital_alliance_readme.md). Installation time on a typical HPC should take less than 5 minutes (for 1 Intel Xeon CPU @ 2 GHz and 8 GB memory, installation takes 3 minutes). 
