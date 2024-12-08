@@ -50,7 +50,7 @@ If you have enough GPU memory you can start running all of them in parallel. Mod
 
 #### Job submitting on HPC: 
 
-If you are using remote shared GPU clusters, e.g., Compute Canada servers, then a sample script to submit the GPU job is provided here: https://github.com/schwartzlab-methods/NEST/blob/main/gpu_job_submit_compute_canada.sh 
+If you are using remote shared GPU clusters, e.g., Compute Canada servers, then a sample script to submit the GPU job is provided here: https://github.com/schwartzlab-methods/CellNEST/blob/main/gpu_job_submit_compute_canada.sh 
 
 ## Postprocessing output to generate a list of strong CCC
 
@@ -130,7 +130,7 @@ It will generate two files: edge_graph.svg and edge_graph.pdf. The edge_graph.pd
 ![pdf file of the generated altair plot for top 3000 CCC](../images/edge_graph.pdf)
 
 ### CellNEST Interactive
-Finally, you can interactively visualize the cell-cell communication on tissue surface by using CellNEST Interactive: a web-based data visualization tool. The detailed instructions for running the interactive tool are provided here: https://github.com/schwartzlab-methods/NEST-interactive
+Finally, you can interactively visualize the cell-cell communication on tissue surface by using CellNEST Interactive: a web-based data visualization tool. The detailed instructions for running the interactive tool are provided here: https://github.com/schwartzlab-methods/CellNEST-interactive
 
 If the platform you are using to run the CellNEST model also supports web-based data visualization, you can use the same cellnest command to start the interactive interface. We will need to pass the directory path containing the CellNEST interactive repository and the port number to start the frontend of the web-based interface. The following files are also to be put in a directory and passed to the interactive interface. 
 
