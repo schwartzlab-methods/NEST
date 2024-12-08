@@ -12,7 +12,7 @@ import anndata as ad
 
 [CytoSPACE](https://github.com/digitalcytometry/cytospace#input-files) requires a single-cell RNA-seq atlas and spatial transcriptomics data to perform cell-to-spot assignment. 
 
-First, we download the Visium data for [human lymph node](https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_filtered_feature_bc_matrix.tar.gz) in a standard Visium format and save it here: 'data/lymph/'. 
+First, we download the Visium data for [human lymph node](https://cf.10xgenomics.com/samples/spatial-exp/1.1.0/V1_Human_Lymph_Node/V1_Human_Lymph_Node_spatial.tar.gz) in a standard Visium format, unzip it, and move it here: 'data/lymph/'. 
 
 Next, we download the scRNA-seq for human lymph node from [here](https://cell2location.cog.sanger.ac.uk/paper/integrated_lymphoid_organ_scrna/RegressionNBV4Torch_57covariates_73260cells_10237genes/sc.h5ad) and save it here: 'data/lymph/'. 
 
@@ -97,7 +97,7 @@ Then, we prepare the formatted inputs for the single-cell and spatial data:
 in_dir = 'data/lymph/'
 out_dir = 'data/lymph/CytoSPACE_format/'
 adata_sc = sc.read(os.path.join(in_dir, "sc.h5ad"))
-adata_spatial = sc.read_visium(in_dir)
+adata_spatial = sc.read_visium(os.path.join(in_dir, "V1_Human_Lymph_Node_spatial")) 
 cytospaceRef(adata_sc, out_dir, "Subset")
 cytospaceSpatial(adata_spatial, out_dir)
 ```
