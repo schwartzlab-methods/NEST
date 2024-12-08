@@ -1,17 +1,29 @@
 # Python package installation
 
-Run following commands to create virtual environment and activate it before installing python libraries:
+On Digital Alliance, you have to load the Python module first as follows:
 ```
 module load python/3.10
+```
+
+Then, run the following commands to create a virtual environment for running CellNEST and activate it before installing Python libraries to setup the environment:
+```
 virtualenv --no-download /project/[group_name]/[user_name]/cellnest_venv
 source /project/[group_name]/[user_name]/cellnest_venv/bin/activate
 ```
-Please replace [group_name] and [user_name] with your assigned group and name.
+Please replace [group_name] and [user_name] with your assigned group and name. 
 
 Upgrade pip3:
 ```
 pip3 install --no-index --upgrade pip
 ```
+
+After that, use the requirements.txt to install the required Python libraries as follows:
+```
+pip3 install -r requirements.txt
+```
+
+The above command should setup the environment properly. If the setup fails due to unmatched CUDA in your system, then please follow this to setup torch with cuda manually.
+
 
 Install required libraries as follows:  
 ```
