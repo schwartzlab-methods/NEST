@@ -1,6 +1,6 @@
 # Python package installation
 
-On Digital Alliance, you have to load the Python module first as follows:
+On Digital Alliance, you have to load the Python module first as follows (this can be skipped if you are working on your local machine):
 ```
 module load python/3.10
 ```
