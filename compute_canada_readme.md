@@ -38,6 +38,7 @@ pip3 install qnorm
 pip3 install csv pickle gzip matplotlib scipy sklearn 
 ```
 
+## Install Torch with CUDA support for GPU usage
 Next, see which pytorch and CUDA versions are available:
 ```
 avail_wheels "torch*"
