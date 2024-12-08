@@ -7,7 +7,7 @@ mkdir cellnest_container
 cd cellnest_container
 singularity pull cellnest_image.sif library://fatema/collection/nest_image.sif:latest
 ```
-[** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.](https://github.com/schwartzlab-methods/NEST/blob/main/vignette/running_NEST_singularity_container.md#running-cellnest-container-on-digital-alliance-using-apptainer)
+[** NOTE: Instructions for pulling the image on Digital Alliance are provided at the end.](https://github.com/schwartzlab-methods/CellNEST/blob/main/vignette/running_NEST_singularity_container.md#running-cellnest-container-on-digital-alliance-using-apptainer)
 
 ### Running CellNEST model through the downloaded singularity image
 
