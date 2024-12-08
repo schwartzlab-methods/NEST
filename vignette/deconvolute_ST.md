@@ -5,7 +5,7 @@ We first import the necessary Python libraries.
 ```
 import os 
 import pandas as pd
-import numpy as np
+import numpy as np 
 import scanpy as sc 
 import anndata as ad 
 ```
