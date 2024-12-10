@@ -11,7 +11,7 @@ matplotlib.use('Agg')
 #matplotlib.use('TkAgg') 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.colors import LinearSegmentedColormap, to_hex, rgb2hex
+#from matplotlib.colors import LinearSegmentedColormap, to_hex, rgb2hex
 #from typing import List
 import qnorm
 from scipy.sparse import csr_matrix
@@ -382,7 +382,7 @@ if __name__ == "__main__":
     ################################################################################
     combined_score_distribution = []
     csv_record = []
-    csv_record.append(['from_cell', 'to_cell', 'ligand', 'receptor', 'edge_rank', 'component', 'from_id', 'to_id', 'attention_score', 'deviation_from_median'])
+    csv_record.append(['from_cell', 'to_cell', 'ligand', 'receptor', 'edge_rank', 'component', 'from_id', 'to_id', 'attention_score']) #, 'deviation_from_median'
     for key_value in csv_record_dict.keys():
         item = key_value.split('-')
         i = int(item[0])
@@ -392,7 +392,7 @@ if __name__ == "__main__":
         edge_rank = csv_record_dict[key_value]        
         score = edge_score_intersect_dict[key_value] # weighted average attention score, where weight is the rank, lower rank being higher attention score
         label = -1 
-        csv_record.append([barcode_info[i][0], barcode_info[j][0], ligand, receptor, edge_rank, label, i, j, score,-1])
+        csv_record.append([barcode_info[i][0], barcode_info[j][0], ligand, receptor, edge_rank, label, i, j, score])
         combined_score_distribution.append(score)
     
             
@@ -422,21 +422,27 @@ if __name__ == "__main__":
 
     chart.save(args.output_path + args.model_name+'_attention_score_distribution.html')  
     skewness_distribution = skew(score_distribution)
+    
+    if args.output_all == 1:
+        df = pd.DataFrame(csv_record) # 
+        df.to_csv(args.output_path + args.model_name+'_allCCC.csv', index=False, header=False)
 
     ###########
     if args.cutoff_MAD !=-1:
         MAD = median_abs_deviation(score_distribution)
         median_distribution = statistics.median(score_distribution)
-        for k in range (1, len(csv_record)):    
-            csv_record[k][9] = np.abs(median_distribution-csv_record[k][8])
-        
         csv_record_final = []
         csv_record_final.append(csv_record[0])
+        csv_record_final[0].append('deviation_from_median')
         for k in range (1, len(csv_record)):
-            if csv_record[k][9] <= MAD:       
-                csv_record_final.append(csv_record[k])
+            deviation_from_median = median_distribution-csv_record[k][8]
+            if deviation_from_median <= MAD:   
+                temp_record = csv_record[k]
+                temp_record.append(deviation_from_median)
+                csv_record_final.append(temp_record)
+                
     
-        df = pd.DataFrame(csv_record_final) # output 4
+        df = pd.DataFrame(csv_record_final) # 
         df.to_csv(args.output_path + args.model_name+'_MAD_cutoff.csv', index=False, header=False)
         
     ##### save the file for downstream analysis ########
@@ -444,9 +450,12 @@ if __name__ == "__main__":
         z_score_distribution = stats.zscore(score_distribution)
         csv_record_final = []
         csv_record_final.append(csv_record[0])
+        csv_record_final[0].append('z-score')
         for k in range (1, len(csv_record)):
-            if z_score_distribution[k-1] >= 1.97: #args.cutoff_z_score:       
-                csv_record_final.append(csv_record[k])
+            if z_score_distribution[k-1] >= 1.97: #args.cutoff_z_score:  
+                temp_record = csv_record[k]
+                temp_record.append(z_score_distribution[k-1])
+                csv_record_final.append(temp_record)
     
         df = pd.DataFrame(csv_record_final) # output 4
         df.to_csv(args.output_path + args.model_name+'_z_score_cutoff.csv', index=False, header=False)
