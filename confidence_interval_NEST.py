@@ -26,10 +26,8 @@ if __name__ == "__main__":
     parser.add_argument( '--model_name', type=str, help='Name of the trained model', required=True)
     parser.add_argument( '--data_name', type=str, help='Name of the data.', required=True)
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
-    parser.add_argument( '--top20', type=int, default=-1, help='set to 1 to output the CCC having the attention score within the 95th percent confidence interval of top20 cutoff')
-    parser.add_argument( '--std', type=int, default=-1, help='set to 1 to output the CCC having the attention score within the 95th percent confidence interval of standard deviation')
-
-    
+    parser.add_argument( '--top20', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of top20 cutoff and output the CCC having the attention score within that range.')
+    parser.add_argument( '--std', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of standard deviation and output the CCC having the attention score within that range.')    
     args = parser.parse_args()
     if args.output_path=='output/':
         args.output_path = args.output_path + args.data_name + '/'
