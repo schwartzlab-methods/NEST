@@ -1,16 +1,20 @@
-We provide the arguments for running various steps of CellNEST model along with the preferred values as default. Most of the arguments are self-explanatory. The parameters that may need changing are discussed. 
+We provide the arguments for running various steps of CellNEST model along with the preferred values as Default. Most of the arguments are self-explanatory. The parameters that may need changing are discussed. 
 
 ## Data Preprocess 
+Sample command:
+```
+cellnest preprocess --data_name='V1_Human_Lymph_Node_spatial' --data_from='data/V1_Human_Lymph_Node_spatial/'
+```
 ### Arguments
     --data_name = Name of the dataset. Type is String. Required
     --data_from = Path to the dataset to read from. Space Ranger outs/ folder is preferred. Otherwise, provide the *.mtx file of the gene expression matrix. Type is String. Required.
     --data_to = Path to save the input graph (to be passed to GAT). Type is String. Default = 'input_graph/'.
-    --metadata_to = Path to save the metadata. Type is String. default='metadata/'
+    --metadata_to = Path to save the metadata. Type is String. Default='metadata/'
     --filter_min_cell = Minimum number of cells for gene filtering. Type is Int. Default=1. 
     --threshold_gene_exp = Threshold percentile for gene expression. Genes above this percentile are considered active. Type is float. Default=98
     --tissue_position_file = If your --data_from argument points to a *.mtx file instead of Space Ranger, then please provide the path to tissue position file. Type is String. Default='None'
     --spot_diameter = Spot/cell diameter for filtering ligand-receptor pairs based on cell-cell contact information. Should be provided in the same unit as spatia data (for Visium, that is pixel). Type is float. Default=89.43
-    --split = How many split sections? Type is Int. default=0. 
+    --split = How many split sections? Type is Int. Default=0. 
     --neighborhood_threshold = Set neighborhood threshold distance in terms of same unit as spot diameter. Type is float. If not set, then it is set to four times of the spot diameter.
     --database_path = Provide your desired ligand-receptor database path here. Default database is a combination of CellChat and NicheNet database. Type is String. Default='database/NEST_database.csv'
 
@@ -25,6 +29,10 @@ We have the following optional arguments for integrating intracellular pathways 
     --threshold_gene_exp_intra = Threshold percentile for gene expression. Genes above this percentile are considered active. This should be kept very low to detect most of the intracellular signals. Type is float. Default=20% 
 
 ## Model Run 
+Sample command:
+```
+nohup cellnest run --data_name='V1_Human_Lymph_Node_spatial' --num_epoch 60000 --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --run_id=1 > output_human_lymph_node_run1.log &
+```
 ### Arguments
     --data_name = Name of the dataset. Type is String. Required.  
     --model_name = Provide a model name. Type is String. Required. 
@@ -50,20 +58,39 @@ We have the following optional arguments for integrating intracellular pathways 
 Most of the parameters can be kept at default. Set --manual_seed='Yes' if you want to reproduce the results using user defined --seed. For details explanation on the required arguments please see the vignette.  
 
 ## Model Prediction Ensemble 
+Sample command:
+```
+cellnest postprocess --data_name='V1_Human_Lymph_Node_spatial' --model_name='CellNEST_V1_Human_Lymph_Node_spatial' --total_runs=5 
+```
 ### Arguments
     --data_name = The name of dataset. Type is String. Required.
-    --model_name = Name of the trained model.  Type is String. Required.
+    --model_name = Name of the trained model. Type is String. Required.
     --total_runs = How many runs for ensemble (at least 2 are preferred). Type is Int. Required.
     #######################################################################################################
     --embedding_path = Path to grab the attention scores from.  Type is String. Default='embedding_data/'
-    --metadata_from =  Path to grab the metadata.  Type is String. Default='metadata/' 
+    --metadata_from =  Path to grab the metadata. Type is String. Default='metadata/' 
     --data_from = Path to grab the input graph from (to be passed to GAT).  Type is String. Default='input_graph/'
     --output_path = Path to save the visualization results, e.g., histograms, graph etc.  Type is String. Default='output/'
     --top_percent = Top N percentage communications to pick. Type is Float. Default=20.
     --cutoff_MAD = Set it 1 to keep the communication having deviation lower than MAD. Type is Int. Default=-1
     --cutoff_z_score = Set it 1 to keep the communication having z_score higher than 1.97. Type is Int. Default=-1
+    --output_all = Set it to 1 to output all communications. Type is Int. Default=-1
     
 By default top 20% (--top_percent=20) CCC are kept, and the rest are discarded as most of the true connections are detected within top 20% based on synthetic data. Increasing this value will result in a lot of false positives. If you want to filter based on median absolute deviation (MAD) or z scores (1.97), please use --cutoff_MAD=1 or --cutoff_z_score=1, respectively. 
+
+## Confidence Interval
+Sample command: 
+```
+cellnest confidence_interval --data_name='V1_Human_Lymph_Node_spatial' --model_name='CellNEST_V1_Human_Lymph_Node_spatial'
+```
+Please note that to run this command, you have to first run previous command (postprocess) with argument: --output_all = 1
+### Arguments
+    --ccc_list_path = Path to *_allCCC.csv file generated by previous command. Type is Str. Default = 'output/' 
+    --model_name = Name of the trained model. Type is Str. Required = True
+    --data_name = Name of the data. Type is Str. Required = True.
+    --output_path = Path to save the visualization results, e.g., histograms, graph etc. Type is Str. Default = 'output/' 
+    --top20 = Set to 1 to print the 95th percent confidence interval of top20 cutoff and output the CCC having the attention score within that range. Type is Int. Default = -1
+    --std = Set to 1 to print the 95th percent confidence interval of standard deviation and output the CCC having the attention score within that range. Type is Int. Default = -1 
 
 ## Output Visualize 
 ### Arguments
@@ -85,3 +112,56 @@ By default top 20% (--top_percent=20) CCC are kept, and the rest are discarded a
     --sort_by_attentionScore = Set --histogram_attention_score=1 if you want to sort the histograms of CCC by attention score. Type is String. Default=-1
 
 --top_edge_count is a crucial parameter, and the effect of varying this parameter is explained with figures in the vignette. Additionally, --filter should be set 1 if you want to filter the CCC by user-specified ligand-receptor, spot/cell type annotation, or components, which are all explained in vignette. All other parameters can be kept at default.   
+## Downstream gene expression plot for a given receptor gene
+Sample command:
+```
+cellnest downstream --adata_path='data/V1_Human_Lymph_Node_spatial/V1_Human_Lymph_Node_filtered_feature_bc_matrix' --positions_path='data/V1_Human_Lymph_Node_spatial/spatial/tissue_positions_list.csv' --gene='CCR7' 
+```
+### Arguments
+    --adata_path = The path of gene expression matrix. Type is Str. Required=True 
+    --positions_path = The path of position file. Type is Str. Required=True
+    --gene = Gene name to plot downstream TF. Type is Str. Required=True.
+    --ppi_path = Path to ppi database. Type is Str. Default='database/human_signaling_ppi.csv'  
+    --tf_path = Path to TF list. Type is Str. Default='database/human_tf_target.csv'
+    --output_file = Path to save the visualization. Type is Str. Default=''
+ 
+
+## Extract Relay
+Sample command:
+```
+cellnest relay_extract --data_name='V1_Human_Lymph_Node_spatial' --metadata='metadata/' --top_ccc_file='output/V1_Human_Lymph_Node_spatial/V1_Human_Lymph_Node_spatial_ccc_list_top3000.csv' --output_path='relay_validation_sample_data/lymph_node/'
+```
+### Arguments
+    --data_name = The name of dataset. Type is Str. Required = True.  
+    --metadata = The name of dataset. Type is Str. Default='metadata/'.
+    --barcode_info_file = Path to load the barcode information file produced during data preprocessing step Type is Str. Default=''.
+    --annotation_file_path = Path to load the annotation file in csv format (if available). Type is Str. Default=''
+    --selfloop_info_file = Path to load the selfloop information file produced during data preprocessing step. Type is Str. Default='' 
+    --top_ccc_file = Path to load the selected top CCC file produced during data postprocessing step. Type is Str. Required = True
+    --output_path = Output file name prefix according to user\'s choice. Type is Str. Default='NEST_figures_output/'
+
+## Cell type identification for relays
+Sample command:
+```
+cellnest relay_celltype --input_path='relay_validation_sample_data/lymph_node/' --output_path='CellNEST_figures_output/' --annotation_file='relay_validation_sample_data/lymph_node/fractional_abundances_by_spot.csv' --modality='spot'
+```
+### Arguments
+    --input_path' = Directory containing NEST relay outputs. Type is Str. Required = True 
+    --output_path' = Directory to write output plots to. Type is Str. Required = True 
+    --annotation_file = Path to CSV file with cell type annotations. Type is = argparse.FileType('r'). Required = True 
+    --modality' = Spatial modality with choices = ["sc", "spot"]. Type is Str. Required = True
+    --additional_network = Append additional network to bar chart/create additional pie chart. Type is Str. Required = False
+
+## Confidence score for the CellNEST detected relays
+Sample command:
+```
+cellnest relay_confidence --input_path='relay_validation_sample_data/lymph_node/' --output_path='CellNEST_figures_output/' --organism='human' --database_dir='database/'
+```
+### Arguments
+    --input_path = Path to a CSV file containing relay network outputs from NEST. Must contain column 'Relay Patterns'. Type is  Str. Required = True 
+    --database_dir = Directory containing PPI and TF-target gene databases. Type is  Str. Required = True 
+    --organism = Organism profiled in spatial transcriptomics experiment with choices = ["human", "mouse"]. Type is  Str. Required = True 
+    --output_path = Path to csv file to write confidence scoring output. Type is  Str. Required = True 
+
+
+   
