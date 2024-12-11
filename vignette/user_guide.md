@@ -111,7 +111,19 @@ Please note that to run this command, you have to first run previous command (po
     --filter_by_component = Set component id, e.g., --filter_by_component=9 if you want to filter by component id. Type is String. Type is Int.  Default=-1
     --sort_by_attentionScore = Set --histogram_attention_score=1 if you want to sort the histograms of CCC by attention score. Type is String. Default=-1
 
---top_edge_count is a crucial parameter, and the effect of varying this parameter is explained with figures in the vignette. Additionally, --filter should be set 1 if you want to filter the CCC by user-specified ligand-receptor, spot/cell type annotation, or components, which are all explained in vignette. All other parameters can be kept at default.   
+--top_edge_count is a crucial parameter, and the effect of varying this parameter is explained with figures in the vignette. Additionally, --filter should be set 1 if you want to filter the CCC by user-specified ligand-receptor, spot/cell type annotation, or components, which are all explained in vignette. All other parameters can be kept at default.  
+
+### Output:
+We provide several visualization outputs to best quantify CellNEST's predictions:
+1. An HTML file showing the graph of connected components on the tissue. 
+2. A CSV file containing a list of CCCs with assigned connected components.
+3. A NetworkX visualization of the CCC network.
+4. A DOT file for plotting the graph in easy-to-share formats such as PDF and SVG with tools like Graphviz.
+5. A Histogram CSV and corresponding figure output delineating abundant CCC within each connected component of tissue.
+6. A scatter plot of the mean top downstream signaling gene expressions of a user-specified receptor gene.
+
+
+
 ## Downstream gene expression plot for a given receptor gene
 Sample command:
 ```
