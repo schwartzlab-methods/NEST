@@ -138,7 +138,8 @@ cellnest downstream --adata_path='data/V1_Human_Lymph_Node_spatial/V1_Human_Lymp
     --output_file = Path to save the visualization. Type is Str. Default=''
  
 
-## Extract Relay
+## Relay network related commands
+### Extract relay
 Sample command:
 ```
 cellnest relay_extract --data_name='V1_Human_Lymph_Node_spatial' --metadata='metadata/' --top_ccc_file='output/V1_Human_Lymph_Node_spatial/V1_Human_Lymph_Node_spatial_ccc_list_top3000.csv' --output_path='relay_validation_sample_data/lymph_node/'
@@ -152,7 +153,9 @@ cellnest relay_extract --data_name='V1_Human_Lymph_Node_spatial' --metadata='met
     --top_ccc_file = Path to load the selected top CCC file produced during data postprocessing step. Type is Str. Required = True
     --output_path = Output file name prefix according to user\'s choice. Type is Str. Default='NEST_figures_output/'
 
-## Cell type identification for relays
+Output: An HTML file showing histograms of detected relay counts and a CSV file showing the corresponding counts in a tabular format.
+
+### Cell type identification for relays
 Sample command:
 ```
 cellnest relay_celltype --input_path='relay_validation_sample_data/lymph_node/' --output_path='CellNEST_figures_output/' --annotation_file='relay_validation_sample_data/lymph_node/fractional_abundances_by_spot.csv' --modality='spot'
@@ -164,7 +167,9 @@ cellnest relay_celltype --input_path='relay_validation_sample_data/lymph_node/' 
     --modality' = Spatial modality with choices = ["sc", "spot"]. Type is Str. Required = True
     --additional_network = Append additional network to bar chart/create additional pie chart. Type is Str. Required = False
 
-## Confidence score for the CellNEST detected relays
+Output: HTML pie and bar charts to visualize cell-type proportions in relay networks. A CSV file containing cell-type proportions in a tabular format. 
+
+### Confidence score for the CellNEST detected relays
 Sample command:
 ```
 cellnest relay_confidence --input_path='relay_validation_sample_data/lymph_node/' --output_path='CellNEST_figures_output/' --organism='human' --database_dir='database/'
@@ -175,5 +180,5 @@ cellnest relay_confidence --input_path='relay_validation_sample_data/lymph_node/
     --organism = Organism profiled in spatial transcriptomics experiment with choices = ["human", "mouse"]. Type is  Str. Required = True 
     --output_path = Path to csv file to write confidence scoring output. Type is  Str. Required = True 
 
-
+Output: A CSV file containing putative intracellular pathways and confidence scores associated with relay networks.
    
