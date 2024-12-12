@@ -12,6 +12,7 @@ from collections import defaultdict
 import pandas as pd
 from random import choices
 import gzip
+from scipy.stats import median_abs_deviation
 #from kneed import KneeLocator
 import copy 
 import argparse
@@ -27,7 +28,9 @@ if __name__ == "__main__":
     parser.add_argument( '--data_name', type=str, help='Name of the data.', required=True)
     parser.add_argument( '--output_path', type=str, default='output/', help='Path to save the visualization results, e.g., histograms, graph etc.')
     parser.add_argument( '--top20', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of top20 cutoff and output the CCC having the attention score within that range.')
-    parser.add_argument( '--std', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of standard deviation and output the CCC having the attention score within that range.')    
+    parser.add_argument( '--std', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of standard deviation and output the CCC having the attention score within that range.') 
+    parser.add_argument( '--MAD', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of median absolute deviation and output the CCC having the deviation from median within that range.')    
+
     args = parser.parse_args()
     if args.output_path=='output/':
         args.output_path = args.output_path + args.data_name + '/'
@@ -83,8 +86,8 @@ if __name__ == "__main__":
     if args.std == 1:
         std_list = []
         for i in range (0, len(new_sets)):
-            std_score = np.std(new_sets[i]) # top 20% means above 80th percentile since the list is in 
-                                            # ascending order and higher value means more strong
+            std_score = np.std(new_sets[i]) 
+                                            
             std_list.append(std_score)
 
         lower_limit = np.percentile(std_list,2.7)
@@ -100,6 +103,28 @@ if __name__ == "__main__":
         csv_record_final = [df_column_names] + csv_record_final
         df = pd.DataFrame(csv_record_final) # output 4
         df.to_csv(args.output_path + args.model_name+'_CCC_list_std_confidence.csv', index=False, header=False)
-    
+        
+    if args.MAD == 1:
+        mad_list = []
+        for i in range (0, len(new_sets)):
+            mad_score = median_abs_deviation(new_sets[i]) 
+            mad_list.append(mad_score)
+
+        lower_limit = np.percentile(mad_list,2.7)
+        upper_limit = np.percentile(mad_list, 97)
+        print('95th percent confidence interval is: %g to %g'%(lower_limit, upper_limit))
+        # output only ccc which are between this confidence interval
+        csv_record_final = []
+        median_distribution = statistics.median(attention_score_original) 
+        for i in range (0, len(csv_record)):
+            deviation_from_median = median_distribution-csv_record[k][8]
+            if lower_limit <= deviation_from_median and deviation_from_median <= upper_limit:
+                csv_record_final.append(csv_record[i])
+                
+        csv_record_final = [df_column_names] + csv_record_final
+        df = pd.DataFrame(csv_record_final) # output 4
+        df.to_csv(args.output_path + args.model_name+'_CCC_list_mad_confidence.csv', index=False, header=False)
+
+ 
     ###########################################################################################################################################
 
