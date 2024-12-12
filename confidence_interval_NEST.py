@@ -30,6 +30,8 @@ if __name__ == "__main__":
     parser.add_argument( '--top20', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of top20 cutoff and output the CCC having the attention score within that range.')
     parser.add_argument( '--std', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of standard deviation and output the CCC having the attention score within that range.') 
     parser.add_argument( '--MAD', type=int, default=-1, help='Set to 1 to print the 95th percent confidence interval of median absolute deviation and output the CCC having the deviation from median within that range.')    
+    parser.add_argument( '--N1', type=int, default=-1, help='Set to the number of times you want to sample from original set. If none input, two third of the total number of edges are selected.') 
+    parser.add_argument( '--N2', type=int, default=100, help='Set to the number of new subsets.')    
 
     args = parser.parse_args()
     if args.output_path=='output/':
