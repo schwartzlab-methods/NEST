@@ -51,10 +51,14 @@ if __name__ == "__main__":
     for i in range (0, len(csv_record)):
         edge_index.append(i)
         attention_score_original.append(csv_record[i][8])
-        
+
+    if args.N1 == -1:
+        args.N1 = (2*total_edge)/3
+
+    num_new_set = args.N2
     new_sets = []
     for i in range (0, num_new_set):
-        temp_set = choices(edge_index, k=(2*total_edge)/3)
+        temp_set = choices(edge_index, k=args.N1)
         new_sets.append(new_sets)
 
     # replace new_sets[i] with attention scores
