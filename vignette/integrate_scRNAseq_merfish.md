@@ -1,6 +1,6 @@
 ## Integrate scRNAseq data with spatial MERFISH data
 
-We show how to integrate high-plex RNA imaging-based spatially resolved MERFISH data with scRNA-seq data using [uniPort](https://www.biorxiv.org/content/10.1101/2024.03.19.585796v1). This integration tutorial is adapted from Uniport. The MERFISH data includes 64,373 cells with 155 genes, and the scRNA-seq data includes 30,370 cells with 21,030 genes from six mice measured with dissociated scRNA-seq (10X).
+We show how to integrate high-plex RNA imaging-based spatially resolved MERFISH data with scRNA-seq data using [uniPort](https://uniport.readthedocs.io/en/latest/examples/MERFISH/merfish.html). This integration tutorial is adapted from Uniport. The MERFISH data includes 64,373 cells with 155 genes, and the scRNA-seq data includes 30,370 cells with 21,030 genes from six mice measured with dissociated scRNA-seq (10X).
 
 ```
 import uniport as up
